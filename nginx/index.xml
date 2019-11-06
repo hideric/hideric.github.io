@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Nginx on Hideric&#39;s Blog</title>
+    <link>https://hideric.github.io/nginx/</link>
+    <description>Recent content in Nginx on Hideric&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>The Hugo Documents are copyright © gethugothemes 2018.</copyright>
+    <lastBuildDate>Wed, 07 Aug 2019 11:02:05 +0600</lastBuildDate>
+    
+	<atom:link href="https://hideric.github.io/nginx/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>后端实践：Nginx日志配置（超详细）</title>
+      <link>https://hideric.github.io/nginx/%E5%90%8E%E7%AB%AF%E5%AE%9E%E8%B7%B5nginx%E6%97%A5%E5%BF%97%E9%85%8D%E7%BD%AE%E8%B6%85%E8%AF%A6%E7%BB%86/</link>
+      <pubDate>Wed, 30 Oct 2019 15:41:01 +0800</pubDate>
+      
+      <guid>https://hideric.github.io/nginx/%E5%90%8E%E7%AB%AF%E5%AE%9E%E8%B7%B5nginx%E6%97%A5%E5%BF%97%E9%85%8D%E7%BD%AE%E8%B6%85%E8%AF%A6%E7%BB%86/</guid>
+      <description>后端实践：Nginx日志配置（超详细）  作者：antwang juejin.im/post/5aa09bb3f265da238f121b6c
+ 前言 Nginx日志对于统计、系统服务排错很有用。
+Nginx日志主要分为两种：access_log(访问日志)和error_log(错误日志)。通过访问日志我们可以得到用户的IP地址、浏览器的信息，请求的处理时间等信息。错误日志记录了访问出错的信息，可以帮助我们定位错误的原因。
+本文将详细描述一下如何配置Nginx日志。
+设置access_log 访问日志主要记录客户端的请求。客户端向Nginx服务器发起的每一次请求都记录在这里。客户端IP，浏览器信息，referer，请求处理时间，请求URL等都可以在访问日志中得到。当然具体要记录哪些信息，你可以通过log_format指令定义。
+语法 access_log path [format [buffer=size] [gzip[=level]] [flush=time] [if=condition]]; # 设置访问日志 access_log off; # 关闭访问日志    path 指定日志的存放位置。 format 指定日志的格式。默认使用预定义的combined。 buffer 用来指定日志写入时的缓存大小。默认是64k。 gzip 日志写入前先进行压缩。压缩率可以指定，从1到9数值越大压缩比越高，同时压缩的速度也越慢。默认是1。 flush 设置缓存的有效时间。如果超过flush指定的时间，缓存中的内容将被清空。 if 条件判断。如果指定的条件计算为0或空字符串，那么该请求不会写入日志。   另外，还有一个特殊的值off。如果指定了该值，当前作用域下的所有的请求日志都被关闭。
+作用域 可以应用access_log指令的作用域分别有http，server，location，limit_except。也就是说，在这几个作用域外使用该指令，Nginx会报错。
+以上是access_log指令的基本语法和参数的含义。下面我们看一几个例子加深一下理解。
+基本用法 access_log /var/logs/nginx-access.log  该例子指定日志的写入路径为/var/logs/nginx-access.log，日志格式使用默认的combined。
+access_log /var/logs/nginx-access.log buffer=32k gzip flush=1m  该例子指定日志的写入路径为/var/logs/nginx-access.log，日志格式使用默认的combined，指定日志的缓存大小为32k，日志写入前启用gzip进行压缩，压缩比使用默认值1，缓存数据有效时间为1分钟。
+使用log_format自定义日志格式 Nginx预定义了名为combined日志格式，如果没有明确指定日志格式默认使用该格式：
+log_format combined &#39;$remote_addr - $remote_user [$time_local] &#39; &#39;&amp;quot;$request&amp;quot; $status $body_bytes_sent &#39; &#39;&amp;quot;$http_referer&amp;quot; &amp;quot;$http_user_agent&amp;quot;&#39;;  如果不想使用Nginx预定义的格式，可以通过log_format指令来自定义。</description>
+    </item>
+    
+    <item>
+      <title>使用Nginx进行四层负载均衡</title>
+      <link>https://hideric.github.io/nginx/%E4%BD%BF%E7%94%A8nginx%E8%BF%9B%E8%A1%8C%E5%9B%9B%E5%B1%82%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1/</link>
+      <pubDate>Wed, 30 Oct 2019 15:39:39 +0800</pubDate>
+      
+      <guid>https://hideric.github.io/nginx/%E4%BD%BF%E7%94%A8nginx%E8%BF%9B%E8%A1%8C%E5%9B%9B%E5%B1%82%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1/</guid>
+      <description>使用Nginx进行四层负载均衡 HTTP负载均衡，也就是我们通常所说的&amp;rdquo;七层负载均衡&amp;rdquo;，工作在第七层&amp;rdquo;应用层&amp;rdquo;。而TCP负载均衡，就是我们通常所说的&amp;rdquo;四层负载均衡&amp;rdquo;，工作在&amp;rdquo;网络层&amp;rdquo;和&amp;rdquo;传输层&amp;rdquo;。例如，LVS(Linux&amp;nbsp;Virtual Server，Linux虚拟服务)和F5(一种硬件负载均衡设备)是属于&amp;rdquo;四层负载均衡&amp;rdquo;的。
+nginx-1.9.0 已发布，该版本增加了stream 模块用于一般的TCP 代理和负载均衡，ngx_stream_core_module 这个模块在1.90版本后将被启用。但是并不会默认安装， 需要在编译时通过指定 --with-stream 参数来激活这个模块。 1）配置Nginx编译文件参数 ./configure --with-http_stub_status_module --with-stream ------------------------------------------------------------------ 2）编译、安装，make &amp;amp;&amp;amp; make install ------------------------------------------------------------------ 3）配置nginx.conf文件 stream { upstream kevin { server 192.168.10.10:8080; #这里配置成要访问的地址 server 192.168.10.20:8081; server 192.168.10.30:8081; #需要代理的端口，在这里我代理一一个kevin模块的接口8081 } server { listen 8081; #需要监听的端口 proxy_timeout 20s; proxy_pass kevin; } } 创建最高级别的stream（与http同一级别），定义一个upstream组 名称为kevin，由多个服务组成达到负载均衡 定义一个服务用来监听TCP连接（如：8081端口）， 并且把他们代理到一个upstream组的kevin中，配置负载均衡的方法和参数为每个server；配置些如：连接数、权重等等。 首先创建一个server组，用来作为TCP负载均衡组。定义一个upstream块在stream上下文中，在这个块里面添加由server命令定义的server，指定他的IP地址和 主机名（能够被解析成多地址的主机名)和端口号。下面的例子是建立一个被称之为kevin组，两个监听1395端口的server ，一个监听8080端口的server。 upstream kevin { server 192.168.10.10:8080; #这里配置成要访问的地址 server 192.168.10.20:8081; server 192.168.10.30:8081; #需要代理的端口，在这里我代理一一个kevin模块的接口8081 } 需要特别注意的是： 你不能为每个server定义协议，因为这个stream命令建立TCP作为整个 server的协议了。 配置反向代理使Nginx能够把TCP请求从一个客户端转发到负载均衡组中(如：kevin组)。在每个server配置块中 通过每个虚拟server的server的配置信息和在 每个server中定义的监听端口（客户端需求的代理端口号，如我推流的的是kevin协议，则端口号为：8081）的配置信息和proxy_passs 命令把TCP通信发送到 upstream的哪个server中去。下面我们将TCP通信发送到kevin 组中去。 server { listen 8081; #需要监听的端口 proxy_timeout 20s; proxy_pass kevin; } 当然我们也可以采用单一的代理方式： server { listen 8081; #需要监听的端口 proxy_timeout 20s; proxy_pass 192.</description>
+    </item>
+    
+  </channel>
+</rss>

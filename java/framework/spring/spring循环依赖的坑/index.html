@@ -1,0 +1,707 @@
+<head>
+  <meta charset="utf-8">
+  <title>Spring循环依赖的坑</title>
+
+  <meta name="generator" content="Hugo 0.58.3" />
+
+  <!-- mobile responsive meta -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <!-- ** Plugins Needed for the Project ** -->
+  <!-- Bootstrap -->
+  <link rel="stylesheet" href="https://hideric.github.io/plugins/bootstrap/bootstrap.min.css">
+  <!-- themefy-icon -->
+  <link rel="stylesheet" href="https://hideric.github.io/plugins/themify-icons/themify-icons.css">
+  <!-- highlight -->
+  <link rel="stylesheet" href="https://hideric.github.io/plugins/highlight/hybrid.css">
+  <!-- fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700" rel="stylesheet">
+
+  <style>
+  :root{
+    --primary-color:#2f1f48;
+    --secondary-color:#f9f9f9;
+    --text-color:#636363;
+    --text-color-dark:#242738;
+    --white-color:#ffffff;
+  }  
+  </style>
+
+  <!-- Main Stylesheet -->
+  
+  <link rel="stylesheet" href="https://hideric.github.io/css/style.min.css" integrity="" media="screen">
+
+  <!-- jquiry -->
+  <script src="https://hideric.github.io/plugins/jquery/jquery-1.12.4.js"></script>
+
+  <!-- jquary ui -->
+  <script src="https://hideric.github.io/plugins/jquery/jquery-ui.js"></script>
+
+  <!--Favicon-->
+  <link rel="icon" href="https://hideric.github.io/images/favicon.png" type="image/x-icon">
+
+</head>
+
+
+<!-- navigation -->
+<header class="shadow-bottom sticky-top bg-white">
+  <div class="container">
+    <nav class="navbar navbar-expand-lg navbar-light">
+  <a class="navbar-brand" href="https://hideric.github.io/">Hideric</a>
+  <button class="navbar-toggler border-0" type="button" data-toggle="collapse" data-target="#navigation"
+    aria-controls="navigation" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse text-center" id="navigation">
+    <ul class="navbar-nav ml-auto">
+      <li class="nav-item">
+        <a class="nav-link text-dark" href="https://hideric.github.io/">Home</a>
+      </li>
+      
+      
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle text-dark" href="#" role="button" data-toggle="dropdown" aria-haspopup="true"
+          aria-expanded="false">
+          Back-End
+        </a>
+        <div class="dropdown-menu" >
+          
+          <a class="dropdown-item" href="https://hideric.github.io/java">Java</a>
+          
+          <a class="dropdown-item" href="https://hideric.github.io/python">Python</a>
+          
+          <a class="dropdown-item" href="https://hideric.github.io/go">Go</a>
+          
+          <a class="dropdown-item" href="https://hideric.github.io/cpp">C&#43;&#43;</a>
+          
+        </div>
+      </li>
+      
+      
+      
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle text-dark" href="#" role="button" data-toggle="dropdown" aria-haspopup="true"
+          aria-expanded="false">
+          DB
+        </a>
+        <div class="dropdown-menu" >
+          
+          <a class="dropdown-item" href="https://hideric.github.io/mysql">Mysql</a>
+          
+          <a class="dropdown-item" href="https://hideric.github.io/oracle">Oracle</a>
+          
+        </div>
+      </li>
+      
+      
+      
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle text-dark" href="#" role="button" data-toggle="dropdown" aria-haspopup="true"
+          aria-expanded="false">
+          Front-End
+        </a>
+        <div class="dropdown-menu" >
+          
+          <a class="dropdown-item" href="https://hideric.github.io/js">JavaScript</a>
+          
+          <a class="dropdown-item" href="https://hideric.github.io/vue">Vue</a>
+          
+          <a class="dropdown-item" href="https://hideric.github.io/react">React</a>
+          
+          <a class="dropdown-item" href="https://hideric.github.io/rn">React Native</a>
+          
+        </div>
+      </li>
+      
+      
+      
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle text-dark" href="#" role="button" data-toggle="dropdown" aria-haspopup="true"
+          aria-expanded="false">
+          Mid-Ware
+        </a>
+        <div class="dropdown-menu" >
+          
+          <a class="dropdown-item" href="https://hideric.github.io/redis">Redis</a>
+          
+          <a class="dropdown-item" href="https://hideric.github.io/nginx">Nginx</a>
+          
+        </div>
+      </li>
+      
+      
+      
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle text-dark" href="#" role="button" data-toggle="dropdown" aria-haspopup="true"
+          aria-expanded="false">
+          Mobile
+        </a>
+        <div class="dropdown-menu" >
+          
+          <a class="dropdown-item" href="https://hideric.github.io/android">Android</a>
+          
+          <a class="dropdown-item" href="https://hideric.github.io/ios">IOS</a>
+          
+        </div>
+      </li>
+      
+      
+      
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle text-dark" href="#" role="button" data-toggle="dropdown" aria-haspopup="true"
+          aria-expanded="false">
+          OPS
+        </a>
+        <div class="dropdown-menu" >
+          
+          <a class="dropdown-item" href="https://hideric.github.io/k8s">kubernetes</a>
+          
+          <a class="dropdown-item" href="https://hideric.github.io/docker">Docker</a>
+          
+          <a class="dropdown-item" href="https://hideric.github.io/leetcode">Leetcode</a>
+          
+          <a class="dropdown-item" href="https://hideric.github.io/linux">Linux</a>
+          
+        </div>
+      </li>
+      
+      
+      
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle text-dark" href="#" role="button" data-toggle="dropdown" aria-haspopup="true"
+          aria-expanded="false">
+          pages
+        </a>
+        <div class="dropdown-menu" >
+          
+          <a class="dropdown-item" href="https://hideric.github.io/faq">FAQ</a>
+          
+          <a class="dropdown-item" href="https://hideric.github.io/contact">CONTACT</a>
+          
+          <a class="dropdown-item" href="https://hideric.github.io/elements">ELEMENTS</a>
+          
+          <a class="dropdown-item" href="https://hideric.github.io/others">OTHERS</a>
+          
+        </div>
+      </li>
+      
+      
+    </ul>
+    
+    <ul class="list-inline text-center mb-0">
+      
+    </ul>
+  </div>
+</nav>
+  </div>
+</header>
+<!-- /navigation -->
+
+
+<section class="single pt-5 bg-gray">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-3">
+        <div class="p-4 bg-white sticky-top top-100">
+            
+            <nav class="sidebar-menu">
+              <ul class="list-styled">
+            <li class=""><a href="https://hideric.github.io/android/">Android</a>
+              <ul class="">
+            <li class=""><a href="https://hideric.github.io/android/tool/f-droidapps/">F-Droid Apps Recommendation</a>
+            </li></ul>
+              
+            </li>
+            <li class=""><a href="https://hideric.github.io/cpp/">C&#43;&#43;</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/docker/">Docker</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/go/">Go</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/ios/">IOS</a>
+            </li>
+            <li class="parent d-block "><a href="https://hideric.github.io/java/">Java</a>
+              <ul class="sub-menu">
+            <li class=""><a href="https://hideric.github.io/java/basis/http%E6%96%AD%E7%82%B9%E7%BB%AD%E4%BC%A0/">HTTP断点续传</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/basis/java-%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8/">Java 垃圾收集器</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/basis/java-%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%8B%BC%E6%8E%A5%E5%A7%BF%E5%8A%BF/">Java 字符串拼接姿势</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/basis/java-%E5%A6%82%E4%BD%95%E6%9B%B4%E4%BC%98%E9%9B%85%E7%9A%84%E5%A4%84%E7%90%86%E7%A9%BA%E5%80%BC/">Java-如何更优雅的处理空值</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/basis/jvm/jvm-%E5%A0%86%E5%86%85%E5%AD%98%E6%BA%A2%E5%87%BA%E5%90%8E%E5%85%B6%E4%BB%96%E7%BA%BF%E7%A8%8B%E6%98%AF%E5%90%A6%E5%8F%AF%E7%BB%A7%E7%BB%AD%E5%B7%A5%E4%BD%9C/">JVM 堆内存溢出后，其他线程是否可继续工作？</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/framework/mybatis/mybatis%E4%B8%ADlike-%E7%9A%84%E4%BD%BF%E7%94%A8%E6%96%B9%E5%BC%8F%E4%BB%A5%E5%8F%8A%E4%B8%80%E4%BA%9B%E6%B3%A8%E6%84%8F%E7%82%B9/">Mybatis中Like 的使用方式以及一些注意点</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/framework/mybatis/mybatis%E5%B1%85%E7%84%B6%E6%9C%89%E5%9D%91%E5%8D%83%E4%B8%87%E5%88%AB%E8%B8%A9/">Mybatis居然有坑，千万别踩！</a>
+            </li>
+            <li class=" active "><a href="https://hideric.github.io/java/framework/spring/spring%E5%BE%AA%E7%8E%AF%E4%BE%9D%E8%B5%96%E7%9A%84%E5%9D%91/">Spring循环依赖的坑</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/framework/spring/spring%E7%9A%84%E5%90%84%E7%A7%8D%E6%B3%A8%E8%A7%A3/">Spring的各种注解</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/basis/%E4%BB%8E%E5%AE%9E%E8%B7%B5%E8%A7%92%E5%BA%A6%E9%87%8D%E6%96%B0%E7%90%86%E8%A7%A3bio%E5%92%8Cnio/">从实践角度重新理解BIO和NIO</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/basis/%E5%85%B3%E4%BA%8E-git-%E6%8F%90%E4%BA%A4%E8%A7%84%E8%8C%83/">关于 Git 提交规范</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/basis/jvm/%E6%B3%A8%E6%84%8Fcode-cache%E6%89%93%E6%BB%A1%E5%8F%AF%E5%AF%BC%E8%87%B4%E5%BA%94%E7%94%A8%E6%80%A7%E8%83%BD%E9%99%8D%E4%BD%8E/">注意，Code Cache打满可导致应用性能降低</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/framework/spring/spring-%E5%AE%B9%E5%99%A8%E5%90%AF%E5%8A%A8%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/">Spring 容器启动源码解析</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/framework/spring/spring-%E7%9A%84-beanutils-%E5%A1%AB%E5%9D%91%E8%AE%B0/">Spring 的 BeanUtils 填坑记</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/basis/weakhashmap%E7%94%9F%E4%BA%86%E7%97%85%E7%9A%84-hashmap-/">WeakHashMap，生了病的 HashMap ？</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/framework/dubbo/%E4%BD%BF%E7%94%A8dubbo%E8%BF%87%E7%A8%8B%E4%B8%AD%E9%81%87%E5%88%B0%E8%BF%87%E5%93%AA%E4%BA%9B%E5%9D%91/">使用dubbo过程中遇到过哪些坑？</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/basis/%E4%B8%80%E4%B8%AAjava%E5%AF%B9%E8%B1%A1%E5%88%B0%E5%BA%95%E5%8D%A0%E7%94%A8%E5%A4%9A%E5%A4%A7%E5%86%85%E5%AD%98/">一个Java对象到底占用多大内存？</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/basis/%E4%BD%A0%E7%9C%9F%E7%9A%84%E4%BA%86%E8%A7%A3logback%E5%90%97/">你真的了解logback吗？</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/basis/%E8%BF%99%E5%8F%AF%E8%83%BD%E6%98%AFgithub%E4%B8%8A%E6%9C%80%E5%8F%8B%E5%A5%BD%E7%9A%84%E5%88%86%E5%B8%83%E5%BC%8F%E5%8D%B3%E6%97%B6%E9%80%9A%E8%AE%AF%E9%A1%B9%E7%9B%AE..../">这可能是Github上最友好的分布式即时通讯项目.....</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/basis/java-8-stream-%E9%9B%86%E5%90%88%E6%93%8D%E4%BD%9C%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B/">Java 8 - Stream 集合操作快速上手</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/basis/concurrency/stringbuilder-%E4%B8%BA%E4%BB%80%E4%B9%88%E7%BA%BF%E7%A8%8B%E4%B8%8D%E5%AE%89%E5%85%A8/">StringBuilder 为什么线程不安全？</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/basis/jvm/jvm%E4%BC%98%E5%8C%96%E4%B9%8B%E9%80%83%E9%80%B8%E5%88%86%E6%9E%90%E4%B8%8E%E5%88%86%E9%85%8D%E6%B6%88%E9%99%A4/">JVM优化之逃逸分析与分配消除</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/framework/security/shiro%E6%A1%86%E6%9E%B6-%E7%94%A8%E6%88%B7%E6%9D%83%E9%99%90%E7%AE%A1%E7%90%86/">Shiro框架 - 用户权限管理</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/basis/concurrency/threadlocal%E9%9D%A2%E8%AF%95%E9%A2%98/">ThreadLocal面试题</a>
+            </li></ul>
+              
+            </li>
+            <li class=""><a href="https://hideric.github.io/js/">JavaScript</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/k8s/">Kubernets</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/leetcode/">Leetcode</a>
+              <ul class="">
+            <li class=""><a href="https://hideric.github.io/leetcode/leetcode-5/">LeetCode #5 最长回文子字符串</a>
+            </li></ul>
+              
+            </li>
+            <li class=""><a href="https://hideric.github.io/linux/">Linux</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/mysql/">Mysql</a>
+              <ul class="">
+            <li class=""><a href="https://hideric.github.io/mysql/mysql%E9%9D%A2%E8%AF%95%E9%A2%98%E5%8F%8A%E5%8D%83%E4%B8%87%E7%BA%A7%E6%95%B0%E6%8D%AE%E6%9F%A5%E8%AF%A2%E4%BC%98%E5%8C%96/">Mysql面试题及千万级数据查询优化</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/mysql/mysql%E7%9A%84count%E8%AF%AD%E5%8F%A5/">MySQL的COUNT语句</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/mysql/mysql-%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E6%80%9D%E8%B7%AF/">MySQL 性能优化思路</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/mysql/%E5%AE%98%E6%96%B9%E5%B7%A5%E5%85%B7mysql-router-%E9%AB%98%E5%8F%AF%E7%94%A8%E5%8E%9F%E7%90%86%E4%B8%8E%E5%AE%9E%E6%88%98/">官方工具｜MySQL Router 高可用原理与实战</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/mysql/mysql-%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%968-%E7%A7%8D%E5%B8%B8%E8%A7%81-sql-%E9%94%99%E8%AF%AF%E7%94%A8%E6%B3%95/">MySQL 性能优化：8 种常见 SQL 错误用法！</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/mysql/index/null%E8%83%BD%E7%94%A8%E7%B4%A2%E5%BC%95/">MySQL中IS NULL、IS NOT NULL、!=不能用索引？</a>
+            </li></ul>
+              
+            </li>
+            <li class=""><a href="https://hideric.github.io/nginx/">Nginx</a>
+              <ul class="">
+            <li class=""><a href="https://hideric.github.io/nginx/%E5%90%8E%E7%AB%AF%E5%AE%9E%E8%B7%B5nginx%E6%97%A5%E5%BF%97%E9%85%8D%E7%BD%AE%E8%B6%85%E8%AF%A6%E7%BB%86/">后端实践：Nginx日志配置（超详细）</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/nginx/%E4%BD%BF%E7%94%A8nginx%E8%BF%9B%E8%A1%8C%E5%9B%9B%E5%B1%82%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1/">使用Nginx进行四层负载均衡</a>
+            </li></ul>
+              
+            </li>
+            <li class=""><a href="https://hideric.github.io/oracle/">Oracle</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/others/">OTHERS</a>
+              <ul class="">
+            <li class=""><a href="https://hideric.github.io/others/term/qps%E6%9C%AF%E8%AF%AD/">秒懂 QPS、TPS、PV、UV、GMV、IP、RPS！</a>
+            </li></ul>
+              
+            </li>
+            <li class=""><a href="https://hideric.github.io/python/">Python</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/react/">React</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/rn/">React Native</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/redis/">Redis</a>
+              <ul class="">
+            <li class=""><a href="https://hideric.github.io/redis/%E5%A6%82%E4%BD%95%E7%94%A8-redis-%E7%BB%9F%E8%AE%A1%E7%8B%AC%E7%AB%8B%E7%94%A8%E6%88%B7%E8%AE%BF%E9%97%AE%E9%87%8F/">如何用 Redis 统计独立用户访问量？</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/redis/redis-%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81%E7%9A%84%E6%AD%A3%E7%A1%AE%E5%AE%9E%E7%8E%B0%E6%96%B9%E5%BC%8Fjava%E7%89%88/">Redis 分布式锁的正确实现方式（Java版）</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/redis/redis-%E5%AE%9E%E7%8E%B0%E9%99%84%E8%BF%91%E7%9A%84%E4%BA%BA%E5%8A%9F%E8%83%BD/">Redis 实现“附近的人”功能</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/redis/%E4%B8%BA%E4%BB%80%E4%B9%88rediscluster%E6%9C%8916384%E4%B8%AA%E6%A7%BD/">为什么RedisCluster有16384个槽?</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/redis/%E5%AD%A6%E4%BC%9A%E8%BF%99%E5%87%A0%E4%B8%AAredis%E6%8A%80%E5%B7%A7%E8%AE%A9%E4%BD%A0%E7%9A%84%E7%A8%8B%E5%BA%8F%E5%BF%AB%E5%A6%82%E9%97%AA%E7%94%B5/">学会这几个Redis技巧，让你的程序快如闪电</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/redis/%E6%AF%94redis%E8%BF%98%E5%BF%AB5%E5%80%8D%E7%9A%84%E4%B8%AD%E9%97%B4%E4%BB%B6%E4%B8%BA%E5%95%A5%E8%BF%99%E4%B9%88%E5%BF%AB/">比Redis还快5倍的中间件，为啥这么快？</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/redis/redis%E9%AB%98%E7%BA%A7%E5%AE%A2%E6%88%B7%E7%AB%AFlettuce%E8%AF%A6%E8%A7%A3/">Redis高级客户端Lettuce详解</a>
+            </li></ul>
+              
+            </li>
+            <li class=""><a href="https://hideric.github.io/vue/">Vue</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/contact/">Contact</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/elements/">Elements</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/faq/">Frequently Asked Questions</a>
+            </li></ul>
+            </nav>
+
+            
+        </div>
+      </div>
+      <div class="col-lg-9">
+        <div class="p-5 bg-white">
+            <h2>Spring循环依赖的坑</h2>
+            
+
+<h2 id="spring循环依赖的坑">Spring循环依赖的坑</h2>
+
+<blockquote>
+<p><strong>作者：</strong><strong>Mythsman</strong></p>
+
+<p><strong>原文：</strong><strong><a href="https://blog.mythsman.com/post/5d838c7c2db8a452e9b7082c/">https://blog.mythsman.com/post/5d838c7c2db8a452e9b7082c/</a></strong></p>
+</blockquote>
+
+<h4 id="前言">前言</h4>
+
+<p><br  /></p>
+
+<p>这两天工作遇到了一个挺有意思的<strong>Spring循环依赖</strong>的问题，但是这个和以往遇到的循环依赖问题都不太一样，隐藏的相当隐蔽，网络上也很少看到有其他人遇到类似的问题。这里权且称他<strong>非典型Spring循环依赖问题</strong>。但是我相信我肯定不是第一个踩这个坑的，也一定不是最后一个，可能只是因为踩过的人比较少、鲜有记录罢了。因此这里权且记录一下这个坑，方便后人查看。<br  /></p>
+
+<p>正如鲁迅（我）说过，“这个世上本没有坑，踩的人多了，也便成了坑”。</p>
+
+<h4 id="典型场景">典型场景</h4>
+
+<p><br  /></p>
+
+<p>经常听很多人在Review别人代码的时候有如下的评论：“你在设计的时候这些类之间怎么能有循环依赖呢？你这样会报错的！”。</p>
+
+<p>其实这句话前半句当然没有错，出现循环依赖的确是设计上的问题，理论上应当将循环依赖进行分层，抽取公共部分，然后由各个功能类再去依赖公共部分。</p>
+
+<p>但是在复杂代码中，各个manager类互相调用太多，总会一不小心出现一些类之间的循环依赖的问题。可有时候我们又发现在用Spring进行依赖注入时，虽然Bean之间有循环依赖，但是代码本身却大概率能很正常的work，似乎也没有任何bug。</p>
+
+<p>很多敏感的同学心里肯定有些犯嘀咕，循环依赖这种触犯<strong>因果律</strong>的事情怎么能发生呢？没错，这一切其实都并不是那么理所当然。</p>
+
+<p><br  /></p>
+
+<p>3</p>
+
+<p>-</p>
+
+<h4 id="什么是依赖">什么是依赖</h4>
+
+<p><br  /></p>
+
+<p>其实，不分场景地、笼统地说<strong>A依赖B</strong>其实是不够准确、至少是不够细致的。我们可以简单定义一下什么是<strong>依赖</strong>。</p>
+
+<p>所谓<strong>A依赖B</strong>，可以理解为A中某些功能的实现是需要调用B中的其他功能配合实现的。这里也可以拆分为两层含义：</p>
+
+<ol>
+<li><p><strong>A强依赖B</strong>。创建A的实例这件事情本身需要B来参加。对照在现实生活就像<strong>妈妈生你</strong>一样。</p></li>
+
+<li><p><strong>A弱依赖B</strong>。创建A的实例这件事情不需要B来参加，但是A实现功能是需要调用B的方法。对照在现实生活就像<strong>男耕女织</strong>一样。</p></li>
+</ol>
+
+<p>那么，所谓<strong>循环依赖</strong>，其实也有两层含义：</p>
+
+<ol>
+<li><p>强依赖之间的循环依赖。</p></li>
+
+<li><p>弱依赖之间的循环依赖。</p></li>
+</ol>
+
+<p>讲到这一层，我想大家应该知道我想说什么了。</p>
+
+<p><br  /></p>
+
+<h4 id="什么是依赖调解">什么是依赖调解</h4>
+
+<p><br  /></p>
+
+<p>对于<strong>强依赖</strong>而言，A和B不能互相作为存在的前提，否则宇宙就爆炸了。因此这类依赖目前是无法调解的。</p>
+
+<p>对于<strong>弱依赖</strong>而言，A和B的存在并没有前提关系，A和B只是互相合作。因此正常情况下是不会出现违反因果律的问题的。</p>
+
+<p>那什么是<strong>循环依赖的调解</strong>呢？我的理解是：</p>
+
+<p>将 原本是弱依赖关系的两者误当做是强依赖关系的做法 重新改回弱依赖关系的过程。</p>
+
+<p>基于上面的分析，我们基本上也就知道Spring是怎么进行循环依赖调解的了（仅指弱依赖，强依赖的循环依赖只有上帝能自动调解）。</p>
+
+<p><br  /></p>
+
+<p>5</p>
+
+<p>-</p>
+
+<h4 id="为什么要依赖注入">为什么要依赖注入</h4>
+
+<p><br  /></p>
+
+<p>网上经常看到很多<strong>手撸IOC容器的入门科普文</strong>，大部分人只是将IOC容器实现成一个“存储Bean的map”，将DI实现成“通过注解+反射将bean赋给类中的field”。实际上很多人都忽视了DI的依赖调解的功能。而<strong>帮助我们进行依赖调解</strong>本身就是我们使用IOC+DI的一个重要原因。</p>
+
+<p>在没有依赖注入的年代里，很多人都会将类之间的依赖通过构造函数传递（实际上是构成了强依赖）。当项目越来越庞大时，非常容易出现无法调解的循环依赖。这时候开发人员就被迫必须进行重新抽象，非常麻烦。而事实上，我们之所以将原本的弱依赖弄成了强依赖，完全是因为我们将<strong>类的构造</strong>、<strong>类的配置</strong>、<strong>类的初始化逻辑</strong>三个功能耦合在构造函数之中。</p>
+
+<p>而DI就是帮我们将构造函数的功能进行了解耦。</p>
+
+<p>那么Spring是怎么进行解耦的呢？</p>
+
+<p><br  /></p>
+
+<h4 id="spring的依赖注入模型">Spring的依赖注入模型</h4>
+
+<p><br  /></p>
+
+<p>这一部分网上有很多相关内容，我的理解大概是上面提到的三步：</p>
+
+<ol>
+<li><p><strong>类的构造</strong>，调用构造函数、解析强依赖（一般是无参构造），并创建类实例。</p></li>
+
+<li><p><strong>类的配置</strong>，根据Field/GetterSetter中的依赖注入相关注解、解析弱依赖，并填充所有需要注入的类。</p></li>
+
+<li><p><strong>类的初始化逻辑</strong>，调用生命周期中的初始化方法（例如<code>@PostConstruct</code>注解或<code>InitializingBean</code>的<code>afterPropertiesSet</code>方法），执行实际的初始化业务逻辑。</p></li>
+</ol>
+
+<p>这样，构造函数的功能就由原来的三个弱化为了一个，只负责类的构造。并将类的配置交由DI，将类的初始化逻辑交给生命周期。</p>
+
+<p>想到这一层，忽然解决了我堵在心头已久的问题。在刚开始学Spring的时候，我一直想不通：</p>
+
+<ul>
+<li><p><strong>为什么Spring除了构造函数之外还要在Bean生命周期里有一个额外的初始化方法？</strong></p></li>
+
+<li><p><strong>这个初始化方法和构造函数到底有什么区别？</strong></p></li>
+
+<li><p><strong>为什么Spring建议将初始化的逻辑写在生命周期里的初始化方法里？</strong></p></li>
+</ul>
+
+<blockquote>
+<p>现在，把依赖调解结合起来看，解释就十分清楚了：</p>
+</blockquote>
+
+<ol>
+<li><p>为了进行依赖调解，Spring在调用构造函数时是没有将依赖注入进来的。也就是说构造函数中是无法使用通过DI注入进来的bean（或许可以，但是Spring并不保证这一点）。</p></li>
+
+<li><p>如果不在构造函数中使用依赖注入的bean而仅仅使用构造函数中的参数，虽然没有问题，但是这就导致了这个bean强依赖于他的入参bean。当后续出现循环依赖时无法进行调解。
+<br  /></p></li>
+</ol>
+
+<h4 id="非典型问题">非典型问题</h4>
+
+<p><br  /></p>
+
+<h2 id="结论"><strong>结论？</strong></h2>
+
+<p>根据上面的分析我们应该得到了以下共识：
+- 通过构造函数传递依赖的做法是<strong>有可能</strong>造成无法自动调解的循环依赖的。
+- 纯粹通过Field/GetterSetter进行依赖注入造成的循环依赖是完全可以被自动调解的。
+因此这样我就得到了一个我认为正确的结论。这个结论屡试不爽，直到我发现了这次遇到的场景：</p>
+
+<blockquote>
+<p>在Spring中对Bean进行依赖注入时，在纯粹只考虑循环依赖的情况下，只要不使用构造函数注入就永远不会产生无法调解的循环依赖。</p>
+</blockquote>
+
+<p>当然，我没有任何“不建议使用构造器注入”的意思。相反，我认为能够“优雅地、不引入循环依赖地使用构造器注入”是一个要求更高的、更优雅的做法。贯彻这一做法需要有更高的抽象能力，并且会自然而然的使得各个功能解耦合。</p>
+
+<h3 id="问题"><strong>问题</strong></h3>
+
+<p>将实际遇到的问题简化后大概是下面的样子（下面的类在同一个包中）：</p>
+
+<p><br  /></p>
+
+<hr />
+
+<pre><code class="language-java">@SpringBootApplication
+@Import({ServiceA.class, ConfigurationA.class, BeanB.class})
+public class TestApplication {
+  	public static void main(String[] args) {
+  			SpringApplication.run(TestApplication.class, args);
+  	}
+}
+</code></pre>
+
+<p><br  /></p>
+
+<hr />
+
+<pre><code class="language-java">public class ServiceA {
+    @Autowired
+    private BeanA beanA;
+    @Autowired
+    private BeanB beanB; 
+}
+</code></pre>
+
+<p><br  /></p>
+
+<hr />
+
+<pre><code class="language-java">public class ConfigurationA {
+    @Autowired
+    public BeanB beanB;
+    @Bean
+    public BeanA beanA() {
+    		return new BeanA();
+    }
+}
+</code></pre>
+
+<p><br  /></p>
+
+<hr />
+
+<pre><code class="language-java">public class BeanA {
+}
+</code></pre>
+
+<p><br  /></p>
+
+<hr />
+
+<pre><code class="language-java">public class BeanB {
+    @Autowired
+    public BeanA beanA;
+}
+</code></pre>
+
+<p><br  /></p>
+
+<p>首先声明一点，我没有用<code>@Component</code>、<code>@Configuration</code>之类的注解，而是采用<code>@Import</code>手动扫描Bean是为了方便指定Bean的初始化顺序。Spring会按照我<code>@Import</code>的顺序依次加载Bean。同时，在加载每个Bean的时候，如果这个Bean有需要注入的依赖，则会试图加载他依赖的Bean。</p>
+
+<p><br  /></p>
+
+<p>我们可以发现，BeanA,BeanB,ConfigurationA之间有一个循环依赖，不过莫慌，所有的依赖都是通过非构造函数注入的方式实现的，理论上似乎可以自动调解的。</p>
+
+<p>但是实际上，这段代码会报下面的错：</p>
+
+<pre><code class="language-bash">Caused by: org.springframework.beans.factory.BeanCurrentlyInCreationException: Error creating bean with name 'beanA': Requested bean is currently in creation: Is there an unresolvable circular reference?
+</code></pre>
+
+<p><br  /></p>
+
+<p>这显然是出现了Spring无法调解的循环依赖了。</p>
+
+<p>这已经有点奇怪了。但是，如果你尝试将<code>ServiceA</code>类中声明的<code>BeanA</code>,<code>BeanB</code><strong>调换一下位置</strong>，你就会发现这段代码突然就跑的通了！！！</p>
+
+<p>显然，调换这两个Bean的依赖的顺序本质是调整了Spring加载Bean的顺序（众所周知，Spring创建Bean是单线程的）。</p>
+
+<h3 id="解释"><strong>解释</strong></h3>
+
+<p>相信你已经发现问题了，没错，问题的症结就在于<code>ConfigurationA</code>这个配置类。</p>
+
+<p>配置类和普通的Bean有一个区别，就在于除了同样作为Bean被管理之外，配置类也可以在内部声明其他的Bean。</p>
+
+<p>这样就存在一个问题，配置类中声明的其他Bean的构造过程其实是属于配置类的业务逻辑的一部分的。也就是说我们只有先将配置类的依赖全部满足之后才可以创建他自己声明的其他的Bean。（如果不加这个限制，那么在创建自己声明的其他Bean的时候，如果用到了自己的依赖，则有空指针的风险。）</p>
+
+<p>这样一来，BeanA对ConfigurationA就不再是弱依赖，而是实打实的<strong>强依赖</strong>了（也就是说ConfigurationA的初始化不仅影响了BeanA的依赖填充，也影响了BeanA的实例构造）。</p>
+
+<p>有了这样的认识，我们再来分别分析两种初始化的路径。</p>
+
+<h4 id="先加载beana"><strong>先加载BeanA</strong></h4>
+
+<ol>
+<li><p>当Spring在试图加载ServiceA时，先构造了ServiceA，然后发现他依赖BeanA，于是就试图去加载BeanA；</p></li>
+
+<li><p>Spring想构造BeanA，但是发现BeanA在ConfigurationA内部，于是又试图加载ConfigurationA（此时BeanA仍未构造）；</p></li>
+
+<li><p>Spring构造了ConfigurationA的实例，然后发现他依赖BeanB，于是就试图去加载BeanB。</p></li>
+
+<li><p>Spring构造了BeanB的实例，然后发现他依赖BeanA，于是就试图去加载BeanA。</p></li>
+
+<li><p>Spring发现BeanA还没有实例化，此时Spring发现自己回到了步骤2。。。GG。。。</p>
+
+<h4 id="先加载beanb"><strong>先加载BeanB</strong></h4></li>
+
+<li><p>当Spring在试图加载ServiceA时，先构造了ServiceA，然后发现他依赖BeanB，于是就试图去加载BeanB；</p></li>
+
+<li><p>Spring构造了BeanB的实例，然后发现他依赖BeanA，于是就试图去加载BeanA。</p></li>
+
+<li><p>Spring发现BeanA在ConfigurationA内部，于是试图加载ConfigurationA（此时BeanA仍未构造）；</p></li>
+
+<li><p>Spring构造了ConfigurationA的实例，然后发现他依赖BeanB，并且BeanB的实例已经有了，于是将这个依赖填充进ConfigurationA中。</p></li>
+
+<li><p>Spring发现ConfigurationA已经完成了构造、填充了依赖，于是想起来构造了BeanA。</p></li>
+
+<li><p>Spring发现BeanA已经有了实例，于是将他给了BeanB，BeanB填充的依赖完成。</p></li>
+
+<li><p>Spring回到了为ServiceA填充依赖的过程，发现还依赖BeanA，于是将BeanA填充给了ServiceA。</p></li>
+
+<li><p>Spring成功完成了初始化操作。</p>
+
+<h3 id="结论-1"><strong>结论</strong></h3></li>
+</ol>
+
+<p>总结一下这个问题，结论就是：</p>
+
+<blockquote>
+<p>除了<strong>构造注入</strong>会导致强依赖以外，一个Bean也会强依赖于暴露他的配置类。</p>
+</blockquote>
+
+<h3 id="代码坏味道"><strong>代码坏味道</strong></h3>
+
+<p>写到这，我已经觉得有点恶心了。谁在写代码的时候没事做还要这么分析依赖，太容易出锅了吧！那到底有没有什么方法能避免分析这种恶心的问题呢？</p>
+
+<p>方法其实是有的，那就是遵守下面的代码规范————<strong>不要对有@Configuration注解的配置类进行Field级的依赖注入</strong>。</p>
+
+<p>没错，对配置类进行依赖注入，几乎等价于对配置类中的所有Bean增加了一个强依赖，极大的提高了出现无法调解的循环依赖的风险。我们应当将依赖尽可能的缩小，所有依赖只能由真正需要的Bean直接依赖才行。</p>
+
+<blockquote>
+<p><strong>参考资料</strong></p>
+
+<p><strong>Circular Dependencies in Spring</strong></p>
+
+<p><strong>Spring-bean的循环依赖以及解决方式</strong></p>
+
+<p><strong>Factory method injection should be used in &ldquo;@Configuration&rdquo; classes</strong></p>
+</blockquote>
+
+<h3 id="end">END</h3>
+
+            <p class="post-meta border-bottom pb-3 mb-0">Updated on 30 Oct 2019</p><nav class="pagination mt-3"><a class="nav nav-prev" href="https://hideric.github.io/java/framework/mybatis/mybatis%E5%B1%85%E7%84%B6%E6%9C%89%E5%9D%91%E5%8D%83%E4%B8%87%E5%88%AB%E8%B8%A9/" title="Mybatis居然有坑，千万别踩！"><i class="ti-arrow-left mr-2"></i>Mybatis居然有坑，千万别踩！</a>
+            <a class="nav nav-next" href="https://hideric.github.io/java/framework/spring/spring%E7%9A%84%E5%90%84%E7%A7%8D%E6%B3%A8%E8%A7%A3/" title="Spring的各种注解">Spring的各种注解<i class="ti-arrow-right ml-2"></i></a>
+            </nav></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- footer -->
+<footer class="section bg-gray pb-0">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-8 text-md-left text-center">
+        <p>The Hugo Documents are copyright © gethugothemes 2018.</p> 
+      </div>
+      <div class="col-md-4 text-md-right text-center">
+        <ul class="list-inline mb-3">
+          
+          <li class="list-inline-item"><a class="text-color d-inline-block p-2" href="#"><i class="ti-facebook"></i></a></li>
+          
+          <li class="list-inline-item"><a class="text-color d-inline-block p-2" href="#"><i class="ti-twitter-alt"></i></a></li>
+          
+          <li class="list-inline-item"><a class="text-color d-inline-block p-2" href="#"><i class="ti-vimeo-alt"></i></a></li>
+          
+          <li class="list-inline-item"><a class="text-color d-inline-block p-2" href="#"><i class="ti-instagram"></i></a></li>
+          
+        </ul>
+      </div>
+    </div>
+  </div>
+</footer>
+<!-- /footer -->
+
+<!-- Bootstrap JS -->
+<script src="https://hideric.github.io/plugins/bootstrap/bootstrap.min.js"></script>
+<!-- highlight -->
+<script src="https://hideric.github.io/plugins/highlight/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+<!-- Main Script -->
+
+<script src="https://hideric.github.io/js/script.min.js"></script>

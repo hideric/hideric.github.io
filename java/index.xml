@@ -1,0 +1,535 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Java on Hideric&#39;s Blog</title>
+    <link>https://hideric.github.io/java/</link>
+    <description>Recent content in Java on Hideric&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>The Hugo Documents are copyright © gethugothemes 2018.</copyright>
+    <lastBuildDate>Wed, 07 Aug 2019 11:02:05 +0600</lastBuildDate>
+    
+	<atom:link href="https://hideric.github.io/java/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>HTTP断点续传</title>
+      <link>https://hideric.github.io/java/basis/http%E6%96%AD%E7%82%B9%E7%BB%AD%E4%BC%A0/</link>
+      <pubDate>Wed, 30 Oct 2019 15:41:01 +0800</pubDate>
+      
+      <guid>https://hideric.github.io/java/basis/http%E6%96%AD%E7%82%B9%E7%BB%AD%E4%BC%A0/</guid>
+      <description>HTTP断点续传 0x01: 简述
+断点续传：指的是在上传/下载时，将任务（一个文件或压缩包）人为的划分为几个部分，每一个部分采用一个线程进行上传/下载，如果碰到网络故障，可以从已经上传/下载的部分开始继续上传/下载未完成的部分，而没有必要从头开始上传/下载。可以节省时间，提高速度。
+0x02: 断点续传的用途
+有时用户上传/下载文件需要历时数小时，万一线路中断，不具备断点续传的 HTTP/FTP 服务器或下载软件就只能从头重传，比较好的 HTTP/FTP 服务器或下载软件具有断点续传能力，允许用户从上传/下载断线的地方继续传送，这样大大减少了用户的烦恼。
+​ 常见的支持断点续传的上传/下载软件：QQ 旋风、迅雷、快车、电驴、酷6、土豆、优酷、百度视频、新浪视频、腾讯视频、百度云等。
+​ 在 Linux/Unix 系统下，常用支持断点续传的 FTP 客户端软件是 lftp。
+0x03: Range &amp;amp; Content-Range
+HTTP1.1 协议（RFC2616）开始支持获取文件的部分内容，这为并行下载以及断点续传提供了技术支持。它通过在 Header 里两个参数实现的，客户端发请求时对应的是 Range ，服务器端响应时对应的是 Content-Range。
+0x04: Range
+用于请求头中，指定第一个字节的位置和最后一个字节的位置，一般格式：
+​ Range:(unit=first byte pos)-[last byte pos]
+Range 头部的格式有以下几种情况： - Range: bytes=0-499 表示第 0-499 字节范围的内容 - Range: bytes=500-999 表示第 500-999 字节范围的内容 - Range: bytes=-500 表示最后 500 字节的内容 - Range: bytes=500- 表示从第 500 字节开始到文件结束部分的内容 - Range: bytes=0-0,-1 表示第一个和最后一个字节 - Range: bytes=500-600,601-999 同时指定几个范围</description>
+    </item>
+    
+    <item>
+      <title>Java 垃圾收集器</title>
+      <link>https://hideric.github.io/java/basis/java-%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8/</link>
+      <pubDate>Wed, 30 Oct 2019 15:41:01 +0800</pubDate>
+      
+      <guid>https://hideric.github.io/java/basis/java-%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8/</guid>
+      <description>Java 垃圾收集器 概念准备
+下面了解几个概念以帮助后面的学习：线程暂停（Stop The World）、安全点（Safepoint）、安全区（Safe region）。
+在执行可达性分析的时候会出现在分析的过程中对象关系引用等发生了变化，为了保证分析的准确性，就必须在分析的过程中暂停所有Java线程，Sun将这一事件称作“Stop The World”。
+那么，什么时候暂停合适呢？并不是所有的时刻都可以暂停所有线程进行GC的，只有到达某些点才可以进行GC操作，这些点就称作安全点（Safepoint）。
+安全点的设置不能太少，那样GC等待的时间就会太长，但也不能太多否则会增加运行时的负担。
+所以，安全点的选定基本上是以程序“是否具有让程序长时间执行的特征”为标准进行选定的。比如，循环的末尾、方法临返回前/调用方法的call指令后、可能抛异常的位置等。
+HotSpot采用主动中断的方式，让执行线程在运行期轮询是否需要暂停的（GC设置的）标志，若需要则中断挂起。
+对于正在运行的线程，可以主动运行到安全点并暂停执行，但是对于那些正在Sleep或阻塞的线程，当它们重新执行时可能已经过了安全点，但此时GC可能还没完成垃圾回收，这种情况该怎么办呢？
+于是就有了安全区（Safe region）的概念，安全区是一块区域，在该区域中引用都不会被修改。比如，线程进入到安全区的时候先标识自己进入了安全区，等它被唤醒准备离开时，先检查GC是否完成，如果完成则可以离开，否则就在安全区等待。
+了解了上面的基本概念之后，下面正式进入垃圾收集器的讲解。
+垃圾收集器分类
+先通过下图了解一下Hotspot的8种垃圾收集器及其应用。
+两个收集器之间的连线，表示它们可以搭配使用。收集器所处的区域表示它是属于新生代收集器还是老年代收集器。其中ZGC为Java11引入的新的垃圾收集器。
+默认垃圾收集器
+不同Java版本采用的默认收集器如下。
+Serial收集器
+Serial收集器是最基本、发展历史最悠久的收集器，是一个单线程的收集器。在进行垃圾收集时，必须暂停其他所有的工作线程，直到它收集结束。就是所谓的“Stop The World。”
+ParNew收集器
+ParNew收集器其实就是Serial收集器的多线程版本。除了使用多线程进行垃圾收集外，其余行为包括Serial收集器可用的所有控制参数、收集算法（复制算法）、Stop The World、对象分配规则、回收策略等与Serial收集器完全相同，两者共用了相当多的代码。
+Parallel Scavenge收集器
+Parallel Scavenge收集器是一个新生代搜集器，主要采用复制算法，与ParNew类似。但关注点与其他搜集器不同，目标是达到一个可控的吞吐量。
+Serial Old收集器
+Serial Old是Serial收集器的老年代版本，同样是一个单线程收集器，使用标记－整理算法。运作图同Serial搜集器。
+Parallel Old收集器
+Parallel Old是Parallel Scavenge收集器的老年代版本，使用多线程和“标记－整理”算法。在JDK 1.6中才开始提供。
+CMS收集器
+CMS（Concurrent Mark and Sweep 并发-标记-清除），是一种以获取最短回收停顿时间为目标的收集器。基于并发、使用标记清除算法，只针对老年代进行垃圾回收。
+CMS收集器工作时，尽可能让GC线程和用户线程并发执行，以达到降低STW时间的目的。
+整个操作步骤分为四步：初始标记（CMS initial mark）、并发标记（CMS concurrent mark）、重新标记（CMS remark）、并发清除（CMS concurrent sweep）。
+在上图过程中，初始标记和重新标记都会触发“Stop The World”。
+初始标记仅仅只是标记一下GC Roots能直接关联到的对象，速度很快，在Java7中是单线程，在Java8以后可采用多线程。
+发标记阶段GC线程和应用线程并发执行，初始标记出来的存活对象，然后继续递归标记这些对象可达的对象。
+重新标记阶段则是为了修正并发标记期间，因用户程序继续运作而导致标记产生变动的那一部分对象的标记记录，这个阶段的停顿时间一般会比初始标记阶段稍长一些，但远比并发标记的时间短。
+优点：并发收集、低停顿。
+缺点：对CPU资源非常敏感、无法处理浮动垃圾、标记-清除算法导致的空间碎片。</description>
+    </item>
+    
+    <item>
+      <title>Java 字符串拼接姿势</title>
+      <link>https://hideric.github.io/java/basis/java-%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%8B%BC%E6%8E%A5%E5%A7%BF%E5%8A%BF/</link>
+      <pubDate>Wed, 30 Oct 2019 15:41:01 +0800</pubDate>
+      
+      <guid>https://hideric.github.io/java/basis/java-%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%8B%BC%E6%8E%A5%E5%A7%BF%E5%8A%BF/</guid>
+      <description>Java 字符串拼接姿势 01、“+”号操作符 要说姿势，“+”号操作符必须是字符串拼接最常用的一种了，没有之一。
+String chenmo = &amp;quot;沉默&amp;quot;; String wanger = &amp;quot;王二&amp;quot;; System.out.println(chenmo + wanger);  我们把这段代码使用 JAD 反编译一下。
+String chenmo = &amp;quot;\u6C89\u9ED8&amp;quot;; // 沉默 String wanger = &amp;quot;\u738B\u4E8C&amp;quot;; // 王二 System.out.println((new StringBuilder(String.valueOf(chenmo))).append(wanger).toString());  我去，原来编译的时候把“+”号操作符替换成了 StringBuilder 的 append 方法。也就是说，“+”号操作符在拼接字符串的时候只是一种形式主义，让开发者使用起来比较简便，代码看起来比较简洁，读起来比较顺畅。算是 Java 的一种语法糖吧。
+02、StringBuilder 除去“+”号操作符，StringBuilder 的 append 方法就是第二个常用的字符串拼接姿势了。
+先来看一下 StringBuilder 类的 append 方法的源码：
+public StringBuilder append(String str) { super.append(str); return this; }  这 3 行代码没啥可看的，可看的是父类 AbstractStringBuilder 的 append 方法：
+public AbstractStringBuilder append(String str) { if (str == null) return appendNull(); int len = str.</description>
+    </item>
+    
+    <item>
+      <title>Java-如何更优雅的处理空值</title>
+      <link>https://hideric.github.io/java/basis/java-%E5%A6%82%E4%BD%95%E6%9B%B4%E4%BC%98%E9%9B%85%E7%9A%84%E5%A4%84%E7%90%86%E7%A9%BA%E5%80%BC/</link>
+      <pubDate>Wed, 30 Oct 2019 15:41:01 +0800</pubDate>
+      
+      <guid>https://hideric.github.io/java/basis/java-%E5%A6%82%E4%BD%95%E6%9B%B4%E4%BC%98%E9%9B%85%E7%9A%84%E5%A4%84%E7%90%86%E7%A9%BA%E5%80%BC/</guid>
+      <description>Java:如何更优雅的处理空值  来源：lrwinxhttps://lrwinx.github.io/  导语 在笔者几年的开发经验中，经常看到项目中存在到处空值判断的情况，这些判断，会让人觉得摸不着头绪，它的出现很有可能和当前的业务逻辑并没有关系。但它会让你很头疼。
+有时候，更可怕的是系统因为这些空值的情况，会抛出空指针异常，导致业务系统发生问题。
+此篇文章，我总结了几种关于空值的处理手法，希望对读者有帮助。
+业务中的空值 场景 存在一个UserSearchService用来提供用户查询的功能:
+public interface UserSearchService{ List&amp;lt;User&amp;gt; listUser(); User get(Integer id); }  问题现场 对于面向对象语言来讲，抽象层级特别的重要。尤其是对接口的抽象，它在设计和开发中占很大的比重，我们在开发时希望尽量面向接口编程。
+对于以上描述的接口方法来看，大概可以推断出可能它包含了以下两个含义:
+ listUser(): 查询用户列表
+ get(Integer id): 查询单个用户 在所有的开发中，XP推崇的TDD模式可以很好的引导我们对接口的定义，所以我们将TDD作为开发代码的”推动者”。
+  对于以上的接口，当我们使用TDD进行测试用例先行时，发现了潜在的问题：
+ listUser() 如果没有数据，那它是返回空集合还是null呢？
+ get(Integer id) 如果没有这个对象，是抛异常还是返回null呢？
+深入listUser研究  我们先来讨论
+listUser()  这个接口，我经常看到如下实现:
+public List&amp;lt;User&amp;gt; listUser(){ List&amp;lt;User&amp;gt; userList = userListRepostity.selectByExample(new UserExample()); if(CollectionUtils.isEmpty(userList)){//spring util工具类 return null; } return userList; }  这段代码返回是null,从我多年的开发经验来讲，对于集合这样返回值，最好不要返回null，因为如果返回了null，会给调用者带来很多麻烦。你将会把这种调用风险交给调用者来控制。
+如果调用者是一个谨慎的人，他会进行是否为null的条件判断。如果他并非谨慎，或者他是一个面向接口编程的狂热分子(当然，面向接口编程是正确的方向)，他会按照自己的理解去调用接口，而不进行是否为null的条件判断，如果这样的话，是非常危险的，它很有可能出现空指针异常！
+根据墨菲定律来判断: “很有可能出现的问题，在将来一定会出现!”</description>
+    </item>
+    
+    <item>
+      <title>JVM 堆内存溢出后，其他线程是否可继续工作？</title>
+      <link>https://hideric.github.io/java/basis/jvm/jvm-%E5%A0%86%E5%86%85%E5%AD%98%E6%BA%A2%E5%87%BA%E5%90%8E%E5%85%B6%E4%BB%96%E7%BA%BF%E7%A8%8B%E6%98%AF%E5%90%A6%E5%8F%AF%E7%BB%A7%E7%BB%AD%E5%B7%A5%E4%BD%9C/</link>
+      <pubDate>Wed, 30 Oct 2019 15:41:01 +0800</pubDate>
+      
+      <guid>https://hideric.github.io/java/basis/jvm/jvm-%E5%A0%86%E5%86%85%E5%AD%98%E6%BA%A2%E5%87%BA%E5%90%8E%E5%85%B6%E4%BB%96%E7%BA%BF%E7%A8%8B%E6%98%AF%E5%90%A6%E5%8F%AF%E7%BB%A7%E7%BB%AD%E5%B7%A5%E4%BD%9C/</guid>
+      <description>JVM 堆内存溢出后，其他线程是否可继续工作？ 最近网上出现一个美团面试题：“一个线程OOM后，其他线程还能运行吗？”。我看网上出现了很多不靠谱的答案。这道题其实很有难度，涉及的知识点有jvm内存分配、作用域、gc等，不是简单的是与否的问题。
+由于题目中给出的OOM，java中OOM又分很多类型；比如：堆溢出（“java.lang.OutOfMemoryError: Java heap space”）、永久带溢出（“java.lang.OutOfMemoryError:Permgen space”）、不能创建线程（“java.lang.OutOfMemoryError:Unable to create new native thread”）等很多种情况。
+本文主要是分析堆溢出对应用带来的影响。
+先说一下答案，答案是还能运行。
+代码如下：
+public class JvmThread { public static void main(String[] args) { new Thread(() -&amp;gt; { List&amp;lt;byte[]&amp;gt; list = new ArrayList&amp;lt;byte[]&amp;gt;(); while (true) { System.out.println(new Date().toString() + Thread.currentThread() + &amp;quot;==&amp;quot;); byte[] b = new byte[1024 * 1024 * 1]; list.add(b); try { Thread.sleep(1000); } catch (Exception e) { e.printStackTrace(); } } }).start(); // 线程二 new Thread(() -&amp;gt; { while (true) { System.</description>
+    </item>
+    
+    <item>
+      <title>Mybatis中Like 的使用方式以及一些注意点</title>
+      <link>https://hideric.github.io/java/framework/mybatis/mybatis%E4%B8%ADlike-%E7%9A%84%E4%BD%BF%E7%94%A8%E6%96%B9%E5%BC%8F%E4%BB%A5%E5%8F%8A%E4%B8%80%E4%BA%9B%E6%B3%A8%E6%84%8F%E7%82%B9/</link>
+      <pubDate>Wed, 30 Oct 2019 15:41:01 +0800</pubDate>
+      
+      <guid>https://hideric.github.io/java/framework/mybatis/mybatis%E4%B8%ADlike-%E7%9A%84%E4%BD%BF%E7%94%A8%E6%96%B9%E5%BC%8F%E4%BB%A5%E5%8F%8A%E4%B8%80%E4%BA%9B%E6%B3%A8%E6%84%8F%E7%82%B9/</guid>
+      <description> Mybatis中Like 的使用方式以及一些注意点 模糊查询在项目中还是经常使用的，本文就简单整理Mybatis中使用Like进行模糊查询的几种写法以及一些常见的问题。
+初始数据 方式一 在Mybatis中的第一种写法：
+这种会有sql注入的问题，需要明白在 Mybatis中&amp;nbsp;$&amp;nbsp;和&amp;nbsp;#&amp;nbsp;使用的区别。这种写法也不能加jdbcType=VARCHAR,否则也会报错。
+做了个简单的测试：
+注意：排序的字段也容易出现这个问题，在使用的时候也一定要注意。
+ order by ${orderBy}
+ 第一种方式在实际开发过程中千万要注意，不要写成这样了。
+方式二 在Mybatis中的第二种写法：
+在代码中加上%。
+这种方式在一些项目中也会看到。如果没有使用如Mybatis等ORM框架，直接写sql查询就这样拼接了。
+方式三 在Mybatis中的第三种写法：
+测试：
+在实际开发中推荐使用这种方式。
+小注意 当使用方式三的时候，如果查询的关键字就是%&amp;nbsp;，那情况会是什么？初始化数据中name有9条数据中包含%。
+查询的sql如下：
+ select * from t_user where name like concat(&amp;lsquo;%&amp;rsquo;,&amp;lsquo;%&amp;rsquo;,&amp;lsquo;%&amp;rsquo;)
+ 查出来全部的数据，并不是只包含了%的数据，如果查询_也是一样的。
+那这种情况肯定是不满足查询需求的，则需要调整。
+①在代码中进行转义
+②使用ESCAPE
+这两种本质都是对查询的关键字进行了处理，这种处理在代码中可以使用拦截器或者AOP等技术统一处理。
+小总结 1、不要写方式1的这种模糊查询，容易发生sql注入！
+ 建议使用第三种方式进行模糊查询
+ 2、上面这三种模糊查询，都是使用%关键字%，这种方式是不会走索引的，大数据量时候有查询效率问题
+ 看情况，可以使用全文索引；或者使用ES进行说明：网上有一些优化like的查询的，但是亲测后没啥用
+ 3、注意关键词中有%、_这些特殊字符如何处理。
+ 1、业务上不允许输入这些字符，直接过滤（前台、后台过滤）2、使用上面的ESCAPE或者转义
+ END </description>
+    </item>
+    
+    <item>
+      <title>Mybatis居然有坑，千万别踩！</title>
+      <link>https://hideric.github.io/java/framework/mybatis/mybatis%E5%B1%85%E7%84%B6%E6%9C%89%E5%9D%91%E5%8D%83%E4%B8%87%E5%88%AB%E8%B8%A9/</link>
+      <pubDate>Wed, 30 Oct 2019 15:41:01 +0800</pubDate>
+      
+      <guid>https://hideric.github.io/java/framework/mybatis/mybatis%E5%B1%85%E7%84%B6%E6%9C%89%E5%9D%91%E5%8D%83%E4%B8%87%E5%88%AB%E8%B8%A9/</guid>
+      <description>Mybatis居然有坑，千万别踩！ 来源：http://h5ip.cn/aJgJ
+Mybatis是一个开源的轻量级半自动化ORM框架，使得面向对象应用程序与关系数据库的映射变得更加容易。MyBatis使用xml描述符或注解将对象与存储过程或SQL语句相结合。Mybatis最大优点是应用程序与Sql进行解耦，sql语句是写在Xml Mapper文件中。
+OGNL表达式在Mybatis当中应用非常广泛，其表达式的灵活性使得动态Sql功能的非常强大。OGNL是Object-Graph Navigation Language的缩写，代表对象图导航语言。OGNL是一种EL表达式语言，用于设置和获取Java对象的属性，并且可以对列表进行投影选择以及执行lambda表达式。Ognl类提供了许多简便方法用于执行表达式的。Struts2发布的每个版本都会出现的新的高危可执行漏洞也是因为它使用了灵活的OGNL表达式。
+公司后端采用Mybatis作为数据访问层,所使用版本为3.2.3。线上环境业务系统在运行过程中出现了一个令人困惑的异常, 该异常时而出现时而不出现，构造各种OGNL表达式为空等特殊情况均不会重现该异常。具体异常堆栈信息如下:
+### Error querying database. Cause: org.apache.ibatis.builder.BuilderException: Error evaluating expression &#39;list != null and list.size() &amp;gt; 0&#39;. Cause: org.apache.ibatis.ognl.MethodFailedException: Method &amp;quot;size&amp;quot; failed for object [1] [java.lang.IllegalAccessException: Class org.apache.ibatis.ognl.OgnlRuntime can not access a member of class java.util.Collections$SingletonList with modifiers &amp;quot;public&amp;quot;] ### Cause: org.apache.ibatis.builder.BuilderException: Error evaluating expression &#39;list != null and list.size() &amp;gt; 0&#39;. Cause: org.apache.ibatis.ognl.MethodFailedException: Method &amp;quot;size&amp;quot; failed for object [1] [java.lang.IllegalAccessException: Class org.</description>
+    </item>
+    
+    <item>
+      <title>Spring循环依赖的坑</title>
+      <link>https://hideric.github.io/java/framework/spring/spring%E5%BE%AA%E7%8E%AF%E4%BE%9D%E8%B5%96%E7%9A%84%E5%9D%91/</link>
+      <pubDate>Wed, 30 Oct 2019 15:41:01 +0800</pubDate>
+      
+      <guid>https://hideric.github.io/java/framework/spring/spring%E5%BE%AA%E7%8E%AF%E4%BE%9D%E8%B5%96%E7%9A%84%E5%9D%91/</guid>
+      <description>Spring循环依赖的坑  作者：Mythsman
+原文：https://blog.mythsman.com/post/5d838c7c2db8a452e9b7082c/
+ 前言 这两天工作遇到了一个挺有意思的Spring循环依赖的问题，但是这个和以往遇到的循环依赖问题都不太一样，隐藏的相当隐蔽，网络上也很少看到有其他人遇到类似的问题。这里权且称他非典型Spring循环依赖问题。但是我相信我肯定不是第一个踩这个坑的，也一定不是最后一个，可能只是因为踩过的人比较少、鲜有记录罢了。因此这里权且记录一下这个坑，方便后人查看。正如鲁迅（我）说过，“这个世上本没有坑，踩的人多了，也便成了坑”。
+典型场景 经常听很多人在Review别人代码的时候有如下的评论：“你在设计的时候这些类之间怎么能有循环依赖呢？你这样会报错的！”。
+其实这句话前半句当然没有错，出现循环依赖的确是设计上的问题，理论上应当将循环依赖进行分层，抽取公共部分，然后由各个功能类再去依赖公共部分。
+但是在复杂代码中，各个manager类互相调用太多，总会一不小心出现一些类之间的循环依赖的问题。可有时候我们又发现在用Spring进行依赖注入时，虽然Bean之间有循环依赖，但是代码本身却大概率能很正常的work，似乎也没有任何bug。
+很多敏感的同学心里肯定有些犯嘀咕，循环依赖这种触犯因果律的事情怎么能发生呢？没错，这一切其实都并不是那么理所当然。
+3
+-
+什么是依赖 其实，不分场景地、笼统地说A依赖B其实是不够准确、至少是不够细致的。我们可以简单定义一下什么是依赖。
+所谓A依赖B，可以理解为A中某些功能的实现是需要调用B中的其他功能配合实现的。这里也可以拆分为两层含义：
+ A强依赖B。创建A的实例这件事情本身需要B来参加。对照在现实生活就像妈妈生你一样。
+ A弱依赖B。创建A的实例这件事情不需要B来参加，但是A实现功能是需要调用B的方法。对照在现实生活就像男耕女织一样。
+  那么，所谓循环依赖，其实也有两层含义：
+ 强依赖之间的循环依赖。
+ 弱依赖之间的循环依赖。
+  讲到这一层，我想大家应该知道我想说什么了。
+什么是依赖调解 对于强依赖而言，A和B不能互相作为存在的前提，否则宇宙就爆炸了。因此这类依赖目前是无法调解的。
+对于弱依赖而言，A和B的存在并没有前提关系，A和B只是互相合作。因此正常情况下是不会出现违反因果律的问题的。
+那什么是循环依赖的调解呢？我的理解是：
+将 原本是弱依赖关系的两者误当做是强依赖关系的做法 重新改回弱依赖关系的过程。
+基于上面的分析，我们基本上也就知道Spring是怎么进行循环依赖调解的了（仅指弱依赖，强依赖的循环依赖只有上帝能自动调解）。
+5
+-
+为什么要依赖注入 网上经常看到很多手撸IOC容器的入门科普文，大部分人只是将IOC容器实现成一个“存储Bean的map”，将DI实现成“通过注解+反射将bean赋给类中的field”。实际上很多人都忽视了DI的依赖调解的功能。而帮助我们进行依赖调解本身就是我们使用IOC+DI的一个重要原因。
+在没有依赖注入的年代里，很多人都会将类之间的依赖通过构造函数传递（实际上是构成了强依赖）。当项目越来越庞大时，非常容易出现无法调解的循环依赖。这时候开发人员就被迫必须进行重新抽象，非常麻烦。而事实上，我们之所以将原本的弱依赖弄成了强依赖，完全是因为我们将类的构造、类的配置、类的初始化逻辑三个功能耦合在构造函数之中。
+而DI就是帮我们将构造函数的功能进行了解耦。
+那么Spring是怎么进行解耦的呢？
+Spring的依赖注入模型 这一部分网上有很多相关内容，我的理解大概是上面提到的三步：
+ 类的构造，调用构造函数、解析强依赖（一般是无参构造），并创建类实例。
+ 类的配置，根据Field/GetterSetter中的依赖注入相关注解、解析弱依赖，并填充所有需要注入的类。
+ 类的初始化逻辑，调用生命周期中的初始化方法（例如@PostConstruct注解或InitializingBean的afterPropertiesSet方法），执行实际的初始化业务逻辑。
+  这样，构造函数的功能就由原来的三个弱化为了一个，只负责类的构造。并将类的配置交由DI，将类的初始化逻辑交给生命周期。
+想到这一层，忽然解决了我堵在心头已久的问题。在刚开始学Spring的时候，我一直想不通：
+ 为什么Spring除了构造函数之外还要在Bean生命周期里有一个额外的初始化方法？
+ 这个初始化方法和构造函数到底有什么区别？
+ 为什么Spring建议将初始化的逻辑写在生命周期里的初始化方法里？
+   现在，把依赖调解结合起来看，解释就十分清楚了：
+  为了进行依赖调解，Spring在调用构造函数时是没有将依赖注入进来的。也就是说构造函数中是无法使用通过DI注入进来的bean（或许可以，但是Spring并不保证这一点）。</description>
+    </item>
+    
+    <item>
+      <title>Spring的各种注解</title>
+      <link>https://hideric.github.io/java/framework/spring/spring%E7%9A%84%E5%90%84%E7%A7%8D%E6%B3%A8%E8%A7%A3/</link>
+      <pubDate>Wed, 30 Oct 2019 15:41:01 +0800</pubDate>
+      
+      <guid>https://hideric.github.io/java/framework/spring/spring%E7%9A%84%E5%90%84%E7%A7%8D%E6%B3%A8%E8%A7%A3/</guid>
+      <description>Spring的各种注解  作者：digdeep &amp;nbsp;&amp;nbsp;来源：http://1t.click/ataS
+ Spring中的注解大概可以分为两大类：
+1.spring的bean容器相关的注解，或者说bean工厂相关的注解；
+2.springmvc相关的注解。
+spring的bean容器相关的注解，先后有：@Required， @Autowired, @PostConstruct, @PreDestory，还有Spring3.0开始支持的JSR-330标准javax.inject.*中的注解(@Inject, @Named, @Qualifier, @Provider, @Scope, @Singleton).
+springmvc相关的注解有：@Controller, @RequestMapping, @RequestParam， @ResponseBody等等。
+要理解Spring中的注解，先要理解Java中的注解。
+# Java中的注解
+Java中1.5中开始引入注解，我们最熟悉的应该是：@Override, 它的定义如下：
+/** * Indicates that a method declaration is intended to override a * method declaration in a supertype. If a method is annotated with * this annotation type compilers are required to generate an error * message unless at least one of the following conditions hold: * The method does override or implement a method declared in a * supertype.</description>
+    </item>
+    
+    <item>
+      <title>从实践角度重新理解BIO和NIO</title>
+      <link>https://hideric.github.io/java/basis/%E4%BB%8E%E5%AE%9E%E8%B7%B5%E8%A7%92%E5%BA%A6%E9%87%8D%E6%96%B0%E7%90%86%E8%A7%A3bio%E5%92%8Cnio/</link>
+      <pubDate>Wed, 30 Oct 2019 15:41:01 +0800</pubDate>
+      
+      <guid>https://hideric.github.io/java/basis/%E4%BB%8E%E5%AE%9E%E8%B7%B5%E8%A7%92%E5%BA%A6%E9%87%8D%E6%96%B0%E7%90%86%E8%A7%A3bio%E5%92%8Cnio/</guid>
+      <description>从实践角度重新理解BIO和NIO 前言 这段时间自己在看一些Java中BIO和NIO之类的东西，看了很多博客，发现各种关于NIO的概念说的天花乱坠头头是道，可以说是非常的完整，但是整个看下来之后，自己对NIO还是一知半解的状态，所以这篇文章不会提到很多的概念，而是站在一个实践的角度，写一些我自己关于NIO的见解，站在实践过后的高度下再回去看概念，应该对概念会有一个更好的理解。
+实现一个简易单线程服务器 要讲明白BIO和NIO，首先我们应该自己实现一个简易的服务器，不用太复杂，单线程即可。
+为什么使用单线程作为演示 因为在单线程环境下可以很好地对比出BIO和NIO的一个区别，当然我也会演示在实际环境中BIO的所谓一个请求对应一个线程的状况。
+服务端 public class Server { public static void main(String[] args) { byte[] buffer = new byte[1024]; try { ServerSocket serverSocket = new ServerSocket(8080); System.out.println(&amp;quot;服务器已启动并监听8080端口&amp;quot;); while (true) { System.out.println(); System.out.println(&amp;quot;服务器正在等待连接...&amp;quot;); Socket socket = serverSocket.accept(); System.out.println(&amp;quot;服务器已接收到连接请求...&amp;quot;); System.out.println(); System.out.println(&amp;quot;服务器正在等待数据...&amp;quot;); socket.getInputStream().read(buffer); System.out.println(&amp;quot;服务器已经接收到数据&amp;quot;); System.out.println(); String content = new String(buffer); System.out.println(&amp;quot;接收到的数据:&amp;quot; + content); } } catch (IOException e) { // TODO Auto-generated catch block e.printStackTrace(); } } }  客户端 public class Consumer { public static void main(String[] args) { try { Socket socket = new Socket(&amp;quot;127.</description>
+    </item>
+    
+    <item>
+      <title>关于 Git 提交规范</title>
+      <link>https://hideric.github.io/java/basis/%E5%85%B3%E4%BA%8E-git-%E6%8F%90%E4%BA%A4%E8%A7%84%E8%8C%83/</link>
+      <pubDate>Wed, 30 Oct 2019 15:41:01 +0800</pubDate>
+      
+      <guid>https://hideric.github.io/java/basis/%E5%85%B3%E4%BA%8E-git-%E6%8F%90%E4%BA%A4%E8%A7%84%E8%8C%83/</guid>
+      <description>关于 Git 提交规范  来源：人人贷大前端技术中心juejin.im/post/5d0b3f8c6fb9a07ec07fc5d0
+git是现在市面上最流行的版本控制工具，书写良好的commit message能大大提高代码维护的效率。但是在日常开发中由于缺少对commit message的约束，导致填写内容随意、质量参差不齐，可读性低亦难以维护。
+在项目中引入commit message规范已是迫在眉睫。
+  用什么规范？
+ Quick Start
+  1. 全局安装commitizen &amp;amp; cz-conventional-changelog   2. 项目内安装commitlint &amp;amp; husky 3. 添加相应配置 4. 使用  Commit message规范在rrd-fe落地使用情况
+  1. type   2. scope 3. body 4. break changes 5. affect issues  示例
+ 扩展阅读
+  用什么规范？ 现在市面上比较流行的方案是约定式提交规范（Conventional Commits），它受到了Angular提交准则的启发，并在很大程度上以其为依据。约定式提交规范是一种基于提交消息的轻量级约定。
+它提供了一组用于创建清晰的提交历史的简单规则；这使得编写基于规范的自动化工具变得更容易。这个约定与SemVer相吻合，在提交信息中描述新特性、bug 修复和破坏性变更。它的 message 格式如下:
+&amp;lt;类型&amp;gt;[可选的作用域]: &amp;lt;描述&amp;gt; [可选的正文] [可选的脚注]  Quick Start 1.</description>
+    </item>
+    
+    <item>
+      <title>注意，Code Cache打满可导致应用性能降低</title>
+      <link>https://hideric.github.io/java/basis/jvm/%E6%B3%A8%E6%84%8Fcode-cache%E6%89%93%E6%BB%A1%E5%8F%AF%E5%AF%BC%E8%87%B4%E5%BA%94%E7%94%A8%E6%80%A7%E8%83%BD%E9%99%8D%E4%BD%8E/</link>
+      <pubDate>Wed, 30 Oct 2019 15:41:01 +0800</pubDate>
+      
+      <guid>https://hideric.github.io/java/basis/jvm/%E6%B3%A8%E6%84%8Fcode-cache%E6%89%93%E6%BB%A1%E5%8F%AF%E5%AF%BC%E8%87%B4%E5%BA%94%E7%94%A8%E6%80%A7%E8%83%BD%E9%99%8D%E4%BD%8E/</guid>
+      <description>注意，Code Cache打满可导致应用性能降低  作者：猿码道juejin.im/post/5aebf997f265da0ba76f99db  0 问题描述 一个应用在运行一段时间后，随着访问量不断增加，突然处理能力下降。但是从流量，jstack，gc上看基本正常。感觉好像突然从 “健康状态” 进入了 “虚弱状态”。
+1 排查问题 1.在JVM日志里，可以发现如下log：
+Java HotSpot(TM) 64-Bit Server VM warning: CodeCache is full. Compiler has been disabled. Java HotSpot(TM) 64-Bit Server VM warning: Try increasing the code cache size using -XX:ReservedCodeCacheSize=. ... “CompilerThread0” java.lang.OutOfMemoryError: requested 2854248 bytes for Chunk::new. Out of swap space?  说明CodeCache已经满了。而且导致这个时候JIT就会停止，JIT一旦停止，就不会再起来了，可以想象一下，如果很多代码没有办法去JIT的话，性能就会比较差。
+2.使用如下命令检查一下Code Cache的值：
+jinfo -flag ReservedCodeCacheSize  2 解决问题 1.一个可行的方法，就是扩大Code Cache空间：
+使用 -XX:ReservedCodeCacheSize= 指定一个更大的空间，来支持更多的JIT编译；
+2.此外，另一个可行的方法，启用Code Cache的回收机制：</description>
+    </item>
+    
+    <item>
+      <title>Spring 容器启动源码解析</title>
+      <link>https://hideric.github.io/java/framework/spring/spring-%E5%AE%B9%E5%99%A8%E5%90%AF%E5%8A%A8%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/</link>
+      <pubDate>Wed, 30 Oct 2019 15:39:39 +0800</pubDate>
+      
+      <guid>https://hideric.github.io/java/framework/spring/spring-%E5%AE%B9%E5%99%A8%E5%90%AF%E5%8A%A8%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/</guid>
+      <description>Spring 容器启动源码解析 &amp;nbsp; &amp;nbsp;01&amp;nbsp;前言&amp;nbsp; &amp;nbsp;
+最近搭建的工程都是基于SpringBoot，简化配置的感觉真爽。但有个以前的项目还是用SpringMvc写的，看到满满的配置xml文件，却有一种想去深入了解的冲动。折腾了好几天，决心去写这篇关于Spring启动的博客，自己是个刚入职的小白，技术水平有限，也是硬着头皮看源码去Debug，很多不懂的地方还请谅解！
+&amp;nbsp; &amp;nbsp;02 概念&amp;nbsp; &amp;nbsp;
+先给出几个让我头皮发麻的概念：web容器，Spring容器，SpringMvc容器
+容器就是管理对象的地方，例如web容器就是管理servlet的地方，Spring容器就是管理Service,dao等Bean的地方，SpringMvc就是管理Controller等bean的地方(下文会做解释)。一个SpringMvc项目的启动离不开上述三个容器。所以这就是这篇文章的讲点，各个容器的启动过程解析。
+&amp;nbsp; &amp;nbsp;03&amp;nbsp;Web容器初始化过程&amp;nbsp; &amp;nbsp;
+官方文档是对于Web容器初始化时是这样描述的（英文不懂，已翻译成中文）
+1.　部署描述文件（web.xml）中的&amp;lt;listener&amp;gt;标记的监听器会被创建和初始化
+2.　对于实现了ServletContextListener的监听器，会执行它的初始化方法 contextInitialized()
+3.　部署描述文件中的&amp;lt;filter&amp;gt;标记的过滤器会被创建和初始化，调用其init()方法
+4.　部署描述文件中的&amp;lt;servlet&amp;gt;标记的servlet会根据&amp;lt;load-on-startup&amp;gt;中的序号创建和初始化，调用init()方法
+　大致流程了解之后，结合自己的SpringMvc项目一步步深入，先贴一下基本的web.xml文件****
+&amp;lt;?xml version=&amp;quot;1.0&amp;quot; encoding=&amp;quot;UTF-8&amp;quot;?&amp;gt; &amp;lt;web-app xmlns:xsi=&amp;quot;http://www.w3.org/2001/XMLSchema-instance&amp;quot; xmlns:web=&amp;quot;http://java.sun.com/xml/ns/javaee&amp;quot; xmlns=&amp;quot;http://java.sun.com/xml/ns/javaee&amp;quot; xsi:schemaLocation=&amp;quot;http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd&amp;quot; id=&amp;quot;WebApp_ID&amp;quot; version=&amp;quot;2.5&amp;quot;&amp;gt; &amp;lt;display-name&amp;gt;dmpserver&amp;lt;/display-name&amp;gt; &amp;lt;welcome-file-list&amp;gt; &amp;lt;welcome-file&amp;gt;login.jsp&amp;lt;/welcome-file&amp;gt; &amp;lt;/welcome-file-list&amp;gt; &amp;lt;context-param&amp;gt; &amp;lt;param-name&amp;gt;contextConfigLocation&amp;lt;/param-name&amp;gt; &amp;lt;param-value&amp;gt;classpath:spring.xml&amp;lt;/param-value&amp;gt; &amp;lt;/context-param&amp;gt; &amp;lt;context-param&amp;gt; &amp;lt;param-name&amp;gt;log4jConfigLocation&amp;lt;/param-name&amp;gt; &amp;lt;param-value&amp;gt;classpath:log4jConfig.xml&amp;lt;/param-value&amp;gt; &amp;lt;/context-param&amp;gt; &amp;lt;filter&amp;gt; &amp;lt;filter-name&amp;gt;encodingFilter&amp;lt;/filter-name&amp;gt; &amp;lt;filter-class&amp;gt;org.springframework.web.filter.CharacterEncodingFilter&amp;lt;/filter-class&amp;gt; &amp;lt;init-param&amp;gt; &amp;lt;param-name&amp;gt;encoding&amp;lt;/param-name&amp;gt; &amp;lt;param-value&amp;gt;utf-8&amp;lt;/param-value&amp;gt; &amp;lt;/init-param&amp;gt; &amp;lt;/filter&amp;gt; &amp;lt;filter-mapping&amp;gt; &amp;lt;filter-name&amp;gt;encodingFilter&amp;lt;/filter-name&amp;gt; &amp;lt;url-pattern&amp;gt;/*&amp;lt;/url-pattern&amp;gt; &amp;lt;/filter-mapping&amp;gt; &amp;lt;listener&amp;gt; &amp;lt;listener-class&amp;gt;org.springframework.web.context.ContextLoaderListener&amp;lt;/listener-class&amp;gt; &amp;lt;/listener&amp;gt; &amp;lt;listener&amp;gt; &amp;lt;listener-class&amp;gt;org.springframework.web.util.Log4jConfigListener&amp;lt;/listener-class&amp;gt; &amp;lt;/listener&amp;gt; &amp;lt;servlet&amp;gt; &amp;lt;description&amp;gt;spring mvc servlet&amp;lt;/description&amp;gt; &amp;lt;servlet-name&amp;gt;rest&amp;lt;/servlet-name&amp;gt; &amp;lt;servlet-class&amp;gt;org.</description>
+    </item>
+    
+    <item>
+      <title>Spring 的 BeanUtils 填坑记</title>
+      <link>https://hideric.github.io/java/framework/spring/spring-%E7%9A%84-beanutils-%E5%A1%AB%E5%9D%91%E8%AE%B0/</link>
+      <pubDate>Wed, 30 Oct 2019 15:39:39 +0800</pubDate>
+      
+      <guid>https://hideric.github.io/java/framework/spring/spring-%E7%9A%84-beanutils-%E5%A1%AB%E5%9D%91%E8%AE%B0/</guid>
+      <description>Spring 的 BeanUtils 填坑记  作者：绝色天龙原文：www.jianshu.com/p/357b55852efc
+ 背景
+最近项目中在和第三方进行联调一个接口，我们这边发送http请求给对方，然后接收对方的回应，代码都是老代码。
+根据注释，对方的SDK中写好的Request类有一个无法序列化的bug，所以这边重新写了一个Request类，基本属性都是相同的，但是重点是有一个属性是静态内部类，还有两个是list属性
+类似于下面这样：
+private List orders; private AddRequest.Ticket ticket; private List payments;  AddRequest就是我们自己重写的请求类，他们SDK中的请求类是MixAddRequest，我们组装好请求参数后利用Spring的BeanUtils的copyProperties方法将AddRequest中的属性拷贝到MixAddRequest，然后发送请求。
+到此为止，照理说一切完美！
+结果请求失败，纳尼？对方说缺少一个必要的字段，参数校验不通过！
+一查字段名称，是Ticket这个类里面的某个字段，赶紧看代码，心里充满对老代码的自信，想着一定是哪里搞错了，或者是他们那边偷偷动了代码，把字段从可选改为了必选，嘿嘿
+果然在代码里找到了设置的地方，这下应该是他们的问题确信无疑了，再开一把调试，准备宣判他们的死刑。
+结果发现发给他们的请求就是没有这个字段。。。中间只有一个Spring的copy属性的方法，当时觉得很诡异
+由于中间只有这么一行代码，玄机肯定在这里面，初步怀疑是两个静态内部类不同导致，所以自己写Demo，准备搞一把这个BeanUtils的copyProperties方法
+写了两个类和一个Main，@Data和@ToString是lombok插件的注解，这里用来自动生成getter和setter方法以及toString方法
+@ToString @Data public class CopyTest1 { public String outerName; public CopyTest1.InnerClass innerClass; public List clazz; ​ @ToString ​ @Data ​ public static class InnerClass { ​ public String InnerName; ​ } }  @ToString @Data public class CopyTest2 { public String outerName; public CopyTest2.</description>
+    </item>
+    
+    <item>
+      <title>WeakHashMap，生了病的 HashMap ？</title>
+      <link>https://hideric.github.io/java/basis/weakhashmap%E7%94%9F%E4%BA%86%E7%97%85%E7%9A%84-hashmap-/</link>
+      <pubDate>Wed, 30 Oct 2019 15:39:39 +0800</pubDate>
+      
+      <guid>https://hideric.github.io/java/basis/weakhashmap%E7%94%9F%E4%BA%86%E7%97%85%E7%9A%84-hashmap-/</guid>
+      <description>WeakHashMap，生了病的 HashMap ？ 在 Map 家族中，WeakHashMap 是一个很特殊的成员，从名字上看与 HashMap 相关，但是与 HashMap 有着很大的差别，翻译成中文后表示弱 HashMap，俗称缓存 HashMap。
+01、摘要 在集合系列的第一章，咱们了解到，Map 的实现类有 HashMap、LinkedHashMap、TreeMap、IdentityHashMap、WeakHashMap、Hashtable、Properties 等等。
+本文主要从数据结构和算法层面，探讨 WeakHashMap 的实现。
+02、简介  刚刚咱们也介绍了，在 Map 家族中，WeakHashMap 是一个很特殊的成员，它的特殊之处在于 WeakHashMap 里的元素可能会被 GC 自动删除，即使程序员没有显示调用 remove() 或者 clear() 方法。
+ 换言之，当向 WeakHashMap 中添加元素的时候，再次遍历获取元素，可能发现它已经不见了，我们来看看下面这个例子。
+public static void main(String[] args) { Map weakHashMap = new WeakHashMap(); //向weakHashMap中添加4个元素 for (int i = 0; i &amp;amp;lt; 3; i++) { weakHashMap.put(&amp;quot;key-&amp;quot;+i, &amp;quot;value-&amp;quot;+ i); } //输出添加的元素 System.out.println(&amp;quot;数组长度：&amp;quot;+weakHashMap.size() + &amp;quot;，输出结果：&amp;quot; + weakHashMap); //主动触发一次GC System.</description>
+    </item>
+    
+    <item>
+      <title>使用dubbo过程中遇到过哪些坑？</title>
+      <link>https://hideric.github.io/java/framework/dubbo/%E4%BD%BF%E7%94%A8dubbo%E8%BF%87%E7%A8%8B%E4%B8%AD%E9%81%87%E5%88%B0%E8%BF%87%E5%93%AA%E4%BA%9B%E5%9D%91/</link>
+      <pubDate>Wed, 30 Oct 2019 15:39:39 +0800</pubDate>
+      
+      <guid>https://hideric.github.io/java/framework/dubbo/%E4%BD%BF%E7%94%A8dubbo%E8%BF%87%E7%A8%8B%E4%B8%AD%E9%81%87%E5%88%B0%E8%BF%87%E5%93%AA%E4%BA%9B%E5%9D%91/</guid>
+      <description>使用dubbo过程中遇到过哪些坑？ Dubbo[ |ˈdʌbəʊ| ,发音为打波] 稳如狗，哪有坑？
+如果你用过Dubbo，但是没碰到过什么坑，那只能说明你还没有深交Dubbo，看看笔者那些年使用Dubbo踩过的坑！
+父子类有相同属性时值丢失 假设Provider提供的服务中某个服务的参数是WordDTO，并且WordDTO继承自BaseDTO，两个类的定义如下：
+@Data public class BaseDTO implements Serializable { private Long id; } @Data public class WordDTO extends BaseDTO { private Long id; private String uuid; private Long timestamp; private String word; }  问题描述：在Consumer侧给WordDTO赋的值，其id属性的值无法在Provider侧获取到。假设Consumer传的值是：{&amp;ldquo;id&amp;rdquo;:68,&amp;ldquo;timestamp&amp;rdquo;:1570928394380,&amp;ldquo;uuid&amp;rdquo;:&amp;ldquo;f774f99f-987c-4506-8ab8-366cd619bb15&amp;rdquo;,&amp;ldquo;word&amp;rdquo;:&amp;ldquo;hello world&amp;rdquo;}，在Provider拿到的却是：{&amp;ldquo;timestamp&amp;rdquo;:1570928394380,&amp;ldquo;uuid&amp;rdquo;:&amp;ldquo;f774f99f-987c-4506-8ab8-366cd619bb15&amp;rdquo;,&amp;ldquo;word&amp;rdquo;:&amp;ldquo;hello world&amp;rdquo;}。
+原因分析：dubbo默认采用的是hessian序列化&amp;amp;反序列化方式，JavaDeserializer在获取fileds时，采用了Map去重。但是在读取值时，根据serializer的顺序，对于同名字段，子类的该字段值会被赋值两次，总是被父类的值覆盖，导致子类的字段值丢失。
+解决方案： 1. 更改序列化方式（不建议）；1. 删掉子类中与父类同名属性（建议）；
+自定义异常被包装成RuntimeException 首先需要说明的是，出现这个问题有一定的条件。如果Provider中的api和自定义Exception定义都是在一个api.jar中，那么是不会有任何问题的。但是如果自定义Exception是在一个单独的比如common.jar包中就会出现这个问题（此时api和model在另一个api.jar中）。
+下面是一段调用一个会抛出自定义异常的服务的代码：
+try { String hello = demoService.saySomething(wordDTO); System.out.println(hello); }catch (WrongArgumentException e){ System.err.println(&amp;quot;wrong argument 1: &amp;quot; + e.getMessage()); }catch (RuntimeException e){ System.</description>
+    </item>
+    
+    <item>
+      <title>一个Java对象到底占用多大内存？</title>
+      <link>https://hideric.github.io/java/basis/%E4%B8%80%E4%B8%AAjava%E5%AF%B9%E8%B1%A1%E5%88%B0%E5%BA%95%E5%8D%A0%E7%94%A8%E5%A4%9A%E5%A4%A7%E5%86%85%E5%AD%98/</link>
+      <pubDate>Wed, 30 Oct 2019 15:38:52 +0800</pubDate>
+      
+      <guid>https://hideric.github.io/java/basis/%E4%B8%80%E4%B8%AAjava%E5%AF%B9%E8%B1%A1%E5%88%B0%E5%BA%95%E5%8D%A0%E7%94%A8%E5%A4%9A%E5%A4%A7%E5%86%85%E5%AD%98/</guid>
+      <description>一个Java对象到底占用多大内存？ 一个Java对象到底占用多大内存？
+为了复现这个问题，准备了4个最简单类：
+class AAAAA {} class BBBBB { int a = 1; } class CCCCC { long a = 1L; } class DDDDD { String s = &amp;quot;hello&amp;quot;; }  当然了，再来个主函数：
+final List&amp;lt;AAAAA&amp;gt; aaa = new ArrayList&amp;lt;&amp;gt;(100000); final List&amp;lt;BBBBB&amp;gt; bbb = new ArrayList&amp;lt;&amp;gt;(100000); final List&amp;lt;CCCCC&amp;gt; ccc = new ArrayList&amp;lt;&amp;gt;(100000); final List&amp;lt;DDDDD&amp;gt; ddd = new ArrayList&amp;lt;&amp;gt;(100000); for (int i = 0; i &amp;lt; 100000; i++) { aaa.add(new AAAAA()); bbb.add(new BBBBB()); ccc.</description>
+    </item>
+    
+    <item>
+      <title>你真的了解logback吗？</title>
+      <link>https://hideric.github.io/java/basis/%E4%BD%A0%E7%9C%9F%E7%9A%84%E4%BA%86%E8%A7%A3logback%E5%90%97/</link>
+      <pubDate>Wed, 30 Oct 2019 15:38:52 +0800</pubDate>
+      
+      <guid>https://hideric.github.io/java/basis/%E4%BD%A0%E7%9C%9F%E7%9A%84%E4%BA%86%E8%A7%A3logback%E5%90%97/</guid>
+      <description>你真的了解logback吗？ logback是java的日志开源组件，是log4j创始人写的，性能比log4j要好，目前主要分为3个模块
+ logback-core:核心代码模块
+ logback-classic:log4j的一个改良版本，同时实现了slf4j的接口，这样你如果之后要切换其他日志组件也是一件很容易的事
+ logback-access:访问模块与Servlet容器集成提供通过Http来访问日志的功能
+  本篇博客会讲解logback的使用、配置详解、以及logback简单的一个原理。
+一、logback的使用 引入maven依赖
+&amp;lt;!--这个依赖直接包含了 logback-core 以及 slf4j-api的依赖--&amp;gt; &amp;lt;dependency&amp;gt; &amp;lt;groupId&amp;gt;ch.qos.logback&amp;lt;/groupId&amp;gt; &amp;lt;artifactId&amp;gt;logback-classic&amp;lt;/artifactId&amp;gt; &amp;lt;version&amp;gt;1.2.3&amp;lt;/version&amp;gt; &amp;lt;/dependency&amp;gt;  然后就可以直接在代码中使用slf4j的接口获取Logger输出日志了。（配置在下面的章节介绍）
+//这是slf4j的接口，由于我们引入了logback-classic依赖，所以底层实现是logback private static final Logger LOGGER = LoggerFactory.getLogger(Test.class); public static void main(String[] args) throws InterruptedException { LOGGER.info(&amp;quot;hello world&amp;quot;); }  二、logback的配置 配置获取顺序 logback在启动的时候，会按照下面的顺序加载配置文件
+ 如果java程序启动时指定了logback.configurationFile属性，就用该属性指定的配置文件。如java -Dlogback.configurationFile=/path/to/mylogback.xml Test ，这样执行Test类的时候就会加载/path/to/mylogback.xml配置
+ 在classpath中查找 logback.groovy 文件
+ 在classpath中查找 logback-test.xml 文件
+ 在classpath中查找 logback.xml 文件
+ 如果是 jdk6+,那么会调用ServiceLoader 查找 com.qos.logback.classic.spi.Configurator接口的第一个实现类</description>
+    </item>
+    
+    <item>
+      <title>这可能是Github上最友好的分布式即时通讯项目.....</title>
+      <link>https://hideric.github.io/java/basis/%E8%BF%99%E5%8F%AF%E8%83%BD%E6%98%AFgithub%E4%B8%8A%E6%9C%80%E5%8F%8B%E5%A5%BD%E7%9A%84%E5%88%86%E5%B8%83%E5%BC%8F%E5%8D%B3%E6%97%B6%E9%80%9A%E8%AE%AF%E9%A1%B9%E7%9B%AE..../</link>
+      <pubDate>Wed, 30 Oct 2019 15:38:52 +0800</pubDate>
+      
+      <guid>https://hideric.github.io/java/basis/%E8%BF%99%E5%8F%AF%E8%83%BD%E6%98%AFgithub%E4%B8%8A%E6%9C%80%E5%8F%8B%E5%A5%BD%E7%9A%84%E5%88%86%E5%B8%83%E5%BC%8F%E5%8D%B3%E6%97%B6%E9%80%9A%E8%AE%AF%E9%A1%B9%E7%9B%AE..../</guid>
+      <description> 这可能是Github上最友好的分布式即时通讯项目&amp;hellip;. CIM(CROSS-IM)&amp;nbsp;一款面向开发者的 IM(即时通讯)系统；同时提供了一些组件帮助开发者构建一款属于自己可水平扩展的 IM 。借助CIM你可以实现一下需求，如IM即时通讯、适用于APP的消息推送中间件、IOT海量连接场景中的消息透传中间件等。此项目使用java开发，作者也是非常贴心，给出了详细的功能介绍，技术架构，和项目部署。
+目前实现的主要功能有以下几点：群聊、私聊、聊天记录查询、服务端自动剔除离线客户端、客户端自动重连、延时消息、分组群聊、离线消息等。基本功能还是比较全的，可以覆盖主要的使用场景。在安全方面，协议支持消息加密，还为客户端提供了相关的策略。
+以私聊功能为例向大家简单展示一下其功能。  私聊首先需要知道对方的 userID 才能进行。 输入命令&amp;nbsp;:olu 可列出所有在线用户。  接着使用 userId;;消息内容&amp;nbsp;的格式即可发送私聊消息。
+同时另一个账号收不到消息。还有AI 模式哦 使用命令&amp;nbsp;:ai 开启 AI 模式，之后所有的消息都会由 AI 响应。:qai&amp;nbsp;退出 AI 模式。
+再来看看项目的技术架构。CIM 中的各个组件均采用 SpringBoot 构建，采用 Netty 构建底层通信，Redis 存放各个客户端的路由信息、账号信息、在线状态等，Zookeeper 用于 IM-server 服务的注册与发现。cim-serverIM 服务端；用于接收 client 连接、消息透传、消息推送等功能。
+支持集群部署。
+cim-forward-route
+消息路由服务器；用于处理消息路由、消息转发、用户登录、用户下线以及一些运营工具（获取在线用户数等）。
+cim-client
+IM 客户端；给用户使用的消息终端，一个命令即可启动并向其他人发起通讯（群聊、私聊）。
+再来看看这几个模块之间是如何交互的
+客户端向 route 发起登录；登录成功从&amp;nbsp;Zookeeper&amp;nbsp;中选择可用&amp;nbsp;IM-server&amp;nbsp;返回给客户端，并保存登录、路由信息到&amp;nbsp;Redis；客户端向&amp;nbsp;IM-server&amp;nbsp;发起长连接，成功后保持心跳；客户端下线时通过&amp;nbsp;route&amp;nbsp;清除状态信息。
+到此，就剩下项目部署相关的东东了。作者也是写的很详细了，感兴趣的读者可以自行翻阅。END </description>
+    </item>
+    
+    <item>
+      <title>Java 8 - Stream 集合操作快速上手</title>
+      <link>https://hideric.github.io/java/basis/java-8-stream-%E9%9B%86%E5%90%88%E6%93%8D%E4%BD%9C%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B/</link>
+      <pubDate>Wed, 30 Oct 2019 15:38:44 +0800</pubDate>
+      
+      <guid>https://hideric.github.io/java/basis/java-8-stream-%E9%9B%86%E5%90%88%E6%93%8D%E4%BD%9C%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B/</guid>
+      <description>Java 8 - Stream 集合操作快速上手  转自：简书，作者：我是你的小眼睛儿www.jianshu.com/p/9fe8632d0bc2
+ 目录
+ Stream简介 为什么要使用Stream 实例数据源 Filter Map FlatMap Reduce Collect Optional 并发 调试  Stream简介
+ Java 8引入了全新的Stream API。这里的Stream和I/O流不同，它更像具有Iterable的集合类，但行为和集合类又有所不同。
+ stream是对集合对象功能的增强，它专注于对集合对象进行各种非常便利、高效的聚合操作，或者大批量数据操作。
+ 只要给出需要对其包含的元素执行什么操作，比如 “过滤掉长度大于 10 的字符串”、“获取每个字符串的首字母”等，Stream 会隐式地在内部进行遍历，做出相应的数据转换。
+  为什么要使用Stream
+ 函数式编程带来的好处尤为明显。这种代码更多地表达了业务逻辑的意图，而不是它的实现机制。易读的代码也易于维护、更可靠、更不容易出错。
+ 高端
+  实例数据源
+public class Data { private static List&amp;lt;PersonModel&amp;gt; list = null; static { PersonModel wu = new PersonModel(&amp;quot;wu qi&amp;quot;, 18, &amp;quot;男&amp;quot;); PersonModel zhang = new PersonModel(&amp;quot;zhang san&amp;quot;, 19, &amp;quot;男&amp;quot;); PersonModel wang = new PersonModel(&amp;quot;wang si&amp;quot;, 20, &amp;quot;女&amp;quot;); PersonModel zhao = new PersonModel(&amp;quot;zhao wu&amp;quot;, 20, &amp;quot;男&amp;quot;); PersonModel chen = new PersonModel(&amp;quot;chen liu&amp;quot;, 21, &amp;quot;男&amp;quot;); list = Arrays.</description>
+    </item>
+    
+    <item>
+      <title>StringBuilder 为什么线程不安全？</title>
+      <link>https://hideric.github.io/java/basis/concurrency/stringbuilder-%E4%B8%BA%E4%BB%80%E4%B9%88%E7%BA%BF%E7%A8%8B%E4%B8%8D%E5%AE%89%E5%85%A8/</link>
+      <pubDate>Wed, 30 Oct 2019 15:38:44 +0800</pubDate>
+      
+      <guid>https://hideric.github.io/java/basis/concurrency/stringbuilder-%E4%B8%BA%E4%BB%80%E4%B9%88%E7%BA%BF%E7%A8%8B%E4%B8%8D%E5%AE%89%E5%85%A8/</guid>
+      <description>StringBuilder 为什么线程不安全？  转自：掘金，作者：千山qianshanjuejin.im/post/5d6228046fb9a06add4e37fe
+ 分析
+ 在分析设个问题之前我们要知道StringBuilder和StringBuffer的内部实现跟String类一样，都是通过一个char数组存储字符串的，不同的是String类里面的char数组是final修饰的，是不可变的，而StringBuilder和StringBuffer的char数组是可变的。
+ 首先通过一段代码去看一下多线程操作StringBuilder对象会出现什么问题
+public class StringBuilderDemo { public static void main(String[] args) throws InterruptedException { StringBuilder stringBuilder = new StringBuilder(); for (int i = 0; i &amp;lt; 10; i++){ new Thread(new Runnable() { @Override public void run() { for (int j = 0; j &amp;lt; 1000; j++){ stringBuilder.append(&amp;quot;a&amp;quot;); } } }).start(); } Thread.sleep(100); System.out.println(stringBuilder.length()); } }  我们能看到这段代码创建了10个线程，每个线程循环1000次往StringBuilder对象里面append字符。正常情况下代码应该输出10000，但是实际运行会输出什么呢？
+我们看到输出了“9326”，小于预期的10000，并且还抛出了一个ArrayIndexOutOfBoundsException异常（异常不是必现）。
+1、为什么输出值跟预期值不一样
+我们先看一下StringBuilder的两个成员变量（这两个成员变量实际上是定义在AbstractStringBuilder里面的，StringBuilder和StringBuffer都继承了AbstractStringBuilder）
+//存储字符串的具体内容 char[] value; //已经使用的字符数组的数量 int count;  再看StringBuilder的append()方法：</description>
+    </item>
+    
+    <item>
+      <title>JVM优化之逃逸分析与分配消除</title>
+      <link>https://hideric.github.io/java/basis/jvm/jvm%E4%BC%98%E5%8C%96%E4%B9%8B%E9%80%83%E9%80%B8%E5%88%86%E6%9E%90%E4%B8%8E%E5%88%86%E9%85%8D%E6%B6%88%E9%99%A4/</link>
+      <pubDate>Wed, 30 Oct 2019 15:29:26 +0800</pubDate>
+      
+      <guid>https://hideric.github.io/java/basis/jvm/jvm%E4%BC%98%E5%8C%96%E4%B9%8B%E9%80%83%E9%80%B8%E5%88%86%E6%9E%90%E4%B8%8E%E5%88%86%E9%85%8D%E6%B6%88%E9%99%A4/</guid>
+      <description>要了解逃逸分析背后的基本原理，我们先来看下这段有问题的C代码——当然这个是没法用Java来写的：
+这段C代码在栈上创建了一个int类型的变量，然后把它的指针作为函数的返回值返回了。这样做是有问题的，因为当 get_the_int() 函数返回的时候，int所在的栈帧就已经被销毁了，后面你再去访问这个地址的话，就不知道里面存储的到底是什么了。
+Java平台设计的一个主要目标就是要消除这种类型的bug。从设计上，JVM就不具备这种低级的“根据位置索引来读内存”的能力。这类操作对应的Java字节码是putfield和getfield。
+来看下这段Java代码：
+这段代码创建了一亿对随机大小的矩形，并去计算有多少对是大小一样的。每次迭代都会创建一对新的矩形。你可能会认为main方法里会创建2亿个Rect对象：一亿个r1，一亿个r2。
+不过，如果某个对象只是在方法内部创建并使用的话——也就是说，它不会传递到另一个方法中或者作为返回值返回——那么运行时程序就还能做得更聪明一些。你可以说这个对象是没有逃逸出去的，因此运行时（其实就是JIT编译器）做的这个分析又叫做逃逸分析。
+如果一个对象没有逃逸出去，那也就是说JVM可以针对这个对象做一些类似“栈自动分配”的事情。在这个例子当中，这个对象不会从堆上分配空间，因此它也不需要垃圾回收器来回收。一旦使用这个“栈分配（stack-allocated）”对象的方法返回了，这个对象所占用的内存也就自动被释放掉了。
+事实上，HotSpot VM的C2编译器做的事情要比栈分配要复杂得多。我们现在就来看一下。
+在HotSpot VM的源码中，可以看到逃逸分析系统是如何对对象的使用进行分类的：
+第一类说明这个对象可以用标量来代替。这种分配消除技术叫标量替换（scalar replacement）。这意味着这个对象会被拆解成它的构成字段，这就相当于分配对象的操作变成了在方法内部创建多个局部变量。完成这个之后，另一项HotSpot VM的JIT技术会参与进来，它会将这些字段（事实上已经是局部变量了）存储到CPU的寄存器中（如果有必要就存储在栈上）。
+Java平台的主要挑战是执行模型非常复杂。在上述例子中，如果只看源代码，你会认为r1对象是不会逃逸出main方法外的，但r2会作为参数传给r1的sameArea方法，因此它逃逸出了main方法外。
+根据上面的分类，乍一看的话r1应该归类为NoEscape，而r2应该归为ArgEscape；不过这个结论是错误的，原因有几点。
+第一，回想一下，Java中的方法调用最终会通过编译器替换为字节码invoke。它会把调用目标（也就是接收对象，注：即要调用的对象）和入参填充到栈中，然后查找到这个方法，再分发给它（也就是执行这个方法）。
+这意味着接收对象也被传入了调用的方法中（它就是调用的方法里的this对象）。因此接收对象也逃逸出了当前域；在这个例子中，这意味着如果逃逸分析分析完这段Java代码，r1和r2都会归类为ArgEscape。
+如果就只是这样的话，那么分配消除的使用场景就很有限了。所幸的是，HotSpot VM能做得更好。我们来仔细看一下它的字节码，看看能发现什么。
+sameArea()方法很小（只有17个字节的字节码），在本例中也会被频繁调用，因此它是方法内联（method inlined）的一个理想对象。
+通过JITWatch或者PrintCompilation可以看到，area()方法的调用的确被内联进了调用方sameArea()方法里，而sameArea()又被内联到了main()方法的循环体中。JITWatch为内联方法提供了一个很方便的图形化展示（如图所示）。
+请记住Java HotSpot VM的JIT编译器的优化顺序也是很重要的。方法内联是最早的优化，也被称为网关优化（gateway optimization），因为它首先把相关联的代码都聚合在了一起，为其它优化打开了大门。
+现在sameArea()方法和area()方法都被内联进来了，方法域的问题不复存在，所有的变量都只在main方法的作用域内了。也就是说逃逸分析不会再把r1和r2视作ArgEscape类型：方法内联之后，它们现在都被归类为NoEscape。
+这个结果看起来可能有悖常理，不过你需要记住的是JIT编译器并不是通过原始代码来进行优化的。如果不知道这点，就搞不清楚哪些情况能够进行逃逸分析。
+前面的例子中，这些对象的分配都不会在堆上进行了，会把它们的字段拆解成独立的值。寄存器分配器通常会把拆解出来的字段直接放到寄存器中，不过如果没有足够可用的寄存器，那剩下的字段会被存储到栈上。这种情况被称为栈溢出（stack spill，注：和stack overflow不同）。
+在逃逸分析开启和关闭的模式下分别运行这个程序，再观察下GC的活动，你就能看到密集循环中堆分配消除的巨大威力。
+在现代JVM中逃逸分析是默认开启的，得通过JVM参数-XX:-DoEscapeAnalysis来关掉它。
+下面是开启了逃逸分析之后的GC日志（一些细节删除了）：
+从日志中可以看到根本没有发生GC事件——只是在进程退出时往日志里记录了下堆的摘要信息。如果再看下关闭逃逸分析后的运行日志，情况就截然不同了
+这里可以很清楚地看到，由于Eden区空间满了，导致了内存分配失败、需要进行垃圾回收，因此触发了GC事件。
+结论 逃逸分析是Java HotSpot VM引入的一项非常有用的升级。这项功能仍在开发阶段时，实际测试中它带来的性能提升就有3%到6%。
+对于那些对平台特性的实现过程和原理感兴趣的开发人员来说，逃逸分析有个很有意思的特点：这项特性依赖于其它优化（自动内联），不然用处不大。
+JVM底层的实现和源代码可以在HotSpot VM的源码opto/escape.hpp中找到。它是1999年11月由Jong-Deok Choi，Manish Gupta，Mauricio Serrano，Vugranam C. Sreedhar和Sam Midkif在ACM SIGPLAN的OOPSLA（面向对象编程，系统，语言和应用程序）会议中提出的“Escape Analysis for Java”算法的一个变种实现。
+除了分配消除，Java HotSpot VM中还有几项优化技术也是基于类似的作用域分析的技术来实现的。这些优化主要用于Java为每个对象提供的内部锁上。</description>
+    </item>
+    
+    <item>
+      <title>Shiro框架 - 用户权限管理</title>
+      <link>https://hideric.github.io/java/framework/security/shiro%E6%A1%86%E6%9E%B6-%E7%94%A8%E6%88%B7%E6%9D%83%E9%99%90%E7%AE%A1%E7%90%86/</link>
+      <pubDate>Wed, 07 Aug 2019 11:02:05 +0600</pubDate>
+      
+      <guid>https://hideric.github.io/java/framework/security/shiro%E6%A1%86%E6%9E%B6-%E7%94%A8%E6%88%B7%E6%9D%83%E9%99%90%E7%AE%A1%E7%90%86/</guid>
+      <description>用户权限管理一般是对用户页面、按钮的访问权限管理。Shiro框架是一个强大且易用的Java安全框架，执行身份验证、授权、密码和会话管理，对于Shiro的介绍这里就不多说。本篇博客主要是了解Shiro的基础使用方法，在权限管理系统中集成Shiro实现登录、url和页面按钮的访问控制。
+一、引入依赖
+使用SpringBoot集成Shiro时，在pom.xml中可以引入shiro-spring-boot-web-starter。由于使用的是thymeleaf框架，thymeleaf与Shiro结合需要 引入thymeleaf-extras-shiro。
+&amp;lt;!-- https://mvnrepository.com/artifact/org.apache.shiro/shiro-spring-boot-web-starter --&amp;gt; &amp;lt;dependency&amp;gt; &amp;lt;groupId&amp;gt;org.apache.shiro&amp;lt;/groupId&amp;gt; &amp;lt;artifactId&amp;gt;shiro-spring-boot-web-starter&amp;lt;/artifactId&amp;gt; &amp;lt;version&amp;gt;1.4.0&amp;lt;/version&amp;gt; &amp;lt;/dependency&amp;gt; &amp;lt;!-- https://mvnrepository.com/artifact/com.github.theborakompanioni/thymeleaf-extras-shiro --&amp;gt; &amp;lt;dependency&amp;gt; &amp;lt;groupId&amp;gt;com.github.theborakompanioni&amp;lt;/groupId&amp;gt; &amp;lt;artifactId&amp;gt;thymeleaf-extras-shiro&amp;lt;/artifactId&amp;gt; &amp;lt;version&amp;gt;2.0.0&amp;lt;/version&amp;gt; &amp;lt;/dependency&amp;gt;  二、增加Shiro配置
+有哪些url是需要拦截的，哪些是不需要拦截的，登录页面、登录成功页面的url、自定义的Realm等这些信息需要设置到Shiro中，所以创建Configuration文件ShiroConfig。
+package com.example.config; import org.apache.shiro.mgt.SecurityManager; import org.apache.shiro.spring.web.ShiroFilterFactoryBean; import org.apache.shiro.web.mgt.DefaultWebSecurityManager; import org.springframework.beans.factory.annotation.Qualifier; import org.springframework.context.annotation.Bean; import org.springframework.context.annotation.Configuration; import at.pollux.thymeleaf.shiro.dialect.ShiroDialect; import java.util.LinkedHashMap; import java.util.Map; @Configuration public class ShiroConfig { @Bean(&amp;quot;shiroFilterFactoryBean&amp;quot;) public ShiroFilterFactoryBean shiroFilterFactoryBean(SecurityManager securityManager) { System.out.println(&amp;quot;ShiroConfiguration.shirFilter()&amp;quot;); ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean(); shiroFilterFactoryBean.setSecurityManager(securityManager); //拦截器. Map&amp;lt;String,String&amp;gt; filterChainDefinitionMap = new LinkedHashMap&amp;lt;String,String&amp;gt;(); // 配置不会被拦截的链接 顺序判断 filterChainDefinitionMap.</description>
+    </item>
+    
+    <item>
+      <title>ThreadLocal面试题</title>
+      <link>https://hideric.github.io/java/basis/concurrency/threadlocal%E9%9D%A2%E8%AF%95%E9%A2%98/</link>
+      <pubDate>Wed, 07 Aug 2019 11:02:05 +0600</pubDate>
+      
+      <guid>https://hideric.github.io/java/basis/concurrency/threadlocal%E9%9D%A2%E8%AF%95%E9%A2%98/</guid>
+      <description>说明
+面试官：讲讲你对ThreadLocal的一些理解。
+那么我们该怎么回答呢？？？？你也可以思考下，下面看看零度的思考；
+ ThreadLocal用在什么地方？ ThreadLocal一些细节！ ThreadLocal的最佳实践！ 思考  ThreadLocal用在什么地方？
+讨论ThreadLocal用在什么地方前，我们先明确下，如果仅仅就一个线程，那么都不用谈ThreadLocal的，ThreadLocal是用在多线程的场景的！！！
+ThreadLocal归纳下来就2类用途：
+ 保存线程上下文信息，在任意需要的地方可以获取！！！ 线程安全的，避免某些情况需要考虑线程安全必须同步带来的性能损失！！！  保存线程上下文信息，在任意需要的地方可以获取！！！
+由于ThreadLocal的特性，同一线程在某地方进行设置，在随后的任意地方都可以获取到。从而可以用来保存线程上下文信息。
+常用的比如每个请求怎么把一串后续关联起来，就可以用ThreadLocal进行set，在后续的任意需要记录日志的方法里面进行get获取到请求id，从而把整个请求串起来。
+还有比如Spring的事务管理，用ThreadLocal存储Connection，从而各个DAO可以获取同一Connection，可以进行事务回滚，提交等操作。
+ 备注：ThreadLocal的这种用处，很多时候是用在一些优秀的框架里面的，一般我们很少接触，反而下面的场景我们接触的更多一些！
+ 线程安全的，避免某些情况需要考虑线程安全必须同步带来的性能损失！！！
+ThreadLocal为解决多线程程序的并发问题提供了一种新的思路。但是ThreadLocal也有局限性，我们来看看阿里规范：
+每个线程往ThreadLocal中读写数据是线程隔离，互相之间不会影响的，所以ThreadLocal无法解决共享对象的更新问题！
+ 由于不需要共享信息，自然就不存在竞争问题了，从而保证了某些情况下线程的安全，以及避免了某些情况需要考虑线程安全必须同步带来的性能损失！！！
+ 这类场景阿里规范里面也提到了：
+ThreadLocal一些细节！
+ThreaLocal使用示例代码：
+public class ThreadLocalTest { private static ThreadLocal&amp;lt;Integer&amp;gt; threadLocal = new ThreadLocal&amp;lt;&amp;gt;(); public static void main(String[] args) { new Thread(() -&amp;gt; { try { for (int i = 0; i &amp;lt; 100; i++) { threadLocal.set(i); System.out.println(Thread.currentThread().getName() + &amp;quot;====&amp;quot; + threadLocal.</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Redis on Hideric&#39;s Blog</title>
+    <link>https://hideric.github.io/redis/</link>
+    <description>Recent content in Redis on Hideric&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>The Hugo Documents are copyright © gethugothemes 2018.</copyright>
+    <lastBuildDate>Wed, 07 Aug 2019 11:02:05 +0600</lastBuildDate>
+    
+	<atom:link href="https://hideric.github.io/redis/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>如何用 Redis 统计独立用户访问量？</title>
+      <link>https://hideric.github.io/redis/%E5%A6%82%E4%BD%95%E7%94%A8-redis-%E7%BB%9F%E8%AE%A1%E7%8B%AC%E7%AB%8B%E7%94%A8%E6%88%B7%E8%AE%BF%E9%97%AE%E9%87%8F/</link>
+      <pubDate>Wed, 30 Oct 2019 15:54:22 +0800</pubDate>
+      
+      <guid>https://hideric.github.io/redis/%E5%A6%82%E4%BD%95%E7%94%A8-redis-%E7%BB%9F%E8%AE%A1%E7%8B%AC%E7%AB%8B%E7%94%A8%E6%88%B7%E8%AE%BF%E9%97%AE%E9%87%8F/</guid>
+      <description> 如何用 Redis 统计独立用户访问量？  作者：沙茶敏碎碎念来源：https://url.cn/5tQPEQg  众所周至，拼多多的待遇也是高的可怕，在挖人方面也是不遗余力，对于一些工作3年的开发，稍微优秀一点的，都给到30K的Offer，当然，拼多多加班也是出名的，一周上6天班是常态，每天工作时间基本都是超过12个小时，也是相当辛苦的。废话不多说，今天我们来聊一聊拼多多的一道后台面试真题，是一道简单的架构类的题目：拼多多有数亿的用户，那么对于某个网页，怎么使用Redis来统计一个网站的用户访问数呢？使用Hash 哈希是Redis的一种基础数据结构，Redis底层维护的是一个开散列，会把不同的key映射到哈希表上，如果是遇到关键字冲突，那么就会拉出一个链表出来。
+当一个用户访问的时候，如果用户登陆过，那么我们就使用用户的id，如果用户没有登陆过，那么我们也能够前端页面随机生成一个key用来标识用户，当用户访问的时候，我们可以使用HSET命令，key可以选择URI与对应的日期进行拼凑，field可以使用用户的id或者随机标识，value可以简单设置为1。
+当我们要统计某一个网站某一天的访问量的时候，就可以直接使用HLEN来得到最终的结果了。
+优点：简单，容易实现，查询也是非常方便，数据准确性非常高。
+缺点：占用内存过大，。随着key的增多，性能也会下降。小网站还行，拼多多这种数亿PV的网站肯定受不了
+使用Bitset 我们知道，对于一个32位的int，如果我们只用来记录id，那么只能够记录一个用户，但如果我们转成2进制，每位用来表示一个用户，那么我们就能够一口气表示32个用户，空间节省了32倍！对于有大量数据的场景，如果我们使用bitset，那么，可以节省非常多的内存。对于没有登陆的用户，我们也可以使用哈希算法，把对应的用户标识哈希成一个数字id。bitset非常的节省内存，假设有1亿个用户，也只需要100000000/8/1024/1024约等于12兆内存。
+Redis已经为我们提供了SETBIT的方法，使用起来非常的方便，我们可以看看下面的例子，我们在item页面可以不停地使用SETBIT命令，设置用户已经访问了该页面，也可以使用GETBIT的方法查询某个用户是否访问。最后我们通过BITCOUNT可以统计该网页每天的访问数量。
+优点：占用内存更小，查询方便，可以指定查询某个用户，数据可能略有瑕疵，对于非登陆的用户，可能不同的key映射到同一个id，否则需要维护一个非登陆用户的映射，有额外的开销。
+缺点：如果用户非常的稀疏，那么占用的内存可能比方法一更大。
+使用概率算法 对于拼多多这种多个页面都可能非常多访问量的网站，如果所需要的数量不用那么准确，可以使用概率算法，事实上，我们对一个网站的UV的统计，1亿跟1亿零30万其实是差不多的。在Redis中，已经封装了HyperLogLog算法，他是一种基数评估算法。这种算法的特征，一般都是数据不存具体的值，而是存用来计算概率的一些相关数据。
+当用户访问网站的时候，我们可以使用PFADD命令，设置对应的命令，最后我们只要通过PFCOUNT就能顺利计算出最终的结果，因为这个只是一个概率算法，所以可能存在0.81%的误差。
+优点：占用内存极小，对于一个key，只需要12kb。对于拼多多这种超多用户的特别适用。
+缺点：查询指定用户的时候，可能会出错，毕竟存的不是具体的数据。总数也存在一定的误差。
+上面就是常见的3种适用Redis统计网站用户访问数的方法了。
+END </description>
+    </item>
+    
+    <item>
+      <title>Redis 分布式锁的正确实现方式（Java版）</title>
+      <link>https://hideric.github.io/redis/redis-%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81%E7%9A%84%E6%AD%A3%E7%A1%AE%E5%AE%9E%E7%8E%B0%E6%96%B9%E5%BC%8Fjava%E7%89%88/</link>
+      <pubDate>Wed, 30 Oct 2019 15:38:52 +0800</pubDate>
+      
+      <guid>https://hideric.github.io/redis/redis-%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81%E7%9A%84%E6%AD%A3%E7%A1%AE%E5%AE%9E%E7%8E%B0%E6%96%B9%E5%BC%8Fjava%E7%89%88/</guid>
+      <description>Redis 分布式锁的正确实现方式（Java版） 本文来源：
+https://www.cnblogs.com/linjiqin/p/8003838.html
+前言 分布式锁一般有三种实现方式：
+ 数据库乐观锁；
+ 基于Redis的分布式锁；
+ 基于ZooKeeper的分布式锁 本篇博客将介绍第二种方式，基于Redis实现分布式锁。
+  虽然网上已经有各种介绍Redis分布式锁实现的博客，然而他们的实现却有着各种各样的问题，为了避免误人子弟，本篇博客将详细介绍如何正确地实现Redis分布式锁。
+可靠性 首先，为了确保分布式锁可用，我们至少要确保锁的实现同时满足以下四个条件：
+ 互斥性。在任意时刻，只有一个客户端能持有锁。
+ 不会发生死锁。即使有一个客户端在持有锁的期间崩溃而没有主动解锁，也能保证后续其他客户端能加锁。
+ 具有容错性。只要大部分的Redis节点正常运行，客户端就可以加锁和解锁。
+ 解铃还须系铃人。加锁和解锁必须是同一个客户端，客户端自己不能把别人加的锁给解了。
+代码实现  组件依赖 首先我们要通过Maven引入Jedis开源组件，在pom.xml文件加入下面的代码：
+&amp;lt;dependency&amp;gt; &amp;lt;groupId&amp;gt;redis.clientsgroupId&amp;gt; &amp;lt;artifactId&amp;gt;jedisartifactId&amp;gt; &amp;lt;version&amp;gt;2.9.0version&amp;gt; &amp;lt;/dependency&amp;gt;  加锁代码 正确姿势 Talk is cheap, show me the code。先展示代码，再带大家慢慢解释为什么这样实现：
+public class RedisTool { private static final String LOCK_SUCCESS = &amp;quot;OK&amp;quot;; private static final String SET_IF_NOT_EXIST = &amp;quot;NX&amp;quot;; private static final String SET_WITH_EXPIRE_TIME = &amp;quot;PX&amp;quot;; /** * 尝试获取分布式锁 * @param jedis Redis客户端 * @param lockKey 锁 * @param requestId 请求标识 * @param expireTime 超期时间 * @return 是否获取成功 */ public static boolean tryGetDistributedLock(Jedis jedis, String lockKey, String requestId, int expireTime) { String result = jedis.</description>
+    </item>
+    
+    <item>
+      <title>Redis 实现“附近的人”功能</title>
+      <link>https://hideric.github.io/redis/redis-%E5%AE%9E%E7%8E%B0%E9%99%84%E8%BF%91%E7%9A%84%E4%BA%BA%E5%8A%9F%E8%83%BD/</link>
+      <pubDate>Wed, 30 Oct 2019 15:38:52 +0800</pubDate>
+      
+      <guid>https://hideric.github.io/redis/redis-%E5%AE%9E%E7%8E%B0%E9%99%84%E8%BF%91%E7%9A%84%E4%BA%BA%E5%8A%9F%E8%83%BD/</guid>
+      <description>Redis 实现“附近的人”功能  来源：
+https://juejin.im/post/5da40462f265da5baf410a11
+ 前言 ： 针对“附近的人”这一位置服务领域的应用场景，常见的可使用PG、MySQL和MongoDB等多种DB的空间索引进行实现。 而Redis另辟蹊径，结合其有序队列zset以及geohash编码，实现了空间搜索功能，且拥有极高的运行效率。
+
+本文将从源码角度对其算法原理进行解析，并推算查询时间复杂度。
+要提供完整的“附近的人”服务，最基本的是要实现“增”、“删”、“查”的功能。以下将分别进行介绍，其中会重点对查询功能进行解析。
+操作命令 自Redis 3.2开始，Redis基于geohash和有序集合提供了地理位置相关功能。Redis Geo模块包含了以下6个命令：
+ GEOADD: 将给定的位置对象（纬度、经度、名字）添加到指定的key;
+ GEOPOS: 从key里面返回所有给定位置对象的位置（经度和纬度）;
+ GEODIST: 返回两个给定位置之间的距离;- GEOHASH: 返回一个或多个位置对象的Geohash表示;
+ GEORADIUS: 以给定的经纬度为中心，返回目标集合中与中心的距离不超过给定最大距离的所有位置对象;
+ GEORADIUSBYMEMBER: 以给定的位置对象为中心，返回与其距离不超过给定最大距离的所有位置对象。
+  其中，组合使用GEOADD和GEORADIUS可实现“附近的人”中“增”和“查”的基本功能。
+要实现微信中“附近的人”功能，可直接使用GEORADIUSBYMEMBER命令。其中“给定的位置对象”即为用户本人，搜索的对象为其他用户。
+不过本质上，GEORADIUSBYMEMBER = GEOPOS + GEORADIUS，即先查找用户位置再通过该位置搜索附近满足位置相互距离条件的其他用户对象。
+ Redis geo操作中只包含了“增”和“查”的操作，并没有专门的“删除”命令。主要是因为Redis内部使用有序集合(zset)保存位置对象，可用zrem进行删除。在Redis源码geo.c的文件注释中，只说明了该文件为GEOADD、GEORADIUS和GEORADIUSBYMEMBER的实现文件（其实在也实现了另三个命令）。从侧面看出其他三个命令为辅助命令。
+  GEOADD  使用方式 
+GEOADD key longitude latitude member [longitude latitude member ...]  将给定的位置对象（纬度、经度、名字）添加到指定的key。
+其中，key为集合名称，member为该经纬度所对应的对象。在实际运用中，当所需存储的对象数量过多时，可通过设置多key(如一个省一个key)的方式对对象集合变相做sharding，避免单集合数量过多。
+成功插入后的返回值：
+(integer) N  其中N为成功插入的个数。</description>
+    </item>
+    
+    <item>
+      <title>为什么RedisCluster有16384个槽?</title>
+      <link>https://hideric.github.io/redis/%E4%B8%BA%E4%BB%80%E4%B9%88rediscluster%E6%9C%8916384%E4%B8%AA%E6%A7%BD/</link>
+      <pubDate>Wed, 30 Oct 2019 15:38:52 +0800</pubDate>
+      
+      <guid>https://hideric.github.io/redis/%E4%B8%BA%E4%BB%80%E4%B9%88rediscluster%E6%9C%8916384%E4%B8%AA%E6%A7%BD/</guid>
+      <description>为什么RedisCluster有16384个槽? 引言 为什么有16384个槽么ps:CRC16算法产生的hash值有16bit，该算法可以产生2^16-=65536个值。换句话说，值是分布在0~65535之间。那作者在做mod运算的时候，为什么不mod65536，而选择mod16384？
+其实我当初第一次思考这个问题的时候，我心里是这么想的，作者应该是觉得16384就够了，然后我就开始查这方面资料。
+很幸运的是，这个问题，作者是给出了回答的！地址如下:https://github.com/antirez/redis/issues/2576
+作者原版回答如下:The reason is:
+ Normal heartbeat packets carry the full configuration of a node, that can be replaced in an idempotent way with the old in order to update an old config. This means they contain the slots configuration for a node, in raw form, that uses 2k of space with16k slots, but would use a prohibitive 8k of space using 65k slots.
+ At the same time it is unlikely that Redis Cluster would scale to more than 1000 mater nodes because of other design tradeoffs.</description>
+    </item>
+    
+    <item>
+      <title>学会这几个Redis技巧，让你的程序快如闪电</title>
+      <link>https://hideric.github.io/redis/%E5%AD%A6%E4%BC%9A%E8%BF%99%E5%87%A0%E4%B8%AAredis%E6%8A%80%E5%B7%A7%E8%AE%A9%E4%BD%A0%E7%9A%84%E7%A8%8B%E5%BA%8F%E5%BF%AB%E5%A6%82%E9%97%AA%E7%94%B5/</link>
+      <pubDate>Wed, 30 Oct 2019 15:38:52 +0800</pubDate>
+      
+      <guid>https://hideric.github.io/redis/%E5%AD%A6%E4%BC%9A%E8%BF%99%E5%87%A0%E4%B8%AAredis%E6%8A%80%E5%B7%A7%E8%AE%A9%E4%BD%A0%E7%9A%84%E7%A8%8B%E5%BA%8F%E5%BF%AB%E5%A6%82%E9%97%AA%E7%94%B5/</guid>
+      <description>学会这几个Redis技巧，让你的程序快如闪电  本文来源：https://dwz.cn/RseclNiY
+ 一、Redis封装架构讲解 实际上NewLife.Redis是一个完整的Redis协议功能的实现，但是Redis的核心功能并没有在这里面，而是在NewLife.Core里面。
+这里可以打开看一下，NewLife.Core里面有一个NewLife.Caching的命名空间，里面有一个Redis类，里面实现了Redis的基本功能；另一个类是RedisClient是Redis的客户端。
+Redis的核心功能就是有这两个类实现，RedisClient代表着Redis客户端对服务器的一个连接。Redis真正使用的时候有一个Redis连接池，里面存放着很多个RedisClient对象。
+所以我们Redis的封装有两层，一层是NewLife.Core里面的Redis以及RedisClient；另一层就是NewLife.Redis。这里面的FullRedis是对Redis的实现了Redis的所有的高级功能。
+这里你也可以认为NewLife.Redis是Redis的一个扩展。
+二、Test实例讲解Redis的基本使用 1、实例 打开Program.cs看下代码：
+这里XTrace.UseConsole();是向控制台输出日志，方便调试使用查看结果。
+接下来看第一个例子Test1，具体的我都在代码中进行了注释，大家可以看下：
+Set的时候，如果是字符串或者字符数据的话，Redis会直接保存起来（字符串内部机制也是保存二进制），如果是其他类型，会默认进行json序列化然后再保存起来。
+Get的时候，如果是字符串或者字符数据会直接获取，如果是其他类型会进行json反序列化。
+Set第三个参数过期时间单位是秒。
+vs调试小技巧，按F5或者直接工具栏“启动”会编译整个解决方案会很慢（VS默认），可以选中项目然后右键菜单选择调试-&amp;gt;启动新实例，会只编译将会用到的项目，这样对调试来说会快很多。
+大家运行调试后可以看到控制台输出的内容：向右的箭头=》是ic.Log=XTrace.Log输出的日志。
+字典的使用：对象的话，需要把json全部取出来，然后转换成对象，而字典的话，就可以直接取某个字段。
+队列是List结构实现的，上游数据太多，下游处理不过来的时候，就可以使用这个队列。上游的数据发到队列，然后下游慢慢的消费。另一个应用，跨语言的协同工作，比方说其他语言实现的程序往队列里面塞数据，然后另一种语言来进行消费处理。这种方式类似MQ的概念，虽然有点low，但是也很好用。
+集合，用的比较多的是用在一个需要精确判断的去重功能。像我们每天有三千万订单，这三千万订单可以有重复。这时候我想统计下一共有订单，这时候直接数据库group by是不大可能的，因为数据库中分了十几张表，这里分享个实战经验：
+比方说揽收，商家发货了，网点要把件收回来，但是收回来之前网点不知道自己有多少货，这时候我们做了一个功能，也就是订单会发送到我们公司来。我们会建一个time_site的key的集合，而且集合本身有去重的功能，而且我们可以很方便的通过set.Count功能来统计数量，当件被揽收以后，我们后台把这个件从集合中Remove掉。然后这个Set中存在的就是网点还没有揽收的件，这时候通过Count就会知道这个网点今天还有多少件没有揽收。实际使用中这个数量比较大，因为有几万个网点。
+Redis中布隆过滤器，去重的，面试的时候问的比较多。
+小经验分享：
+数据库中不合法的时间处理：判断时间中的年份是否大于2000年，如果小于2000就认为不合法；习惯大于小于号不习惯用等于号，这样可以处理很多意外的数据；
+Set的时候最好指定过期时间，防止有些需要删除的数据我们忘记删了；
+Redis异步尽量不用，因为Redis延迟本身很小，大概在100us-200us，再一个就是Redis本身是单线程的，异步任务切换的耗时比网络耗时还要大；
+List用法：物联网中数据上传，量比较大时，我们可以把这些数据先放在Redis的List中，比如说一秒钟1万条，然后再批量取出来然后批量插入数据库中。这时候要设置好key，可以前缀+时间，对已处理的List可以进行remove移除。
+2、压力测试 接下来看第四个例子，我们直接做压力测试，代码如下：
+运行的结果如下图所示：
+测试就是进行get,set remove,累加等的操作。大家可以看到在我本机上轻轻松松的到了六十万，多线程的时候甚至到了一百多万。
+为什么会达到这么高的Ops呢？下面给大家说一下：
+Bench会分根据线程数分多组进行添删改压力测试；
+rand参数，是否随机产生key/value；
+batch批大小，分批执行读写操作，借助GetAll/SetAll进行优化。
+3、Redis中NB的函数来提升性能 上面的操作如果大家都掌握了就基本算Redis入门了，接下来进行进阶。如果能全然吃透，差不多就会比别人更胜一筹了。
+GetAll()与SetAll()
+GetAll：比方说我要取十个key，这个时候可以用getall。这时候Redis就执行了一次命令。比方说我要取10个key那么用get的话要取10次，如果用getall的话要用1次。1次getall时间大概是get的一点几倍，但是10次get的话就是10倍的时间，这个账你应该会算吧？强烈推荐大家用getall。
+setall跟getall相似，批量设置K-V。
+setall与getall性能很恐怖，官方公布的Ops也就10万左右，为什么我们的测试轻轻松松到五十万甚至上百万？因为我们就用了setall,getall。如果get,set两次以上，建议用getall,setall。
+Redis管道Pipeline
+比如执行10次命令会打包成一个包集体发过去执行，这里实现的方式是StartPipeline()开始，StopPipeline()结束中间的代码就会以管道的形式执行。
+这里推荐使用更强的武器，AutoPipeline自动管道属性。管道操作到一定数量时，自动提交，默认0。使用了AutoPipeline，就不需要StartPipeline，StopPipeline指定管道的开始结束了。
+Add与Replace
+Add：Redis中没有这个Key就添加，有了就不要添加，返回false；
+Replace：有则替换，还会返回原来的值，没有则不进行操作。
+Add跟Replace就是实现Redis分布式锁的关键。
+三、Redis使用技巧，经验分享 在项目的Readme中，这里摘录下：
+1、特性 在ZTO大数据实时计算广泛应用，200多个Redis实例稳定工作一年多，每天处理近1亿包裹数据，日均调用量80亿次；
+低延迟，Get/Set操作平均耗时200~600us（含往返网络通信）；
+大吞吐，自带连接池，最大支持1000并发；
+高性能，支持二进制序列化（默认用的json，json很低效，转成二进制性能会提升很多）。
+2、Redis经验分享 在Linux上多实例部署，实例个数等于处理器个数，各实例最大内存直接为本机物理内存，避免单个实例内存撑爆（比方说8核心处理器，那么就部署8个实例）。
+把海量数据（10亿+）根据key哈希（Crc16/Crc32）存放在多个实例上，读写性能成倍增长。
+采用二进制序列化，而非常见的Json序列化。
+合理设计每一对Key的Value大小，包括但不限于使用批量获取，原则是让每次网络包控制在1.4k字节附近，减少通信次数（实际经验几十k，几百k也是没问题的）。
+Redis客户端的Get/Set操作平均耗时200~600us（含往返网络通信），以此为参考评估网络环境和Redis客户端组件（达不到就看一下网络，序列化方式等等）。
+使用管道Pipeline合并一批命令。
+Redis的主要性能瓶颈是序列化、网络带宽和内存大小，滥用时处理器也会达到瓶颈。
+其它可查优化技巧。</description>
+    </item>
+    
+    <item>
+      <title>比Redis还快5倍的中间件，为啥这么快？</title>
+      <link>https://hideric.github.io/redis/%E6%AF%94redis%E8%BF%98%E5%BF%AB5%E5%80%8D%E7%9A%84%E4%B8%AD%E9%97%B4%E4%BB%B6%E4%B8%BA%E5%95%A5%E8%BF%99%E4%B9%88%E5%BF%AB/</link>
+      <pubDate>Wed, 30 Oct 2019 15:38:52 +0800</pubDate>
+      
+      <guid>https://hideric.github.io/redis/%E6%AF%94redis%E8%BF%98%E5%BF%AB5%E5%80%8D%E7%9A%84%E4%B8%AD%E9%97%B4%E4%BB%B6%E4%B8%BA%E5%95%A5%E8%BF%99%E4%B9%88%E5%BF%AB/</guid>
+      <description>比Redis还快5倍的中间件，为啥这么快？  作者：羽洵
+来源：http://suo.im/4Cx7u
+ 今天给大家介绍的是KeyDB，KeyDB项目是从redis fork出来的分支。众所周知redis是一个单线程的kv内存存储系统，而KeyDB在100%兼容redis API的情况下将redis改造成多线程。
+上次也跟大家说了，redis多线程正式版将在今年底发布，大家拭目以待
+线程模型 KeyDB将redis原来的主线程拆分成了主线程和worker线程。每个worker线程都是io线程，负责监听端口，accept请求，读取数据和解析协议。如图所示：
+KeyDB使用了SO_REUSEPORT特性，多个线程可以绑定监听同个端口。
+每个worker线程做了cpu绑核，读取数据也使用了SO_INCOMING_CPU特性，指定cpu接收数据。
+解析协议之后每个线程都会去操作内存中的数据，由一把全局锁来控制多线程访问内存数据。
+主线程其实也是一个worker线程，包括了worker线程的工作内容，同时也包括只有主线程才可以完成的工作内容。在worker线程数组中下标为0的就是主线程。
+主线程的主要工作在实现serverCron，包括：
+ 处理统计 客户端链接管理 db数据的resize和reshard 处理aof replication主备同步 cluster模式下的任务  链接管理 在redis中所有链接管理都是在一个线程中完成的。在KeyDB的设计中，每个worker线程负责一组链接，所有的链接插入到本线程的链接列表中维护。链接的产生、工作、销毁必须在同个线程中。每个链接新增一个字段
+int iel; /* the event loop index we&amp;rsquo;re registered with */
+用来表示链接属于哪个线程接管。
+KeyDB维护了三个关键的数据结构做链接管理：
+ clients_pending_write：线程专属的链表，维护同步给客户链接发送数据的队列 clients_pending_asyncwrite：线程专属的链表，维护异步给客户链接发送数据的队列 clients_to_close：全局链表，维护需要异步关闭的客户链接  分成同步和异步两个队列，是因为redis有些联动api，比如pub/sub，pub之后需要给sub的客户端发送消息，pub执行的线程和sub的客户端所在线程不是同一个线程，为了处理这种情况，KeyDB将需要给非本线程的客户端发送数据维护在异步队列中。
+同步发送的逻辑比较简单，都是在本线程中完成，以下图来说明如何同步给客户端发送数据：
+如上文所提到的，一个链接的创建、接收数据、发送数据、释放链接都必须在同个线程执行。异步发送涉及到两个线程之间的交互。KeyDB通过管道在两个线程中传递消息：
+int fdCmdWrite; //写管道 int fdCmdRead; //读管道  本地线程需要异步发送数据时，先检查client是否属于本地线程，非本地线程获取到client专属的线程ID，之后给专属的线程管到发送AE_ASYNC_OP::CreateFileEvent的操作，要求添加写socket事件。专属线程在处理管道消息时将对应的请求添加到写事件中，如图所示：
+redis有些关闭客户端的请求并非完全是在链接所在的线程执行关闭，所以在这里维护了一个全局的异步关闭链表。
+锁机制 KeyDB实现了一套类似spinlock的锁机制，称之为fastlock。
+fastlock的主要数据结构有：
+struct ticket { uint16_t m_active; //解锁+1 uint16_t m_avail; //加锁+1 }; struct fastlock { volatile struct ticket m_ticket; volatile int m_pidOwner; //当前解锁的线程id volatile int m_depth; //当前线程重复加锁的次数 };  使用原子操作atomic_load_2，atomic_fetch_add，__atomic_compare_exchange来通过比较m_active=m_avail判断是否可以获取锁。</description>
+    </item>
+    
+    <item>
+      <title>Redis高级客户端Lettuce详解</title>
+      <link>https://hideric.github.io/redis/redis%E9%AB%98%E7%BA%A7%E5%AE%A2%E6%88%B7%E7%AB%AFlettuce%E8%AF%A6%E8%A7%A3/</link>
+      <pubDate>Wed, 30 Oct 2019 15:38:44 +0800</pubDate>
+      
+      <guid>https://hideric.github.io/redis/redis%E9%AB%98%E7%BA%A7%E5%AE%A2%E6%88%B7%E7%AB%AFlettuce%E8%AF%A6%E8%A7%A3/</guid>
+      <description>Redis高级客户端Lettuce详解 前提 Lettuce是一个Redis的Java驱动包，初识她的时候是使用RedisTemplate的时候遇到点问题Debug到底层的一些源码，发现spring-data-redis的驱动包在某个版本之后替换为Lettuce。Lettuce翻译为生菜，没错，就是吃的那种生菜，所以它的Logo长这样：
+既然能被Spring生态所认可，Lettuce想必有过人之处，于是笔者花时间阅读她的官方文档，整理测试示例，写下这篇文章。编写本文时所使用的版本为Lettuce 5.1.8.RELEASE，SpringBoot 2.1.8.RELEASE，JDK [8,11]。
+Lettuce简介 Lettuce是一个高性能基于Java编写的Redis驱动框架，底层集成了Project Reactor提供天然的反应式编程，通信框架集成了Netty使用了非阻塞IO，5.x版本之后融合了JDK1.8的异步编程特性，在保证高性能的同时提供了十分丰富易用的API，5.1版本的新特性如下：
+ 支持Redis的新增命令ZPOPMIN, ZPOPMAX, BZPOPMIN, BZPOPMAX。
+ 支持通过Brave模块跟踪Redis命令执行。
+ 支持Redis Streams。
+ 支持异步的主从连接。
+ 支持异步连接池。
+ 新增命令最多执行一次模式（禁止自动重连）。
+ 全局命令超时设置（对异步和反应式命令也有效）。
+ &amp;hellip;&amp;hellip;等等
+  注意一点：Redis的版本至少需要2.6，当然越高越好，API的兼容性比较强大。
+只需要引入单个依赖就可以开始愉快地使用Lettuce：
+ Maven
+&amp;lt;dependency&amp;gt; &amp;lt;groupId&amp;gt;io.lettuce&amp;lt;/groupId&amp;gt; &amp;lt;artifactId&amp;gt;lettuce-core&amp;lt;/artifactId&amp;gt; &amp;lt;version&amp;gt;5.1.8.RELEASE&amp;lt;/version&amp;gt; &amp;lt;/dependency&amp;gt;  Gradle
+dependencies { compile &#39;io.lettuce:lettuce-core:5.1.8.RELEASE&#39; }   连接Redis 单机、哨兵、集群模式下连接Redis需要一个统一的标准去表示连接的细节信息，在Lettuce中这个统一的标准是RedisURI。可以通过三种方式构造一个RedisURI实例：
+ 定制的字符串URI语法：
+RedisURI uri = RedisURI.create(&amp;quot;redis://localhost/&amp;quot;);  使用建造器（RedisURI.Builder）：
+RedisURI uri = RedisURI.builder().withHost(&amp;quot;localhost&amp;quot;).withPort(6379).build();  直接通过构造函数实例化：
+RedisURI uri = new RedisURI(&amp;quot;localhost&amp;quot;, 6379, 60, TimeUnit.</description>
+    </item>
+    
+  </channel>
+</rss>

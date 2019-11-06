@@ -1,0 +1,581 @@
+<head>
+  <meta charset="utf-8">
+  <title>Spring 的 BeanUtils 填坑记</title>
+
+  <meta name="generator" content="Hugo 0.58.3" />
+
+  <!-- mobile responsive meta -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <!-- ** Plugins Needed for the Project ** -->
+  <!-- Bootstrap -->
+  <link rel="stylesheet" href="https://hideric.github.io/plugins/bootstrap/bootstrap.min.css">
+  <!-- themefy-icon -->
+  <link rel="stylesheet" href="https://hideric.github.io/plugins/themify-icons/themify-icons.css">
+  <!-- highlight -->
+  <link rel="stylesheet" href="https://hideric.github.io/plugins/highlight/hybrid.css">
+  <!-- fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700" rel="stylesheet">
+
+  <style>
+  :root{
+    --primary-color:#2f1f48;
+    --secondary-color:#f9f9f9;
+    --text-color:#636363;
+    --text-color-dark:#242738;
+    --white-color:#ffffff;
+  }  
+  </style>
+
+  <!-- Main Stylesheet -->
+  
+  <link rel="stylesheet" href="https://hideric.github.io/css/style.min.css" integrity="" media="screen">
+
+  <!-- jquiry -->
+  <script src="https://hideric.github.io/plugins/jquery/jquery-1.12.4.js"></script>
+
+  <!-- jquary ui -->
+  <script src="https://hideric.github.io/plugins/jquery/jquery-ui.js"></script>
+
+  <!--Favicon-->
+  <link rel="icon" href="https://hideric.github.io/images/favicon.png" type="image/x-icon">
+
+</head>
+
+
+<!-- navigation -->
+<header class="shadow-bottom sticky-top bg-white">
+  <div class="container">
+    <nav class="navbar navbar-expand-lg navbar-light">
+  <a class="navbar-brand" href="https://hideric.github.io/">Hideric</a>
+  <button class="navbar-toggler border-0" type="button" data-toggle="collapse" data-target="#navigation"
+    aria-controls="navigation" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse text-center" id="navigation">
+    <ul class="navbar-nav ml-auto">
+      <li class="nav-item">
+        <a class="nav-link text-dark" href="https://hideric.github.io/">Home</a>
+      </li>
+      
+      
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle text-dark" href="#" role="button" data-toggle="dropdown" aria-haspopup="true"
+          aria-expanded="false">
+          Back-End
+        </a>
+        <div class="dropdown-menu" >
+          
+          <a class="dropdown-item" href="https://hideric.github.io/java">Java</a>
+          
+          <a class="dropdown-item" href="https://hideric.github.io/python">Python</a>
+          
+          <a class="dropdown-item" href="https://hideric.github.io/go">Go</a>
+          
+          <a class="dropdown-item" href="https://hideric.github.io/cpp">C&#43;&#43;</a>
+          
+        </div>
+      </li>
+      
+      
+      
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle text-dark" href="#" role="button" data-toggle="dropdown" aria-haspopup="true"
+          aria-expanded="false">
+          DB
+        </a>
+        <div class="dropdown-menu" >
+          
+          <a class="dropdown-item" href="https://hideric.github.io/mysql">Mysql</a>
+          
+          <a class="dropdown-item" href="https://hideric.github.io/oracle">Oracle</a>
+          
+        </div>
+      </li>
+      
+      
+      
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle text-dark" href="#" role="button" data-toggle="dropdown" aria-haspopup="true"
+          aria-expanded="false">
+          Front-End
+        </a>
+        <div class="dropdown-menu" >
+          
+          <a class="dropdown-item" href="https://hideric.github.io/js">JavaScript</a>
+          
+          <a class="dropdown-item" href="https://hideric.github.io/vue">Vue</a>
+          
+          <a class="dropdown-item" href="https://hideric.github.io/react">React</a>
+          
+          <a class="dropdown-item" href="https://hideric.github.io/rn">React Native</a>
+          
+        </div>
+      </li>
+      
+      
+      
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle text-dark" href="#" role="button" data-toggle="dropdown" aria-haspopup="true"
+          aria-expanded="false">
+          Mid-Ware
+        </a>
+        <div class="dropdown-menu" >
+          
+          <a class="dropdown-item" href="https://hideric.github.io/redis">Redis</a>
+          
+          <a class="dropdown-item" href="https://hideric.github.io/nginx">Nginx</a>
+          
+        </div>
+      </li>
+      
+      
+      
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle text-dark" href="#" role="button" data-toggle="dropdown" aria-haspopup="true"
+          aria-expanded="false">
+          Mobile
+        </a>
+        <div class="dropdown-menu" >
+          
+          <a class="dropdown-item" href="https://hideric.github.io/android">Android</a>
+          
+          <a class="dropdown-item" href="https://hideric.github.io/ios">IOS</a>
+          
+        </div>
+      </li>
+      
+      
+      
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle text-dark" href="#" role="button" data-toggle="dropdown" aria-haspopup="true"
+          aria-expanded="false">
+          OPS
+        </a>
+        <div class="dropdown-menu" >
+          
+          <a class="dropdown-item" href="https://hideric.github.io/k8s">kubernetes</a>
+          
+          <a class="dropdown-item" href="https://hideric.github.io/docker">Docker</a>
+          
+          <a class="dropdown-item" href="https://hideric.github.io/leetcode">Leetcode</a>
+          
+          <a class="dropdown-item" href="https://hideric.github.io/linux">Linux</a>
+          
+        </div>
+      </li>
+      
+      
+      
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle text-dark" href="#" role="button" data-toggle="dropdown" aria-haspopup="true"
+          aria-expanded="false">
+          pages
+        </a>
+        <div class="dropdown-menu" >
+          
+          <a class="dropdown-item" href="https://hideric.github.io/faq">FAQ</a>
+          
+          <a class="dropdown-item" href="https://hideric.github.io/contact">CONTACT</a>
+          
+          <a class="dropdown-item" href="https://hideric.github.io/elements">ELEMENTS</a>
+          
+          <a class="dropdown-item" href="https://hideric.github.io/others">OTHERS</a>
+          
+        </div>
+      </li>
+      
+      
+    </ul>
+    
+    <ul class="list-inline text-center mb-0">
+      
+    </ul>
+  </div>
+</nav>
+  </div>
+</header>
+<!-- /navigation -->
+
+
+<section class="single pt-5 bg-gray">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-3">
+        <div class="p-4 bg-white sticky-top top-100">
+            
+            <nav class="sidebar-menu">
+              <ul class="list-styled">
+            <li class=""><a href="https://hideric.github.io/android/">Android</a>
+              <ul class="">
+            <li class=""><a href="https://hideric.github.io/android/tool/f-droidapps/">F-Droid Apps Recommendation</a>
+            </li></ul>
+              
+            </li>
+            <li class=""><a href="https://hideric.github.io/cpp/">C&#43;&#43;</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/docker/">Docker</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/go/">Go</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/ios/">IOS</a>
+            </li>
+            <li class="parent d-block "><a href="https://hideric.github.io/java/">Java</a>
+              <ul class="sub-menu">
+            <li class=""><a href="https://hideric.github.io/java/basis/http%E6%96%AD%E7%82%B9%E7%BB%AD%E4%BC%A0/">HTTP断点续传</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/basis/java-%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8/">Java 垃圾收集器</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/basis/java-%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%8B%BC%E6%8E%A5%E5%A7%BF%E5%8A%BF/">Java 字符串拼接姿势</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/basis/java-%E5%A6%82%E4%BD%95%E6%9B%B4%E4%BC%98%E9%9B%85%E7%9A%84%E5%A4%84%E7%90%86%E7%A9%BA%E5%80%BC/">Java-如何更优雅的处理空值</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/basis/jvm/jvm-%E5%A0%86%E5%86%85%E5%AD%98%E6%BA%A2%E5%87%BA%E5%90%8E%E5%85%B6%E4%BB%96%E7%BA%BF%E7%A8%8B%E6%98%AF%E5%90%A6%E5%8F%AF%E7%BB%A7%E7%BB%AD%E5%B7%A5%E4%BD%9C/">JVM 堆内存溢出后，其他线程是否可继续工作？</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/framework/mybatis/mybatis%E4%B8%ADlike-%E7%9A%84%E4%BD%BF%E7%94%A8%E6%96%B9%E5%BC%8F%E4%BB%A5%E5%8F%8A%E4%B8%80%E4%BA%9B%E6%B3%A8%E6%84%8F%E7%82%B9/">Mybatis中Like 的使用方式以及一些注意点</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/framework/mybatis/mybatis%E5%B1%85%E7%84%B6%E6%9C%89%E5%9D%91%E5%8D%83%E4%B8%87%E5%88%AB%E8%B8%A9/">Mybatis居然有坑，千万别踩！</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/framework/spring/spring%E5%BE%AA%E7%8E%AF%E4%BE%9D%E8%B5%96%E7%9A%84%E5%9D%91/">Spring循环依赖的坑</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/framework/spring/spring%E7%9A%84%E5%90%84%E7%A7%8D%E6%B3%A8%E8%A7%A3/">Spring的各种注解</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/basis/%E4%BB%8E%E5%AE%9E%E8%B7%B5%E8%A7%92%E5%BA%A6%E9%87%8D%E6%96%B0%E7%90%86%E8%A7%A3bio%E5%92%8Cnio/">从实践角度重新理解BIO和NIO</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/basis/%E5%85%B3%E4%BA%8E-git-%E6%8F%90%E4%BA%A4%E8%A7%84%E8%8C%83/">关于 Git 提交规范</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/basis/jvm/%E6%B3%A8%E6%84%8Fcode-cache%E6%89%93%E6%BB%A1%E5%8F%AF%E5%AF%BC%E8%87%B4%E5%BA%94%E7%94%A8%E6%80%A7%E8%83%BD%E9%99%8D%E4%BD%8E/">注意，Code Cache打满可导致应用性能降低</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/framework/spring/spring-%E5%AE%B9%E5%99%A8%E5%90%AF%E5%8A%A8%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/">Spring 容器启动源码解析</a>
+            </li>
+            <li class=" active "><a href="https://hideric.github.io/java/framework/spring/spring-%E7%9A%84-beanutils-%E5%A1%AB%E5%9D%91%E8%AE%B0/">Spring 的 BeanUtils 填坑记</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/basis/weakhashmap%E7%94%9F%E4%BA%86%E7%97%85%E7%9A%84-hashmap-/">WeakHashMap，生了病的 HashMap ？</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/framework/dubbo/%E4%BD%BF%E7%94%A8dubbo%E8%BF%87%E7%A8%8B%E4%B8%AD%E9%81%87%E5%88%B0%E8%BF%87%E5%93%AA%E4%BA%9B%E5%9D%91/">使用dubbo过程中遇到过哪些坑？</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/basis/%E4%B8%80%E4%B8%AAjava%E5%AF%B9%E8%B1%A1%E5%88%B0%E5%BA%95%E5%8D%A0%E7%94%A8%E5%A4%9A%E5%A4%A7%E5%86%85%E5%AD%98/">一个Java对象到底占用多大内存？</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/basis/%E4%BD%A0%E7%9C%9F%E7%9A%84%E4%BA%86%E8%A7%A3logback%E5%90%97/">你真的了解logback吗？</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/basis/%E8%BF%99%E5%8F%AF%E8%83%BD%E6%98%AFgithub%E4%B8%8A%E6%9C%80%E5%8F%8B%E5%A5%BD%E7%9A%84%E5%88%86%E5%B8%83%E5%BC%8F%E5%8D%B3%E6%97%B6%E9%80%9A%E8%AE%AF%E9%A1%B9%E7%9B%AE..../">这可能是Github上最友好的分布式即时通讯项目.....</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/basis/java-8-stream-%E9%9B%86%E5%90%88%E6%93%8D%E4%BD%9C%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B/">Java 8 - Stream 集合操作快速上手</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/basis/concurrency/stringbuilder-%E4%B8%BA%E4%BB%80%E4%B9%88%E7%BA%BF%E7%A8%8B%E4%B8%8D%E5%AE%89%E5%85%A8/">StringBuilder 为什么线程不安全？</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/basis/jvm/jvm%E4%BC%98%E5%8C%96%E4%B9%8B%E9%80%83%E9%80%B8%E5%88%86%E6%9E%90%E4%B8%8E%E5%88%86%E9%85%8D%E6%B6%88%E9%99%A4/">JVM优化之逃逸分析与分配消除</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/framework/security/shiro%E6%A1%86%E6%9E%B6-%E7%94%A8%E6%88%B7%E6%9D%83%E9%99%90%E7%AE%A1%E7%90%86/">Shiro框架 - 用户权限管理</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/basis/concurrency/threadlocal%E9%9D%A2%E8%AF%95%E9%A2%98/">ThreadLocal面试题</a>
+            </li></ul>
+              
+            </li>
+            <li class=""><a href="https://hideric.github.io/js/">JavaScript</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/k8s/">Kubernets</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/leetcode/">Leetcode</a>
+              <ul class="">
+            <li class=""><a href="https://hideric.github.io/leetcode/leetcode-5/">LeetCode #5 最长回文子字符串</a>
+            </li></ul>
+              
+            </li>
+            <li class=""><a href="https://hideric.github.io/linux/">Linux</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/mysql/">Mysql</a>
+              <ul class="">
+            <li class=""><a href="https://hideric.github.io/mysql/mysql%E9%9D%A2%E8%AF%95%E9%A2%98%E5%8F%8A%E5%8D%83%E4%B8%87%E7%BA%A7%E6%95%B0%E6%8D%AE%E6%9F%A5%E8%AF%A2%E4%BC%98%E5%8C%96/">Mysql面试题及千万级数据查询优化</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/mysql/mysql%E7%9A%84count%E8%AF%AD%E5%8F%A5/">MySQL的COUNT语句</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/mysql/mysql-%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E6%80%9D%E8%B7%AF/">MySQL 性能优化思路</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/mysql/%E5%AE%98%E6%96%B9%E5%B7%A5%E5%85%B7mysql-router-%E9%AB%98%E5%8F%AF%E7%94%A8%E5%8E%9F%E7%90%86%E4%B8%8E%E5%AE%9E%E6%88%98/">官方工具｜MySQL Router 高可用原理与实战</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/mysql/mysql-%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%968-%E7%A7%8D%E5%B8%B8%E8%A7%81-sql-%E9%94%99%E8%AF%AF%E7%94%A8%E6%B3%95/">MySQL 性能优化：8 种常见 SQL 错误用法！</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/mysql/index/null%E8%83%BD%E7%94%A8%E7%B4%A2%E5%BC%95/">MySQL中IS NULL、IS NOT NULL、!=不能用索引？</a>
+            </li></ul>
+              
+            </li>
+            <li class=""><a href="https://hideric.github.io/nginx/">Nginx</a>
+              <ul class="">
+            <li class=""><a href="https://hideric.github.io/nginx/%E5%90%8E%E7%AB%AF%E5%AE%9E%E8%B7%B5nginx%E6%97%A5%E5%BF%97%E9%85%8D%E7%BD%AE%E8%B6%85%E8%AF%A6%E7%BB%86/">后端实践：Nginx日志配置（超详细）</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/nginx/%E4%BD%BF%E7%94%A8nginx%E8%BF%9B%E8%A1%8C%E5%9B%9B%E5%B1%82%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1/">使用Nginx进行四层负载均衡</a>
+            </li></ul>
+              
+            </li>
+            <li class=""><a href="https://hideric.github.io/oracle/">Oracle</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/others/">OTHERS</a>
+              <ul class="">
+            <li class=""><a href="https://hideric.github.io/others/term/qps%E6%9C%AF%E8%AF%AD/">秒懂 QPS、TPS、PV、UV、GMV、IP、RPS！</a>
+            </li></ul>
+              
+            </li>
+            <li class=""><a href="https://hideric.github.io/python/">Python</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/react/">React</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/rn/">React Native</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/redis/">Redis</a>
+              <ul class="">
+            <li class=""><a href="https://hideric.github.io/redis/%E5%A6%82%E4%BD%95%E7%94%A8-redis-%E7%BB%9F%E8%AE%A1%E7%8B%AC%E7%AB%8B%E7%94%A8%E6%88%B7%E8%AE%BF%E9%97%AE%E9%87%8F/">如何用 Redis 统计独立用户访问量？</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/redis/redis-%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81%E7%9A%84%E6%AD%A3%E7%A1%AE%E5%AE%9E%E7%8E%B0%E6%96%B9%E5%BC%8Fjava%E7%89%88/">Redis 分布式锁的正确实现方式（Java版）</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/redis/redis-%E5%AE%9E%E7%8E%B0%E9%99%84%E8%BF%91%E7%9A%84%E4%BA%BA%E5%8A%9F%E8%83%BD/">Redis 实现“附近的人”功能</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/redis/%E4%B8%BA%E4%BB%80%E4%B9%88rediscluster%E6%9C%8916384%E4%B8%AA%E6%A7%BD/">为什么RedisCluster有16384个槽?</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/redis/%E5%AD%A6%E4%BC%9A%E8%BF%99%E5%87%A0%E4%B8%AAredis%E6%8A%80%E5%B7%A7%E8%AE%A9%E4%BD%A0%E7%9A%84%E7%A8%8B%E5%BA%8F%E5%BF%AB%E5%A6%82%E9%97%AA%E7%94%B5/">学会这几个Redis技巧，让你的程序快如闪电</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/redis/%E6%AF%94redis%E8%BF%98%E5%BF%AB5%E5%80%8D%E7%9A%84%E4%B8%AD%E9%97%B4%E4%BB%B6%E4%B8%BA%E5%95%A5%E8%BF%99%E4%B9%88%E5%BF%AB/">比Redis还快5倍的中间件，为啥这么快？</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/redis/redis%E9%AB%98%E7%BA%A7%E5%AE%A2%E6%88%B7%E7%AB%AFlettuce%E8%AF%A6%E8%A7%A3/">Redis高级客户端Lettuce详解</a>
+            </li></ul>
+              
+            </li>
+            <li class=""><a href="https://hideric.github.io/vue/">Vue</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/contact/">Contact</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/elements/">Elements</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/faq/">Frequently Asked Questions</a>
+            </li></ul>
+            </nav>
+
+            
+        </div>
+      </div>
+      <div class="col-lg-9">
+        <div class="p-5 bg-white">
+            <h2>Spring 的 BeanUtils 填坑记</h2>
+            
+
+<h2 id="spring-的-beanutils-填坑记">Spring 的 BeanUtils 填坑记</h2>
+
+<blockquote>
+<p>作者：绝色天龙</code><code>原文：www.jianshu.com/p/357b55852efc</p>
+</blockquote>
+
+<p><strong>背景</strong></p>
+
+<p>最近项目中在和第三方进行联调一个接口，我们这边发送http请求给对方，然后接收对方的回应，代码都是老代码。</p>
+
+<p>根据注释，对方的SDK中写好的Request类有一个无法序列化的bug，所以这边重新写了一个Request类，基本属性都是相同的，但是重点是有一个属性是静态内部类，还有两个是list属性</p>
+
+<p>类似于下面这样：</p>
+
+<pre><code class="language-java">private List orders;
+private AddRequest.Ticket ticket;
+private List payments;
+</code></pre>
+
+<p>AddRequest就是我们自己重写的请求类，他们SDK中的请求类是MixAddRequest，我们组装好请求参数后利用Spring的BeanUtils的copyProperties方法将AddRequest中的属性拷贝到MixAddRequest，然后发送请求。</p>
+
+<p>到此为止，照理说一切完美！</p>
+
+<p>结果请求失败，纳尼？对方说缺少一个必要的字段，参数校验不通过！</p>
+
+<p>一查字段名称，是Ticket这个类里面的某个字段，赶紧看代码，心里充满对老代码的自信，想着一定是哪里搞错了，或者是他们那边偷偷动了代码，把字段从可选改为了必选，嘿嘿</p>
+
+<p>果然在代码里找到了设置的地方，这下应该是他们的问题确信无疑了，再开一把调试，准备宣判他们的死刑。</p>
+
+<p>结果发现发给他们的请求就是没有这个字段。。。中间只有一个Spring的copy属性的方法，当时觉得很诡异</p>
+
+<p>由于中间只有这么一行代码，玄机肯定在这里面，初步怀疑是两个静态内部类不同导致，所以自己写Demo，准备搞一把这个BeanUtils的copyProperties方法</p>
+
+<p>写了两个类和一个Main，@Data和@ToString是lombok插件的注解，这里用来自动生成getter和setter方法以及toString方法</p>
+
+<pre><code>@ToString
+@Data
+public class CopyTest1 {
+    public String outerName;
+    public CopyTest1.InnerClass innerClass;
+    public List clazz;
+
+​    @ToString
+​    @Data
+​    public static class InnerClass {
+​        public String InnerName;
+​    }
+}
+</code></pre>
+
+<pre><code class="language-java">@ToString
+@Data
+public class CopyTest2 {
+    public String outerName;
+    public CopyTest2.InnerClass innerClass;
+    public List clazz;
+
+    @ToString
+    @Data
+    public static class InnerClass {
+        public String InnerName;
+    }
+}
+</code></pre>
+
+<pre><code class="language-java">CopyTest1 test1 = new CopyTest1();
+test1.outerName = &quot;hahaha&quot;;
+CopyTest1.InnerClass innerClass = new CopyTest1.InnerClass();
+innerClass.InnerName = &quot;hohoho&quot;;
+test1.innerClass = innerClass;
+
+System.out.println(test1.toString());
+CopyTest2 test2 = new CopyTest2();
+BeanUtils.copyProperties(test1, test2);
+
+System.out.println(test2.toString());
+</code></pre>
+
+<p>这里遇到了第一个坑，一开始图省事，属性写为public，想着省掉了getter和setter方法，没加@Data注解</p>
+
+<p>结果运行完test2所有属性都为null，一个都没copy过去。加上@Data继续跑，果然，基本属性（String）复制过去了，但是内部类在test2中还是null。</p>
+
+<p>那就验证了真的是内部类的问题，有点不敢相信自己的眼睛，毕竟线上跑了这么久的代码。。。</p>
+
+<p>知道了问题，总要想着怎么解决吧，所以需要单独设置一下内部类，单独copy</p>
+
+<p>如果内部类的bean属性较多或者递归的bean属性很多，那可以自己封装一个方法，用于递归拷贝，我这里只有一层，所以直接额外copy一次</p>
+
+<pre><code class="language-java">CopyTest1 test1 = new CopyTest1();
+test1.outerName = &quot;hahaha&quot;;
+CopyTest1.InnerClass innerClass = new CopyTest1.InnerClass();
+innerClass.InnerName = &quot;hohoho&quot;;
+test1.innerClass = innerClass;
+
+System.out.println(test1.toString());
+CopyTest2 test2 = new CopyTest2();
+test2.innerClass = new CopyTest2.InnerClass();
+BeanUtils.copyProperties(test1, test2);
+BeanUtils.copyProperties(test1.innerClass, test2.innerClass);
+
+System.out.println(test2.toString());
+</code></pre>
+
+<p>记得内部类的属性也是要有setter方法的，不然也会导致copy失败，大家还记得我开头说到还有两个List属性的吧，为什么要提到这个呢？你猜</p>
+
+<p>其实list里面的两个类也都是重写的内部类，他们也是不同的，当时他们却顺利copy过去了</p>
+
+<p>为什么呢？因为java的泛型只在编译期起作用，在运行期，list属性就是一个存放Object的集合</p>
+
+<p>在copy后，MixAddRequest的orders属性其实是一个Order类的集合，但却不是自己内部类的集合，是AddRequest的内部类Order的集合，但因为对方是解析json的，所以没有发生错误。。。</p>
+
+<p><strong>总结</strong></p>
+
+<ol>
+<li><p>Spring的BeanUtils的CopyProperties方法需要对应的属性有getter和setter方法；</p></li>
+
+<li><p>如果存在属性完全相同的内部类，但是不是同一个内部类，即分别属于各自的内部类，则spring会认为属性不同，不会copy；</p></li>
+
+<li><p>泛型只在编译期起作用，不能依靠泛型来做运行期的限制；</p></li>
+
+<li><p>最后，spring和apache的copy属性的方法源和目的参数的位置正好相反，所以导包和调用的时候都要注意一下。</p></li>
+</ol>
+
+<p><strong>最后的最后</strong></p>
+
+<p>附上spring的源码，getWriteMethod是jdk的方法，会去取set开头的方法，所以没有setter方法是不行滴。</p>
+
+<pre><code class="language-java">private static void copyProperties(Object source, Object target, @Nullable Class editable, @Nullable String... ignoreProperties) throws BeansException {
+        Assert.notNull(source, &quot;Source must not be null&quot;);
+        Assert.notNull(target, &quot;Target must not be null&quot;);
+        Class actualEditable = target.getClass();
+        if (editable != null) {
+            if (!editable.isInstance(target)) {
+                throw new IllegalArgumentException(&quot;Target class [&quot; + target.getClass().getName() + &quot;] not assignable to Editable class [&quot; + editable.getName() + &quot;]&quot;);
+            }
+
+            actualEditable = editable;
+        }
+
+        PropertyDescriptor[] targetPds = getPropertyDescriptors(actualEditable);
+        ListignoreList = ignoreProperties != null ? Arrays.asList(ignoreProperties) : null;
+        PropertyDescriptor[] var7 = targetPds;
+        int var8 = targetPds.length;
+
+        for(int var9 = 0; var9 &lt; var8; ++var9) {
+            PropertyDescriptor targetPd = var7[var9];
+            Method writeMethod = targetPd.getWriteMethod();
+            if (writeMethod != null &amp;&amp; (ignoreList == null || !ignoreList.contains(targetPd.getName()))) {
+                PropertyDescriptor sourcePd = getPropertyDescriptor(source.getClass(), targetPd.getName());
+                if (sourcePd != null) {
+                    Method readMethod = sourcePd.getReadMethod();
+                    if (readMethod != null &amp;&amp; ClassUtils.isAssignable(writeMethod.getParameterTypes()[0], readMethod.getReturnType())) {
+                        try {
+                            if (!Modifier.isPublic(readMethod.getDeclaringClass().getModifiers())) {
+                                readMethod.setAccessible(true);
+                            }
+
+                            Object value = readMethod.invoke(source);
+                            if (!Modifier.isPublic(writeMethod.getDeclaringClass().getModifiers())) {
+                                writeMethod.setAccessible(true);
+                            }
+
+                            writeMethod.invoke(target, value);
+                        } catch (Throwable var15) {
+                            throw new FatalBeanException(&quot;Could not copy property '&quot; + targetPd.getName() + &quot;' from source to target&quot;, var15);
+                        }
+                    }
+                }
+            }
+        }
+
+    }
+</code></pre>
+
+<h3 id="end">END</h3>
+
+            <p class="post-meta border-bottom pb-3 mb-0">Updated on 30 Oct 2019</p><nav class="pagination mt-3"><a class="nav nav-prev" href="https://hideric.github.io/java/framework/spring/spring-%E5%AE%B9%E5%99%A8%E5%90%AF%E5%8A%A8%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/" title="Spring 容器启动源码解析"><i class="ti-arrow-left mr-2"></i>Spring 容器启动源码解析</a>
+            <a class="nav nav-next" href="https://hideric.github.io/java/basis/weakhashmap%E7%94%9F%E4%BA%86%E7%97%85%E7%9A%84-hashmap-/" title="WeakHashMap，生了病的 HashMap ？">WeakHashMap，生了病的 HashMap ？<i class="ti-arrow-right ml-2"></i></a>
+            </nav></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- footer -->
+<footer class="section bg-gray pb-0">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-8 text-md-left text-center">
+        <p>The Hugo Documents are copyright © gethugothemes 2018.</p> 
+      </div>
+      <div class="col-md-4 text-md-right text-center">
+        <ul class="list-inline mb-3">
+          
+          <li class="list-inline-item"><a class="text-color d-inline-block p-2" href="#"><i class="ti-facebook"></i></a></li>
+          
+          <li class="list-inline-item"><a class="text-color d-inline-block p-2" href="#"><i class="ti-twitter-alt"></i></a></li>
+          
+          <li class="list-inline-item"><a class="text-color d-inline-block p-2" href="#"><i class="ti-vimeo-alt"></i></a></li>
+          
+          <li class="list-inline-item"><a class="text-color d-inline-block p-2" href="#"><i class="ti-instagram"></i></a></li>
+          
+        </ul>
+      </div>
+    </div>
+  </div>
+</footer>
+<!-- /footer -->
+
+<!-- Bootstrap JS -->
+<script src="https://hideric.github.io/plugins/bootstrap/bootstrap.min.js"></script>
+<!-- highlight -->
+<script src="https://hideric.github.io/plugins/highlight/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+<!-- Main Script -->
+
+<script src="https://hideric.github.io/js/script.min.js"></script>

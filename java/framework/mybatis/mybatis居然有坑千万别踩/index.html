@@ -1,0 +1,675 @@
+<head>
+  <meta charset="utf-8">
+  <title>Mybatis居然有坑，千万别踩！</title>
+
+  <meta name="generator" content="Hugo 0.58.3" />
+
+  <!-- mobile responsive meta -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <!-- ** Plugins Needed for the Project ** -->
+  <!-- Bootstrap -->
+  <link rel="stylesheet" href="https://hideric.github.io/plugins/bootstrap/bootstrap.min.css">
+  <!-- themefy-icon -->
+  <link rel="stylesheet" href="https://hideric.github.io/plugins/themify-icons/themify-icons.css">
+  <!-- highlight -->
+  <link rel="stylesheet" href="https://hideric.github.io/plugins/highlight/hybrid.css">
+  <!-- fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700" rel="stylesheet">
+
+  <style>
+  :root{
+    --primary-color:#2f1f48;
+    --secondary-color:#f9f9f9;
+    --text-color:#636363;
+    --text-color-dark:#242738;
+    --white-color:#ffffff;
+  }  
+  </style>
+
+  <!-- Main Stylesheet -->
+  
+  <link rel="stylesheet" href="https://hideric.github.io/css/style.min.css" integrity="" media="screen">
+
+  <!-- jquiry -->
+  <script src="https://hideric.github.io/plugins/jquery/jquery-1.12.4.js"></script>
+
+  <!-- jquary ui -->
+  <script src="https://hideric.github.io/plugins/jquery/jquery-ui.js"></script>
+
+  <!--Favicon-->
+  <link rel="icon" href="https://hideric.github.io/images/favicon.png" type="image/x-icon">
+
+</head>
+
+
+<!-- navigation -->
+<header class="shadow-bottom sticky-top bg-white">
+  <div class="container">
+    <nav class="navbar navbar-expand-lg navbar-light">
+  <a class="navbar-brand" href="https://hideric.github.io/">Hideric</a>
+  <button class="navbar-toggler border-0" type="button" data-toggle="collapse" data-target="#navigation"
+    aria-controls="navigation" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse text-center" id="navigation">
+    <ul class="navbar-nav ml-auto">
+      <li class="nav-item">
+        <a class="nav-link text-dark" href="https://hideric.github.io/">Home</a>
+      </li>
+      
+      
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle text-dark" href="#" role="button" data-toggle="dropdown" aria-haspopup="true"
+          aria-expanded="false">
+          Back-End
+        </a>
+        <div class="dropdown-menu" >
+          
+          <a class="dropdown-item" href="https://hideric.github.io/java">Java</a>
+          
+          <a class="dropdown-item" href="https://hideric.github.io/python">Python</a>
+          
+          <a class="dropdown-item" href="https://hideric.github.io/go">Go</a>
+          
+          <a class="dropdown-item" href="https://hideric.github.io/cpp">C&#43;&#43;</a>
+          
+        </div>
+      </li>
+      
+      
+      
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle text-dark" href="#" role="button" data-toggle="dropdown" aria-haspopup="true"
+          aria-expanded="false">
+          DB
+        </a>
+        <div class="dropdown-menu" >
+          
+          <a class="dropdown-item" href="https://hideric.github.io/mysql">Mysql</a>
+          
+          <a class="dropdown-item" href="https://hideric.github.io/oracle">Oracle</a>
+          
+        </div>
+      </li>
+      
+      
+      
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle text-dark" href="#" role="button" data-toggle="dropdown" aria-haspopup="true"
+          aria-expanded="false">
+          Front-End
+        </a>
+        <div class="dropdown-menu" >
+          
+          <a class="dropdown-item" href="https://hideric.github.io/js">JavaScript</a>
+          
+          <a class="dropdown-item" href="https://hideric.github.io/vue">Vue</a>
+          
+          <a class="dropdown-item" href="https://hideric.github.io/react">React</a>
+          
+          <a class="dropdown-item" href="https://hideric.github.io/rn">React Native</a>
+          
+        </div>
+      </li>
+      
+      
+      
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle text-dark" href="#" role="button" data-toggle="dropdown" aria-haspopup="true"
+          aria-expanded="false">
+          Mid-Ware
+        </a>
+        <div class="dropdown-menu" >
+          
+          <a class="dropdown-item" href="https://hideric.github.io/redis">Redis</a>
+          
+          <a class="dropdown-item" href="https://hideric.github.io/nginx">Nginx</a>
+          
+        </div>
+      </li>
+      
+      
+      
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle text-dark" href="#" role="button" data-toggle="dropdown" aria-haspopup="true"
+          aria-expanded="false">
+          Mobile
+        </a>
+        <div class="dropdown-menu" >
+          
+          <a class="dropdown-item" href="https://hideric.github.io/android">Android</a>
+          
+          <a class="dropdown-item" href="https://hideric.github.io/ios">IOS</a>
+          
+        </div>
+      </li>
+      
+      
+      
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle text-dark" href="#" role="button" data-toggle="dropdown" aria-haspopup="true"
+          aria-expanded="false">
+          OPS
+        </a>
+        <div class="dropdown-menu" >
+          
+          <a class="dropdown-item" href="https://hideric.github.io/k8s">kubernetes</a>
+          
+          <a class="dropdown-item" href="https://hideric.github.io/docker">Docker</a>
+          
+          <a class="dropdown-item" href="https://hideric.github.io/leetcode">Leetcode</a>
+          
+          <a class="dropdown-item" href="https://hideric.github.io/linux">Linux</a>
+          
+        </div>
+      </li>
+      
+      
+      
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle text-dark" href="#" role="button" data-toggle="dropdown" aria-haspopup="true"
+          aria-expanded="false">
+          pages
+        </a>
+        <div class="dropdown-menu" >
+          
+          <a class="dropdown-item" href="https://hideric.github.io/faq">FAQ</a>
+          
+          <a class="dropdown-item" href="https://hideric.github.io/contact">CONTACT</a>
+          
+          <a class="dropdown-item" href="https://hideric.github.io/elements">ELEMENTS</a>
+          
+          <a class="dropdown-item" href="https://hideric.github.io/others">OTHERS</a>
+          
+        </div>
+      </li>
+      
+      
+    </ul>
+    
+    <ul class="list-inline text-center mb-0">
+      
+    </ul>
+  </div>
+</nav>
+  </div>
+</header>
+<!-- /navigation -->
+
+
+<section class="single pt-5 bg-gray">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-3">
+        <div class="p-4 bg-white sticky-top top-100">
+            
+            <nav class="sidebar-menu">
+              <ul class="list-styled">
+            <li class=""><a href="https://hideric.github.io/android/">Android</a>
+              <ul class="">
+            <li class=""><a href="https://hideric.github.io/android/tool/f-droidapps/">F-Droid Apps Recommendation</a>
+            </li></ul>
+              
+            </li>
+            <li class=""><a href="https://hideric.github.io/cpp/">C&#43;&#43;</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/docker/">Docker</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/go/">Go</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/ios/">IOS</a>
+            </li>
+            <li class="parent d-block "><a href="https://hideric.github.io/java/">Java</a>
+              <ul class="sub-menu">
+            <li class=""><a href="https://hideric.github.io/java/basis/http%E6%96%AD%E7%82%B9%E7%BB%AD%E4%BC%A0/">HTTP断点续传</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/basis/java-%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8/">Java 垃圾收集器</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/basis/java-%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%8B%BC%E6%8E%A5%E5%A7%BF%E5%8A%BF/">Java 字符串拼接姿势</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/basis/java-%E5%A6%82%E4%BD%95%E6%9B%B4%E4%BC%98%E9%9B%85%E7%9A%84%E5%A4%84%E7%90%86%E7%A9%BA%E5%80%BC/">Java-如何更优雅的处理空值</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/basis/jvm/jvm-%E5%A0%86%E5%86%85%E5%AD%98%E6%BA%A2%E5%87%BA%E5%90%8E%E5%85%B6%E4%BB%96%E7%BA%BF%E7%A8%8B%E6%98%AF%E5%90%A6%E5%8F%AF%E7%BB%A7%E7%BB%AD%E5%B7%A5%E4%BD%9C/">JVM 堆内存溢出后，其他线程是否可继续工作？</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/framework/mybatis/mybatis%E4%B8%ADlike-%E7%9A%84%E4%BD%BF%E7%94%A8%E6%96%B9%E5%BC%8F%E4%BB%A5%E5%8F%8A%E4%B8%80%E4%BA%9B%E6%B3%A8%E6%84%8F%E7%82%B9/">Mybatis中Like 的使用方式以及一些注意点</a>
+            </li>
+            <li class=" active "><a href="https://hideric.github.io/java/framework/mybatis/mybatis%E5%B1%85%E7%84%B6%E6%9C%89%E5%9D%91%E5%8D%83%E4%B8%87%E5%88%AB%E8%B8%A9/">Mybatis居然有坑，千万别踩！</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/framework/spring/spring%E5%BE%AA%E7%8E%AF%E4%BE%9D%E8%B5%96%E7%9A%84%E5%9D%91/">Spring循环依赖的坑</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/framework/spring/spring%E7%9A%84%E5%90%84%E7%A7%8D%E6%B3%A8%E8%A7%A3/">Spring的各种注解</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/basis/%E4%BB%8E%E5%AE%9E%E8%B7%B5%E8%A7%92%E5%BA%A6%E9%87%8D%E6%96%B0%E7%90%86%E8%A7%A3bio%E5%92%8Cnio/">从实践角度重新理解BIO和NIO</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/basis/%E5%85%B3%E4%BA%8E-git-%E6%8F%90%E4%BA%A4%E8%A7%84%E8%8C%83/">关于 Git 提交规范</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/basis/jvm/%E6%B3%A8%E6%84%8Fcode-cache%E6%89%93%E6%BB%A1%E5%8F%AF%E5%AF%BC%E8%87%B4%E5%BA%94%E7%94%A8%E6%80%A7%E8%83%BD%E9%99%8D%E4%BD%8E/">注意，Code Cache打满可导致应用性能降低</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/framework/spring/spring-%E5%AE%B9%E5%99%A8%E5%90%AF%E5%8A%A8%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/">Spring 容器启动源码解析</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/framework/spring/spring-%E7%9A%84-beanutils-%E5%A1%AB%E5%9D%91%E8%AE%B0/">Spring 的 BeanUtils 填坑记</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/basis/weakhashmap%E7%94%9F%E4%BA%86%E7%97%85%E7%9A%84-hashmap-/">WeakHashMap，生了病的 HashMap ？</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/framework/dubbo/%E4%BD%BF%E7%94%A8dubbo%E8%BF%87%E7%A8%8B%E4%B8%AD%E9%81%87%E5%88%B0%E8%BF%87%E5%93%AA%E4%BA%9B%E5%9D%91/">使用dubbo过程中遇到过哪些坑？</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/basis/%E4%B8%80%E4%B8%AAjava%E5%AF%B9%E8%B1%A1%E5%88%B0%E5%BA%95%E5%8D%A0%E7%94%A8%E5%A4%9A%E5%A4%A7%E5%86%85%E5%AD%98/">一个Java对象到底占用多大内存？</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/basis/%E4%BD%A0%E7%9C%9F%E7%9A%84%E4%BA%86%E8%A7%A3logback%E5%90%97/">你真的了解logback吗？</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/basis/%E8%BF%99%E5%8F%AF%E8%83%BD%E6%98%AFgithub%E4%B8%8A%E6%9C%80%E5%8F%8B%E5%A5%BD%E7%9A%84%E5%88%86%E5%B8%83%E5%BC%8F%E5%8D%B3%E6%97%B6%E9%80%9A%E8%AE%AF%E9%A1%B9%E7%9B%AE..../">这可能是Github上最友好的分布式即时通讯项目.....</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/basis/java-8-stream-%E9%9B%86%E5%90%88%E6%93%8D%E4%BD%9C%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B/">Java 8 - Stream 集合操作快速上手</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/basis/concurrency/stringbuilder-%E4%B8%BA%E4%BB%80%E4%B9%88%E7%BA%BF%E7%A8%8B%E4%B8%8D%E5%AE%89%E5%85%A8/">StringBuilder 为什么线程不安全？</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/basis/jvm/jvm%E4%BC%98%E5%8C%96%E4%B9%8B%E9%80%83%E9%80%B8%E5%88%86%E6%9E%90%E4%B8%8E%E5%88%86%E9%85%8D%E6%B6%88%E9%99%A4/">JVM优化之逃逸分析与分配消除</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/framework/security/shiro%E6%A1%86%E6%9E%B6-%E7%94%A8%E6%88%B7%E6%9D%83%E9%99%90%E7%AE%A1%E7%90%86/">Shiro框架 - 用户权限管理</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/basis/concurrency/threadlocal%E9%9D%A2%E8%AF%95%E9%A2%98/">ThreadLocal面试题</a>
+            </li></ul>
+              
+            </li>
+            <li class=""><a href="https://hideric.github.io/js/">JavaScript</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/k8s/">Kubernets</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/leetcode/">Leetcode</a>
+              <ul class="">
+            <li class=""><a href="https://hideric.github.io/leetcode/leetcode-5/">LeetCode #5 最长回文子字符串</a>
+            </li></ul>
+              
+            </li>
+            <li class=""><a href="https://hideric.github.io/linux/">Linux</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/mysql/">Mysql</a>
+              <ul class="">
+            <li class=""><a href="https://hideric.github.io/mysql/mysql%E9%9D%A2%E8%AF%95%E9%A2%98%E5%8F%8A%E5%8D%83%E4%B8%87%E7%BA%A7%E6%95%B0%E6%8D%AE%E6%9F%A5%E8%AF%A2%E4%BC%98%E5%8C%96/">Mysql面试题及千万级数据查询优化</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/mysql/mysql%E7%9A%84count%E8%AF%AD%E5%8F%A5/">MySQL的COUNT语句</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/mysql/mysql-%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E6%80%9D%E8%B7%AF/">MySQL 性能优化思路</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/mysql/%E5%AE%98%E6%96%B9%E5%B7%A5%E5%85%B7mysql-router-%E9%AB%98%E5%8F%AF%E7%94%A8%E5%8E%9F%E7%90%86%E4%B8%8E%E5%AE%9E%E6%88%98/">官方工具｜MySQL Router 高可用原理与实战</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/mysql/mysql-%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%968-%E7%A7%8D%E5%B8%B8%E8%A7%81-sql-%E9%94%99%E8%AF%AF%E7%94%A8%E6%B3%95/">MySQL 性能优化：8 种常见 SQL 错误用法！</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/mysql/index/null%E8%83%BD%E7%94%A8%E7%B4%A2%E5%BC%95/">MySQL中IS NULL、IS NOT NULL、!=不能用索引？</a>
+            </li></ul>
+              
+            </li>
+            <li class=""><a href="https://hideric.github.io/nginx/">Nginx</a>
+              <ul class="">
+            <li class=""><a href="https://hideric.github.io/nginx/%E5%90%8E%E7%AB%AF%E5%AE%9E%E8%B7%B5nginx%E6%97%A5%E5%BF%97%E9%85%8D%E7%BD%AE%E8%B6%85%E8%AF%A6%E7%BB%86/">后端实践：Nginx日志配置（超详细）</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/nginx/%E4%BD%BF%E7%94%A8nginx%E8%BF%9B%E8%A1%8C%E5%9B%9B%E5%B1%82%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1/">使用Nginx进行四层负载均衡</a>
+            </li></ul>
+              
+            </li>
+            <li class=""><a href="https://hideric.github.io/oracle/">Oracle</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/others/">OTHERS</a>
+              <ul class="">
+            <li class=""><a href="https://hideric.github.io/others/term/qps%E6%9C%AF%E8%AF%AD/">秒懂 QPS、TPS、PV、UV、GMV、IP、RPS！</a>
+            </li></ul>
+              
+            </li>
+            <li class=""><a href="https://hideric.github.io/python/">Python</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/react/">React</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/rn/">React Native</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/redis/">Redis</a>
+              <ul class="">
+            <li class=""><a href="https://hideric.github.io/redis/%E5%A6%82%E4%BD%95%E7%94%A8-redis-%E7%BB%9F%E8%AE%A1%E7%8B%AC%E7%AB%8B%E7%94%A8%E6%88%B7%E8%AE%BF%E9%97%AE%E9%87%8F/">如何用 Redis 统计独立用户访问量？</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/redis/redis-%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81%E7%9A%84%E6%AD%A3%E7%A1%AE%E5%AE%9E%E7%8E%B0%E6%96%B9%E5%BC%8Fjava%E7%89%88/">Redis 分布式锁的正确实现方式（Java版）</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/redis/redis-%E5%AE%9E%E7%8E%B0%E9%99%84%E8%BF%91%E7%9A%84%E4%BA%BA%E5%8A%9F%E8%83%BD/">Redis 实现“附近的人”功能</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/redis/%E4%B8%BA%E4%BB%80%E4%B9%88rediscluster%E6%9C%8916384%E4%B8%AA%E6%A7%BD/">为什么RedisCluster有16384个槽?</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/redis/%E5%AD%A6%E4%BC%9A%E8%BF%99%E5%87%A0%E4%B8%AAredis%E6%8A%80%E5%B7%A7%E8%AE%A9%E4%BD%A0%E7%9A%84%E7%A8%8B%E5%BA%8F%E5%BF%AB%E5%A6%82%E9%97%AA%E7%94%B5/">学会这几个Redis技巧，让你的程序快如闪电</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/redis/%E6%AF%94redis%E8%BF%98%E5%BF%AB5%E5%80%8D%E7%9A%84%E4%B8%AD%E9%97%B4%E4%BB%B6%E4%B8%BA%E5%95%A5%E8%BF%99%E4%B9%88%E5%BF%AB/">比Redis还快5倍的中间件，为啥这么快？</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/redis/redis%E9%AB%98%E7%BA%A7%E5%AE%A2%E6%88%B7%E7%AB%AFlettuce%E8%AF%A6%E8%A7%A3/">Redis高级客户端Lettuce详解</a>
+            </li></ul>
+              
+            </li>
+            <li class=""><a href="https://hideric.github.io/vue/">Vue</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/contact/">Contact</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/elements/">Elements</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/faq/">Frequently Asked Questions</a>
+            </li></ul>
+            </nav>
+
+            
+        </div>
+      </div>
+      <div class="col-lg-9">
+        <div class="p-5 bg-white">
+            <h2>Mybatis居然有坑，千万别踩！</h2>
+            
+
+<h2 id="mybatis居然有坑-千万别踩">Mybatis居然有坑，千万别踩！</h2>
+
+<p><strong>来源：</strong><strong><a href="http://h5ip.cn/aJgJ">http://h5ip.cn/aJgJ</a></strong></p>
+
+<p>Mybatis是一个开源的轻量级半自动化ORM框架，使得面向对象应用程序与关系数据库的映射变得更加容易。MyBatis使用xml描述符或注解将对象与存储过程或SQL语句相结合。Mybatis最大优点是应用程序与Sql进行解耦，sql语句是写在Xml Mapper文件中。</p>
+
+<p>OGNL表达式在Mybatis当中应用非常广泛，其表达式的灵活性使得动态Sql功能的非常强大。OGNL是Object-Graph Navigation Language的缩写，代表对象图导航语言。OGNL是一种EL表达式语言，用于设置和获取Java对象的属性，并且可以对列表进行投影选择以及执行lambda表达式。Ognl类提供了许多简便方法用于执行表达式的。Struts2发布的每个版本都会出现的新的高危可执行漏洞也是因为它使用了灵活的OGNL表达式。</p>
+
+<p>公司后端采用Mybatis作为数据访问层,所使用版本为3.2.3。线上环境业务系统在运行过程中出现了一个令人困惑的异常, 该异常时而出现时而不出现，构造各种OGNL表达式为空等特殊情况均不会重现该异常。具体异常堆栈信息如下:</p>
+
+<pre><code class="language-java">### Error querying database.  Cause: org.apache.ibatis.builder.BuilderException: Error evaluating expression 'list != null and list.size() &gt; 0'. Cause: org.apache.ibatis.ognl.MethodFailedException: Method &quot;size&quot; failed for object [1] [java.lang.IllegalAccessException: Class org.apache.ibatis.ognl.OgnlRuntime can not access a member of class java.util.Collections$SingletonList with modifiers &quot;public&quot;]
+### Cause: org.apache.ibatis.builder.BuilderException: Error evaluating expression 'list != null and list.size() &gt; 0'. Cause: org.apache.ibatis.ognl.MethodFailedException: Method &quot;size&quot; failed for object [1] [java.lang.IllegalAccessException: Class org.apache.ibatis.ognl.OgnlRuntime can not access a member of class java.util.Collections$SingletonList with modifiers &quot;public&quot;]
+    at org.apache.ibatis.exceptions.ExceptionFactory.wrapException(ExceptionFactory.java:23) org.apache.ibatis.session.defaults.DefaultSqlSession.selectList(DefaultSqlSession.java:107)
+    at org.apache.ibatis.session.defaults.DefaultSqlSession.selectList(DefaultSqlSession.java:98)
+    at cn.com.shaobingmm.MybatisBugTest$2.run(MybatisBugTest.java:88)
+    at java.lang.Thread.run(Thread.java:745)
+Caused by: org.apache.ibatis.builder.BuilderException: Error evaluating expression 'list != null and list.size() &gt; 0'. Cause: org.apache.ibatis.ognl.MethodFailedException: Method &quot;size&quot; failed for object [1] [java.lang.IllegalAccessException: Class org.apache.ibatis.ognl.OgnlRuntime can not access a member of class java.util.Collections$SingletonList with modifiers &quot;public&quot;]
+    at org.apache.ibatis.scripting.xmltags.OgnlCache.getValue(OgnlCache.java
+    at:47)
+    at org.apache.ibatis.scripting.xmltags.ExpressionEvaluator.evaluateBoolean(ExpressionEvaluator.java:29)
+    at org.apache.ibatis.scripting.xmltags.IfSqlNode.apply(IfSqlNode.java:30)
+    at org.apache.ibatis.scripting.xmltags.MixedSqlNode.apply(MixedSqlNode.java:29)
+    at org.apache.ibatis.scripting.xmltags.TrimSqlNode.apply(TrimSqlNode.java:51)
+    at org.apache.ibatis.scripting.xmltags.MixedSqlNode.apply(MixedSqlNode.java:29)
+    at org.apache.ibatis.scripting.xmltags.DynamicSqlSource.getBoundSql(DynamicSqlSource.java:37)
+    at org.apache.ibatis.mapping.MappedStatement.getBoundSql(MappedStatement.java:275)
+    at org.apache.ibatis.executor.CachingExecutor.query(CachingExecutor.java:79)
+    at org.apache.ibatis.session.defaults.DefaultSqlSession.selectList(DefaultSqlSession.java:104)
+    ... 3 more
+Caused by: org.apache.ibatis.ognl.MethodFailedException: Method &quot;size&quot; failed for object [1] [java.lang.IllegalAccessException: Class org.apache.ibatis.ognl.OgnlRuntime can not access a member of class java.util.Collections$SingletonList with modifiers &quot;public&quot;]
+    at org.apache.ibatis.ognl.OgnlRuntime.callAppropriateMethod(OgnlRuntime.java:837)
+    at org.apache.ibatis.ognl.ObjectMethodAccessor.callMethod(ObjectMethodAccessor.java:61)
+    at org.apache.ibatis.ognl.OgnlRuntime.callMethod(OgnlRuntime.java:860)
+    at org.apache.ibatis.ognl.ASTMethod.getValueBody(ASTMethod.java:73)
+    at org.apache.ibatis.ognl.SimpleNode.evaluateGetValueBody(SimpleNode.java:170)
+    at org.apache.ibatis.ognl.SimpleNode.getValue(SimpleNode.java:210)
+    at org.apache.ibatis.ognl.ASTChain.getValueBody(ASTChain.java:109)
+    at org.apache.ibatis.ognl.SimpleNode.evaluateGetValueBody(SimpleNode.java:170)
+    at org.apache.ibatis.ognl.SimpleNode.getValue(SimpleNode.java:210)
+    at org.apache.ibatis.ognl.ASTGreater.getValueBody(ASTGreater.java:49)
+    at org.apache.ibatis.ognl.SimpleNode.evaluateGetValueBody(SimpleNode.java:170)
+    at org.apache.ibatis.ognl.SimpleNode.getValue(SimpleNode.java:210)
+    at org.apache.ibatis.ognl.ASTAnd.getValueBody(ASTAnd.java:56)
+    at org.apache.ibatis.ognl.SimpleNode.evaluateGetValueBody(SimpleNode.java:170)
+    at org.apache.ibatis.ognl.SimpleNode.getValue(SimpleNode.java:210)
+    at org.apache.ibatis.ognl.Ognl.getValue(Ognl.java:333)
+    at org.apache.ibatis.ognl.Ognl.getValue(Ognl.java:413)
+    at org.apache.ibatis.ognl.Ognl.getValue(Ognl.java:395)
+    at org.apache.ibatis.scripting.xmltags.OgnlCache.getValue(OgnlCache.java:45)
+    ... 12 more
+</code></pre>
+
+<p>List的size()方法明显是public为何还会出现不可访问的异常。该问题并不是每一次都会出现，经过多次尝试，该异常一直未在测试环境重现。该接口在完整调用链路中的出错次数占总调用次数的比率为0.01%,无意中联想到并发问题在周期性时间内往往是概率性发生。</p>
+
+<p>编写模拟多线程环境并发读取公司列表测试代码:</p>
+
+<pre><code class="language-xml">&lt;mapper namespace=&quot;CompanyMapper&quot;&gt;
+    &lt;select id=&quot;getCompanysByIds&quot;resultType=&quot;cn.com.shaobingmm.Company&quot;&gt;
+        select *
+        from company
+        &lt;where&gt;
+            &lt;if test=&quot;list != null and list.size() &gt; 0&quot;&gt;
+                and id in
+       &lt;foreach collection=&quot;list&quot; item=&quot;id&quot; open=&quot;(&quot; separator=&quot;,&quot; close=&quot;)&quot;&gt;#{id}
+&lt;/foreach&gt;
+            &lt;/if&gt;
+        &lt;/where&gt;
+    &lt;/select&gt;
+&lt;/mapper&gt;
+
+</code></pre>
+
+<p>多线程并发环境下的压测代码</p>
+
+<pre><code class="language-java">String resource = &quot;mybatis-config.xml&quot;;
+InputStream in = null;
+try {
+  in = Resources.getResourceAsStream(resource);
+  SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(in);
+  final List&lt;Long&gt; ids = Collections.singletonList(1L);
+  final SqlSession session = sqlSessionFactory.openSession();
+  final CountDownLatch mCountDownLatch = new CountDownLatch(1);
+  for (int i = 0; i &lt; 50; i++) {
+    Thread thread = new Thread(new Runnable() {
+      public void run() {
+        try {
+          mCountDownLatch.await();
+        } catch (InterruptedException e) {
+          e.printStackTrace();
+        }
+        for (int k = 0; k &lt; 100; k++) {
+          session.selectList(&quot;CompanyMapper.getCompanysByIds&quot;, ids);
+        }
+      }
+    });
+    thread.start();
+  }
+  mCountDownLatch.countDown();
+  synchronized (MybatisBugTest.class) {
+    try {
+      MybatisBugTest.class.wait();
+    } catch (InterruptedException e) {
+      e.printStackTrace();
+    }
+  }
+
+} catch (IOException e) {
+  e.printStackTrace();
+} catch (Throwable e) {
+  e.printStackTrace();
+} finally {
+  if (in != null)
+    try {
+      in.close();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+}
+
+</code></pre>
+
+<p>上诉异常堆栈信息在并发环境下果然重现出现，根据异常信息代码执行至该行代码时发生异常:</p>
+
+<pre><code class="language-bash">Caused by: org.apache.ibatis.ognl.MethodFailedException: Method &quot;size&quot; failed for object [1] [java.lang.IllegalAccessException: Class org.apache.ibatis.ognl.OgnlRuntime can not access a member of class java.util.Collections$SingletonList with modifiers &quot;public&quot;]
+    at org.apache.ibatis.ognl.OgnlRuntime.callAppropriateMethod(OgnlRuntime.java:837)
+</code></pre>
+
+<p>异常信息表明OgnlRuntime类不能够访问java.util.Collections的私有成员SingletonList。查看源代码发现能够抛出MethodFailedException异常可以锁定在invokeMethod方法内部。</p>
+
+<pre><code class="language-java">public static Object callAppropriateMethod(OgnlContext context, Object source, Object target, String methodName, String propertyName, List methods, Object[] args) throws MethodFailedException {
+        Object reason = null;
+        Object[] actualArgs = objectArrayPool.create(args.length);
+
+        try {
+            Method e = getAppropriateMethod(context, source, target, methodName, propertyName, methods, args, actualArgs);
+            if(e == null || !isMethodAccessible(context, source, e, propertyName)) {
+                StringBuffer buffer = new StringBuffer();
+                if(args != null) {
+                    int i = 0;
+
+                    for(int ilast = args.length - 1; i &lt;= ilast; ++i) {
+                        Object arg = args[i];
+                        buffer.append(arg == null?NULL_STRING:arg.getClass().getName());
+                        if(i &lt; ilast) {
+                            buffer.append(&quot;, &quot;);
+                        }
+                    }
+                }
+
+                throw new NoSuchMethodException(methodName + &quot;(&quot; + buffer + &quot;)&quot;);
+            }
+
+            Object var14 = invokeMethod(target, e, actualArgs);
+            return var14;
+        } catch (NoSuchMethodException var21) {
+            reason = var21;
+        } catch (IllegalAccessException var22) {
+            reason = var22;
+        } catch (InvocationTargetException var23) {
+            reason = var23.getTargetException();
+        } finally {
+            objectArrayPool.recycle(actualArgs);
+        }
+
+        throw new MethodFailedException(source, methodName, (Throwable)reason);
+    }
+</code></pre>
+
+<p>invokeMethod方法代码</p>
+
+<pre><code class="language-java">public static Object invokeMethod(Object target, Method method, Object[] argsArray) throws InvocationTargetException, IllegalAccessException {
+        boolean wasAccessible = true;
+        if(securityManager != null) {
+            try {
+                securityManager.checkPermission(getPermission(method));
+            } catch (SecurityException var6) {
+                throw new IllegalAccessException(&quot;Method [&quot; + method + &quot;] cannot be accessed.&quot;);
+            }
+        }
+
+        if((!Modifier.isPublic(method.getModifiers()) || !Modifier.isPublic(method.getDeclaringClass().getModifiers())) &amp;amp;&amp;amp; !(wasAccessible = method.isAccessible())) {
+            method.setAccessible(true); （1）
+        }
+
+        Object result = method.invoke(target, argsArray); (3)
+        if(!wasAccessible) {
+            method.setAccessible(false); (2)
+        }
+
+        return result;
+    }
+
+</code></pre>
+
+<p>问题出现在method实际上是一个共享变量，也就是例子中的</p>
+
+<pre><code class="language-java">public int java.util.Collections$SingletonList.size()
+</code></pre>
+
+<p><strong>方法</strong></p>
+
+<p>当第一个线程t1至(1)行代码允许method方法可以被调用，第二个线程t2执行至(2)将method的方法设置为不可以访问。接着t1又开始执行到(3)行的时候就会发生该异常。这是一个很典型的同步问题。</p>
+
+<p>Ognl2.7已经修复了该问题，因为ognl源码是直接打包内嵌在mybatis包中，mybatis3.3.0版本中也已经进行了修复升级。(划重点)</p>
+
+<pre><code class="language-java">public static Object invokeMethod(Object target, Method method, Object[] argsArray) throws InvocationTargetException, IllegalAccessException {
+        boolean syncInvoke = false;
+        boolean checkPermission = false;
+        int mHash = method.hashCode();
+        synchronized(method) {
+            if(_methodAccessCache.get(Integer.valueOf(mHash)) == null || _methodAccessCache.get(Integer.valueOf(mHash)) == Boolean.TRUE) {
+                syncInvoke = true;
+            }
+
+            if(_securityManager != null &amp;amp;&amp;amp; _methodPermCache.get(Integer.valueOf(mHash)) == null || _methodPermCache.get(Integer.valueOf(mHash)) == Boolean.FALSE) {
+                checkPermission = true;
+            }
+        }
+
+        boolean wasAccessible = true;
+        Object result;
+        if(syncInvoke) {
+            synchronized(method) {
+                if(checkPermission) {
+                    try {
+                        _securityManager.checkPermission(getPermission(method));
+                        _methodPermCache.put(Integer.valueOf(mHash), Boolean.TRUE);
+                    } catch (SecurityException var12) {
+                        _methodPermCache.put(Integer.valueOf(mHash), Boolean.FALSE);
+                        throw new IllegalAccessException(&quot;Method [&quot; + method + &quot;] cannot be accessed.&quot;);
+                    }
+                }
+
+                if(Modifier.isPublic(method.getModifiers()) &amp;amp;&amp;amp; Modifier.isPublic(method.getDeclaringClass().getModifiers())) {
+                    _methodAccessCache.put(Integer.valueOf(mHash), Boolean.FALSE);
+                } else if(!(wasAccessible = method.isAccessible())) {
+                    method.setAccessible(true);
+                    _methodAccessCache.put(Integer.valueOf(mHash), Boolean.TRUE);
+                } else {
+                    _methodAccessCache.put(Integer.valueOf(mHash), Boolean.FALSE);
+                }
+
+                result = method.invoke(target, argsArray);
+                if(!wasAccessible) {
+                    method.setAccessible(false);
+                }
+            }
+        } else {
+            if(checkPermission) {
+                try {
+                    _securityManager.checkPermission(getPermission(method));
+                    _methodPermCache.put(Integer.valueOf(mHash), Boolean.TRUE);
+                } catch (SecurityException var11) {
+                    _methodPermCache.put(Integer.valueOf(mHash), Boolean.FALSE);
+                    throw new IllegalAccessException(&quot;Method [&quot; + method + &quot;] cannot be accessed.&quot;);
+                }
+            }
+
+            result = method.invoke(target, argsArray);
+        }
+
+        return result;
+    }
+
+</code></pre>
+
+<hr />
+
+<h3 id="end">END</h3>
+
+            <p class="post-meta border-bottom pb-3 mb-0">Updated on 30 Oct 2019</p><nav class="pagination mt-3"><a class="nav nav-prev" href="https://hideric.github.io/java/framework/mybatis/mybatis%E4%B8%ADlike-%E7%9A%84%E4%BD%BF%E7%94%A8%E6%96%B9%E5%BC%8F%E4%BB%A5%E5%8F%8A%E4%B8%80%E4%BA%9B%E6%B3%A8%E6%84%8F%E7%82%B9/" title="Mybatis中Like 的使用方式以及一些注意点"><i class="ti-arrow-left mr-2"></i>Mybatis中Like 的使用方式以及一些注意点</a>
+            <a class="nav nav-next" href="https://hideric.github.io/java/framework/spring/spring%E5%BE%AA%E7%8E%AF%E4%BE%9D%E8%B5%96%E7%9A%84%E5%9D%91/" title="Spring循环依赖的坑">Spring循环依赖的坑<i class="ti-arrow-right ml-2"></i></a>
+            </nav></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- footer -->
+<footer class="section bg-gray pb-0">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-8 text-md-left text-center">
+        <p>The Hugo Documents are copyright © gethugothemes 2018.</p> 
+      </div>
+      <div class="col-md-4 text-md-right text-center">
+        <ul class="list-inline mb-3">
+          
+          <li class="list-inline-item"><a class="text-color d-inline-block p-2" href="#"><i class="ti-facebook"></i></a></li>
+          
+          <li class="list-inline-item"><a class="text-color d-inline-block p-2" href="#"><i class="ti-twitter-alt"></i></a></li>
+          
+          <li class="list-inline-item"><a class="text-color d-inline-block p-2" href="#"><i class="ti-vimeo-alt"></i></a></li>
+          
+          <li class="list-inline-item"><a class="text-color d-inline-block p-2" href="#"><i class="ti-instagram"></i></a></li>
+          
+        </ul>
+      </div>
+    </div>
+  </div>
+</footer>
+<!-- /footer -->
+
+<!-- Bootstrap JS -->
+<script src="https://hideric.github.io/plugins/bootstrap/bootstrap.min.js"></script>
+<!-- highlight -->
+<script src="https://hideric.github.io/plugins/highlight/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+<!-- Main Script -->
+
+<script src="https://hideric.github.io/js/script.min.js"></script>

@@ -1,0 +1,1985 @@
+<head>
+  <meta charset="utf-8">
+  <title>Redis高级客户端Lettuce详解</title>
+
+  <meta name="generator" content="Hugo 0.58.3" />
+
+  <!-- mobile responsive meta -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <!-- ** Plugins Needed for the Project ** -->
+  <!-- Bootstrap -->
+  <link rel="stylesheet" href="https://hideric.github.io/plugins/bootstrap/bootstrap.min.css">
+  <!-- themefy-icon -->
+  <link rel="stylesheet" href="https://hideric.github.io/plugins/themify-icons/themify-icons.css">
+  <!-- highlight -->
+  <link rel="stylesheet" href="https://hideric.github.io/plugins/highlight/hybrid.css">
+  <!-- fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700" rel="stylesheet">
+
+  <style>
+  :root{
+    --primary-color:#2f1f48;
+    --secondary-color:#f9f9f9;
+    --text-color:#636363;
+    --text-color-dark:#242738;
+    --white-color:#ffffff;
+  }  
+  </style>
+
+  <!-- Main Stylesheet -->
+  
+  <link rel="stylesheet" href="https://hideric.github.io/css/style.min.css" integrity="" media="screen">
+
+  <!-- jquiry -->
+  <script src="https://hideric.github.io/plugins/jquery/jquery-1.12.4.js"></script>
+
+  <!-- jquary ui -->
+  <script src="https://hideric.github.io/plugins/jquery/jquery-ui.js"></script>
+
+  <!--Favicon-->
+  <link rel="icon" href="https://hideric.github.io/images/favicon.png" type="image/x-icon">
+
+</head>
+
+
+<!-- navigation -->
+<header class="shadow-bottom sticky-top bg-white">
+  <div class="container">
+    <nav class="navbar navbar-expand-lg navbar-light">
+  <a class="navbar-brand" href="https://hideric.github.io/">Hideric</a>
+  <button class="navbar-toggler border-0" type="button" data-toggle="collapse" data-target="#navigation"
+    aria-controls="navigation" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse text-center" id="navigation">
+    <ul class="navbar-nav ml-auto">
+      <li class="nav-item">
+        <a class="nav-link text-dark" href="https://hideric.github.io/">Home</a>
+      </li>
+      
+      
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle text-dark" href="#" role="button" data-toggle="dropdown" aria-haspopup="true"
+          aria-expanded="false">
+          Back-End
+        </a>
+        <div class="dropdown-menu" >
+          
+          <a class="dropdown-item" href="https://hideric.github.io/java">Java</a>
+          
+          <a class="dropdown-item" href="https://hideric.github.io/python">Python</a>
+          
+          <a class="dropdown-item" href="https://hideric.github.io/go">Go</a>
+          
+          <a class="dropdown-item" href="https://hideric.github.io/cpp">C&#43;&#43;</a>
+          
+        </div>
+      </li>
+      
+      
+      
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle text-dark" href="#" role="button" data-toggle="dropdown" aria-haspopup="true"
+          aria-expanded="false">
+          DB
+        </a>
+        <div class="dropdown-menu" >
+          
+          <a class="dropdown-item" href="https://hideric.github.io/mysql">Mysql</a>
+          
+          <a class="dropdown-item" href="https://hideric.github.io/oracle">Oracle</a>
+          
+        </div>
+      </li>
+      
+      
+      
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle text-dark" href="#" role="button" data-toggle="dropdown" aria-haspopup="true"
+          aria-expanded="false">
+          Front-End
+        </a>
+        <div class="dropdown-menu" >
+          
+          <a class="dropdown-item" href="https://hideric.github.io/js">JavaScript</a>
+          
+          <a class="dropdown-item" href="https://hideric.github.io/vue">Vue</a>
+          
+          <a class="dropdown-item" href="https://hideric.github.io/react">React</a>
+          
+          <a class="dropdown-item" href="https://hideric.github.io/rn">React Native</a>
+          
+        </div>
+      </li>
+      
+      
+      
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle text-dark" href="#" role="button" data-toggle="dropdown" aria-haspopup="true"
+          aria-expanded="false">
+          Mid-Ware
+        </a>
+        <div class="dropdown-menu" >
+          
+          <a class="dropdown-item" href="https://hideric.github.io/redis">Redis</a>
+          
+          <a class="dropdown-item" href="https://hideric.github.io/nginx">Nginx</a>
+          
+        </div>
+      </li>
+      
+      
+      
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle text-dark" href="#" role="button" data-toggle="dropdown" aria-haspopup="true"
+          aria-expanded="false">
+          Mobile
+        </a>
+        <div class="dropdown-menu" >
+          
+          <a class="dropdown-item" href="https://hideric.github.io/android">Android</a>
+          
+          <a class="dropdown-item" href="https://hideric.github.io/ios">IOS</a>
+          
+        </div>
+      </li>
+      
+      
+      
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle text-dark" href="#" role="button" data-toggle="dropdown" aria-haspopup="true"
+          aria-expanded="false">
+          OPS
+        </a>
+        <div class="dropdown-menu" >
+          
+          <a class="dropdown-item" href="https://hideric.github.io/k8s">kubernetes</a>
+          
+          <a class="dropdown-item" href="https://hideric.github.io/docker">Docker</a>
+          
+          <a class="dropdown-item" href="https://hideric.github.io/leetcode">Leetcode</a>
+          
+          <a class="dropdown-item" href="https://hideric.github.io/linux">Linux</a>
+          
+        </div>
+      </li>
+      
+      
+      
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle text-dark" href="#" role="button" data-toggle="dropdown" aria-haspopup="true"
+          aria-expanded="false">
+          pages
+        </a>
+        <div class="dropdown-menu" >
+          
+          <a class="dropdown-item" href="https://hideric.github.io/faq">FAQ</a>
+          
+          <a class="dropdown-item" href="https://hideric.github.io/contact">CONTACT</a>
+          
+          <a class="dropdown-item" href="https://hideric.github.io/elements">ELEMENTS</a>
+          
+          <a class="dropdown-item" href="https://hideric.github.io/others">OTHERS</a>
+          
+        </div>
+      </li>
+      
+      
+    </ul>
+    
+    <ul class="list-inline text-center mb-0">
+      
+    </ul>
+  </div>
+</nav>
+  </div>
+</header>
+<!-- /navigation -->
+
+
+<section class="single pt-5 bg-gray">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-3">
+        <div class="p-4 bg-white sticky-top top-100">
+            
+            <nav class="sidebar-menu">
+              <ul class="list-styled">
+            <li class=""><a href="https://hideric.github.io/android/">Android</a>
+              <ul class="">
+            <li class=""><a href="https://hideric.github.io/android/tool/f-droidapps/">F-Droid Apps Recommendation</a>
+            </li></ul>
+              
+            </li>
+            <li class=""><a href="https://hideric.github.io/cpp/">C&#43;&#43;</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/docker/">Docker</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/go/">Go</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/ios/">IOS</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/">Java</a>
+              <ul class="">
+            <li class=""><a href="https://hideric.github.io/java/basis/http%E6%96%AD%E7%82%B9%E7%BB%AD%E4%BC%A0/">HTTP断点续传</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/basis/java-%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8/">Java 垃圾收集器</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/basis/java-%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%8B%BC%E6%8E%A5%E5%A7%BF%E5%8A%BF/">Java 字符串拼接姿势</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/basis/java-%E5%A6%82%E4%BD%95%E6%9B%B4%E4%BC%98%E9%9B%85%E7%9A%84%E5%A4%84%E7%90%86%E7%A9%BA%E5%80%BC/">Java-如何更优雅的处理空值</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/basis/jvm/jvm-%E5%A0%86%E5%86%85%E5%AD%98%E6%BA%A2%E5%87%BA%E5%90%8E%E5%85%B6%E4%BB%96%E7%BA%BF%E7%A8%8B%E6%98%AF%E5%90%A6%E5%8F%AF%E7%BB%A7%E7%BB%AD%E5%B7%A5%E4%BD%9C/">JVM 堆内存溢出后，其他线程是否可继续工作？</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/framework/mybatis/mybatis%E4%B8%ADlike-%E7%9A%84%E4%BD%BF%E7%94%A8%E6%96%B9%E5%BC%8F%E4%BB%A5%E5%8F%8A%E4%B8%80%E4%BA%9B%E6%B3%A8%E6%84%8F%E7%82%B9/">Mybatis中Like 的使用方式以及一些注意点</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/framework/mybatis/mybatis%E5%B1%85%E7%84%B6%E6%9C%89%E5%9D%91%E5%8D%83%E4%B8%87%E5%88%AB%E8%B8%A9/">Mybatis居然有坑，千万别踩！</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/framework/spring/spring%E5%BE%AA%E7%8E%AF%E4%BE%9D%E8%B5%96%E7%9A%84%E5%9D%91/">Spring循环依赖的坑</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/framework/spring/spring%E7%9A%84%E5%90%84%E7%A7%8D%E6%B3%A8%E8%A7%A3/">Spring的各种注解</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/basis/%E4%BB%8E%E5%AE%9E%E8%B7%B5%E8%A7%92%E5%BA%A6%E9%87%8D%E6%96%B0%E7%90%86%E8%A7%A3bio%E5%92%8Cnio/">从实践角度重新理解BIO和NIO</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/basis/%E5%85%B3%E4%BA%8E-git-%E6%8F%90%E4%BA%A4%E8%A7%84%E8%8C%83/">关于 Git 提交规范</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/basis/jvm/%E6%B3%A8%E6%84%8Fcode-cache%E6%89%93%E6%BB%A1%E5%8F%AF%E5%AF%BC%E8%87%B4%E5%BA%94%E7%94%A8%E6%80%A7%E8%83%BD%E9%99%8D%E4%BD%8E/">注意，Code Cache打满可导致应用性能降低</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/framework/spring/spring-%E5%AE%B9%E5%99%A8%E5%90%AF%E5%8A%A8%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/">Spring 容器启动源码解析</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/framework/spring/spring-%E7%9A%84-beanutils-%E5%A1%AB%E5%9D%91%E8%AE%B0/">Spring 的 BeanUtils 填坑记</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/basis/weakhashmap%E7%94%9F%E4%BA%86%E7%97%85%E7%9A%84-hashmap-/">WeakHashMap，生了病的 HashMap ？</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/framework/dubbo/%E4%BD%BF%E7%94%A8dubbo%E8%BF%87%E7%A8%8B%E4%B8%AD%E9%81%87%E5%88%B0%E8%BF%87%E5%93%AA%E4%BA%9B%E5%9D%91/">使用dubbo过程中遇到过哪些坑？</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/basis/%E4%B8%80%E4%B8%AAjava%E5%AF%B9%E8%B1%A1%E5%88%B0%E5%BA%95%E5%8D%A0%E7%94%A8%E5%A4%9A%E5%A4%A7%E5%86%85%E5%AD%98/">一个Java对象到底占用多大内存？</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/basis/%E4%BD%A0%E7%9C%9F%E7%9A%84%E4%BA%86%E8%A7%A3logback%E5%90%97/">你真的了解logback吗？</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/basis/%E8%BF%99%E5%8F%AF%E8%83%BD%E6%98%AFgithub%E4%B8%8A%E6%9C%80%E5%8F%8B%E5%A5%BD%E7%9A%84%E5%88%86%E5%B8%83%E5%BC%8F%E5%8D%B3%E6%97%B6%E9%80%9A%E8%AE%AF%E9%A1%B9%E7%9B%AE..../">这可能是Github上最友好的分布式即时通讯项目.....</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/basis/java-8-stream-%E9%9B%86%E5%90%88%E6%93%8D%E4%BD%9C%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B/">Java 8 - Stream 集合操作快速上手</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/basis/concurrency/stringbuilder-%E4%B8%BA%E4%BB%80%E4%B9%88%E7%BA%BF%E7%A8%8B%E4%B8%8D%E5%AE%89%E5%85%A8/">StringBuilder 为什么线程不安全？</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/basis/jvm/jvm%E4%BC%98%E5%8C%96%E4%B9%8B%E9%80%83%E9%80%B8%E5%88%86%E6%9E%90%E4%B8%8E%E5%88%86%E9%85%8D%E6%B6%88%E9%99%A4/">JVM优化之逃逸分析与分配消除</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/framework/security/shiro%E6%A1%86%E6%9E%B6-%E7%94%A8%E6%88%B7%E6%9D%83%E9%99%90%E7%AE%A1%E7%90%86/">Shiro框架 - 用户权限管理</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/basis/concurrency/threadlocal%E9%9D%A2%E8%AF%95%E9%A2%98/">ThreadLocal面试题</a>
+            </li></ul>
+              
+            </li>
+            <li class=""><a href="https://hideric.github.io/js/">JavaScript</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/k8s/">Kubernets</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/leetcode/">Leetcode</a>
+              <ul class="">
+            <li class=""><a href="https://hideric.github.io/leetcode/leetcode-5/">LeetCode #5 最长回文子字符串</a>
+            </li></ul>
+              
+            </li>
+            <li class=""><a href="https://hideric.github.io/linux/">Linux</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/mysql/">Mysql</a>
+              <ul class="">
+            <li class=""><a href="https://hideric.github.io/mysql/mysql%E9%9D%A2%E8%AF%95%E9%A2%98%E5%8F%8A%E5%8D%83%E4%B8%87%E7%BA%A7%E6%95%B0%E6%8D%AE%E6%9F%A5%E8%AF%A2%E4%BC%98%E5%8C%96/">Mysql面试题及千万级数据查询优化</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/mysql/mysql%E7%9A%84count%E8%AF%AD%E5%8F%A5/">MySQL的COUNT语句</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/mysql/mysql-%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E6%80%9D%E8%B7%AF/">MySQL 性能优化思路</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/mysql/%E5%AE%98%E6%96%B9%E5%B7%A5%E5%85%B7mysql-router-%E9%AB%98%E5%8F%AF%E7%94%A8%E5%8E%9F%E7%90%86%E4%B8%8E%E5%AE%9E%E6%88%98/">官方工具｜MySQL Router 高可用原理与实战</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/mysql/mysql-%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%968-%E7%A7%8D%E5%B8%B8%E8%A7%81-sql-%E9%94%99%E8%AF%AF%E7%94%A8%E6%B3%95/">MySQL 性能优化：8 种常见 SQL 错误用法！</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/mysql/index/null%E8%83%BD%E7%94%A8%E7%B4%A2%E5%BC%95/">MySQL中IS NULL、IS NOT NULL、!=不能用索引？</a>
+            </li></ul>
+              
+            </li>
+            <li class=""><a href="https://hideric.github.io/nginx/">Nginx</a>
+              <ul class="">
+            <li class=""><a href="https://hideric.github.io/nginx/%E5%90%8E%E7%AB%AF%E5%AE%9E%E8%B7%B5nginx%E6%97%A5%E5%BF%97%E9%85%8D%E7%BD%AE%E8%B6%85%E8%AF%A6%E7%BB%86/">后端实践：Nginx日志配置（超详细）</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/nginx/%E4%BD%BF%E7%94%A8nginx%E8%BF%9B%E8%A1%8C%E5%9B%9B%E5%B1%82%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1/">使用Nginx进行四层负载均衡</a>
+            </li></ul>
+              
+            </li>
+            <li class=""><a href="https://hideric.github.io/oracle/">Oracle</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/others/">OTHERS</a>
+              <ul class="">
+            <li class=""><a href="https://hideric.github.io/others/term/qps%E6%9C%AF%E8%AF%AD/">秒懂 QPS、TPS、PV、UV、GMV、IP、RPS！</a>
+            </li></ul>
+              
+            </li>
+            <li class=""><a href="https://hideric.github.io/python/">Python</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/react/">React</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/rn/">React Native</a>
+            </li>
+            <li class="parent d-block "><a href="https://hideric.github.io/redis/">Redis</a>
+              <ul class="sub-menu">
+            <li class=""><a href="https://hideric.github.io/redis/%E5%A6%82%E4%BD%95%E7%94%A8-redis-%E7%BB%9F%E8%AE%A1%E7%8B%AC%E7%AB%8B%E7%94%A8%E6%88%B7%E8%AE%BF%E9%97%AE%E9%87%8F/">如何用 Redis 统计独立用户访问量？</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/redis/redis-%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81%E7%9A%84%E6%AD%A3%E7%A1%AE%E5%AE%9E%E7%8E%B0%E6%96%B9%E5%BC%8Fjava%E7%89%88/">Redis 分布式锁的正确实现方式（Java版）</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/redis/redis-%E5%AE%9E%E7%8E%B0%E9%99%84%E8%BF%91%E7%9A%84%E4%BA%BA%E5%8A%9F%E8%83%BD/">Redis 实现“附近的人”功能</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/redis/%E4%B8%BA%E4%BB%80%E4%B9%88rediscluster%E6%9C%8916384%E4%B8%AA%E6%A7%BD/">为什么RedisCluster有16384个槽?</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/redis/%E5%AD%A6%E4%BC%9A%E8%BF%99%E5%87%A0%E4%B8%AAredis%E6%8A%80%E5%B7%A7%E8%AE%A9%E4%BD%A0%E7%9A%84%E7%A8%8B%E5%BA%8F%E5%BF%AB%E5%A6%82%E9%97%AA%E7%94%B5/">学会这几个Redis技巧，让你的程序快如闪电</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/redis/%E6%AF%94redis%E8%BF%98%E5%BF%AB5%E5%80%8D%E7%9A%84%E4%B8%AD%E9%97%B4%E4%BB%B6%E4%B8%BA%E5%95%A5%E8%BF%99%E4%B9%88%E5%BF%AB/">比Redis还快5倍的中间件，为啥这么快？</a>
+            </li>
+            <li class=" active "><a href="https://hideric.github.io/redis/redis%E9%AB%98%E7%BA%A7%E5%AE%A2%E6%88%B7%E7%AB%AFlettuce%E8%AF%A6%E8%A7%A3/">Redis高级客户端Lettuce详解</a>
+            </li></ul>
+              
+            </li>
+            <li class=""><a href="https://hideric.github.io/vue/">Vue</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/contact/">Contact</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/elements/">Elements</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/faq/">Frequently Asked Questions</a>
+            </li></ul>
+            </nav>
+
+            
+        </div>
+      </div>
+      <div class="col-lg-9">
+        <div class="p-5 bg-white">
+            <h2>Redis高级客户端Lettuce详解</h2>
+            
+
+<h2 id="redis高级客户端lettuce详解">Redis高级客户端Lettuce详解</h2>
+
+<h2 id="前提">前提</h2>
+
+<p><code>Lettuce</code>是一个<code>Redis</code>的<code>Java</code>驱动包，初识她的时候是使用<code>RedisTemplate</code>的时候遇到点问题<code>Debug</code>到底层的一些源码，发现<code>spring-data-redis</code>的驱动包在某个版本之后替换为<code>Lettuce</code>。<code>Lettuce</code>翻译为生菜，没错，就是吃的那种生菜，所以它的<code>Logo</code>长这样：</p>
+
+<p><img class="" data-ratio="0.3444676409185804" src="data:image/PNG;base64,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 " src="iaPfaDVSUoJGKIycvPDR7CPGORVBNchY7JeCuWxtp2pD4N8r933XLMIsTTgA1m8grfW8sVlQiaNbibj9mtGUKibkaQ"  data-type="png" data-w="479" style="box-sizing: inherit;font-size: inherit;line-height: inherit;border-width: 0px;border-style: initial;border-color: initial;background-repeat: no-repeat;vertical-align: middle;max-width: 70%;"  /></p>
+
+<p>既然能被<code>Spring</code>生态所认可，<code>Lettuce</code>想必有过人之处，于是笔者花时间阅读她的官方文档，整理测试示例，写下这篇文章。编写本文时所使用的版本为<code>Lettuce 5.1.8.RELEASE</code>，<code>SpringBoot 2.1.8.RELEASE</code>，<code>JDK [8,11]</code>。</p>
+
+<h2 id="lettuce简介">Lettuce简介</h2>
+
+<p><code>Lettuce</code>是一个高性能基于<code>Java</code>编写的<code>Redis</code>驱动框架，底层集成了<code>Project Reactor</code>提供天然的反应式编程，通信框架集成了<code>Netty</code>使用了非阻塞<code>IO</code>，<code>5.x</code>版本之后融合了<code>JDK1.8</code>的异步编程特性，在保证高性能的同时提供了十分丰富易用的<code>API</code>，<code>5.1</code>版本的新特性如下：</p>
+
+<ul>
+<li><p>支持<code>Redis</code>的新增命令<code>ZPOPMIN, ZPOPMAX, BZPOPMIN, BZPOPMAX</code>。</p></li>
+
+<li><p>支持通过<code>Brave</code>模块跟踪<code>Redis</code>命令执行。</p></li>
+
+<li><p>支持<code>Redis Streams</code>。</p></li>
+
+<li><p>支持异步的主从连接。</p></li>
+
+<li><p>支持异步连接池。</p></li>
+
+<li><p>新增命令最多执行一次模式（禁止自动重连）。</p></li>
+
+<li><p>全局命令超时设置（对异步和反应式命令也有效）。</p></li>
+
+<li><p>&hellip;&hellip;等等</p></li>
+</ul>
+
+<p>注意一点：<code>Redis</code>的版本至少需要<code>2.6</code>，当然越高越好，<code>API</code>的兼容性比较强大。</p>
+
+<p>只需要引入单个依赖就可以开始愉快地使用<code>Lettuce</code>：</p>
+
+<ul>
+<li><p>Maven</p>
+
+<pre><code class="language-xml">&lt;dependency&gt;
+&lt;groupId&gt;io.lettuce&lt;/groupId&gt;
+&lt;artifactId&gt;lettuce-core&lt;/artifactId&gt;
+&lt;version&gt;5.1.8.RELEASE&lt;/version&gt;
+&lt;/dependency&gt;
+</code></pre></li>
+
+<li><p>Gradle</p>
+
+<pre><code class="language-groovy">dependencies {
+compile 'io.lettuce:lettuce-core:5.1.8.RELEASE'
+}
+</code></pre></li>
+</ul>
+
+<h2 id="连接redis">连接Redis</h2>
+
+<p>单机、哨兵、集群模式下连接<code>Redis</code>需要一个统一的标准去表示连接的细节信息，在<code>Lettuce</code>中这个统一的标准是<code>RedisURI</code>。可以通过三种方式构造一个<code>RedisURI</code>实例：</p>
+
+<ul>
+<li><p>定制的字符串<code>URI</code>语法：</p>
+
+<pre><code class="language-java">RedisURI uri = RedisURI.create(&quot;redis://localhost/&quot;);
+</code></pre></li>
+
+<li><p>使用建造器（<code>RedisURI.Builder</code>）：</p>
+
+<pre><code class="language-java">RedisURI uri = RedisURI.builder().withHost(&quot;localhost&quot;).withPort(6379).build();
+</code></pre></li>
+
+<li><p>直接通过构造函数实例化：</p>
+
+<pre><code class="language-java">RedisURI uri = new RedisURI(&quot;localhost&quot;, 6379, 60, TimeUnit.SECONDS);
+</code></pre></li>
+</ul>
+
+<h3 id="定制的连接uri语法">定制的连接URI语法</h3>
+
+<ul>
+<li><p>单机（前缀为<code>redis://</code>）</p>
+
+<pre><code class="language-bash">格式：redis://[password@]host[:port][/databaseNumber][?[timeout=timeout[d|h|m|s|ms|us|ns]]
+完整：redis://mypassword@127.0.0.1:6379/0?timeout=10s
+简单：redis://localhost
+</code></pre></li>
+
+<li><p>单机并且使用<code>SSL</code>（前缀为<code>rediss://</code>） &lt;== 注意后面多了个<code>s</code></p>
+
+<pre><code class="language-bash">格式：rediss://[password@]host[:port][/databaseNumber][?[timeout=timeout[d|h|m|s|ms|us|ns]]
+完整：rediss://mypassword@127.0.0.1:6379/0?timeout=10s
+简单：rediss://localhost
+</code></pre></li>
+
+<li><p>单机<code>Unix Domain Sockets</code>模式（前缀为<code>redis-socket://</code>）</p>
+
+<pre><code class="language-bash">格式：redis-socket://path[?[timeout=timeout[d|h|m|s|ms|us|ns]][&amp;amp;_database=database_]]
+完整：redis-socket:///tmp/redis?timeout=10s&amp;amp;_database=0
+</code></pre></li>
+
+<li><p>哨兵（前缀为<code>redis-sentinel://</code>）</p>
+
+<pre><code class="language-bash">格式：redis-sentinel://[password@]host[:port][,host2[:port2]][/databaseNumber][?[timeout=timeout[d|h|m|s|ms|us|ns]]#sentinelMasterId
+完整：redis-sentinel://mypassword@127.0.0.1:6379,127.0.0.1:6380/0?timeout=10s#mymaster
+</code></pre></li>
+</ul>
+
+<p>超时时间单位：
+- d 天- h 小时
+- m 分钟
+- s 秒钟
+- ms 毫秒
+- us 微秒
+- ns 纳秒</p>
+
+<p>个人建议使用<code>RedisURI</code>提供的建造器，毕竟定制的<code>URI</code>虽然简洁，但是比较容易出现人为错误。鉴于笔者没有<code>SSL</code>和<code>Unix Domain Socket</code>的使用场景，下面不对这两种连接方式进行列举。</p>
+
+<h3 id="基本使用">基本使用</h3>
+
+<p><code>Lettuce</code>使用的时候依赖于四个主要组件：</p>
+
+<ul>
+<li><p><code>RedisURI</code>：连接信息。</p></li>
+
+<li><p><code>RedisClient</code>：<code>Redis</code>客户端，特殊地，集群连接有一个定制的<code>RedisClusterClient</code>。</p></li>
+
+<li><p><code>Connection</code>：<code>Redis</code>连接，主要是<code>StatefulConnection</code>或者<code>StatefulRedisConnection</code>的子类，连接的类型主要由连接的具体方式（单机、哨兵、集群、订阅发布等等）选定，比较重要。</p></li>
+
+<li><p><code>RedisCommands</code>：<code>Redis</code>命令<code>API</code>接口，基本上覆盖了<code>Redis</code>发行版本的所有命令，提供了同步（<code>sync</code>）、异步（<code>async</code>）、反应式（<code>reative</code>）的调用方式，对于使用者而言，会经常跟<code>RedisCommands</code>系列接口打交道。
+一个基本使用例子如下：</p>
+
+<pre><code class="language-java">@Test
+public void testSetGet() throws Exception {
+RedisURI redisUri = RedisURI.builder()                    // &lt;1&gt; 创建单机连接的连接信息
+        .withHost(&quot;localhost&quot;)
+        .withPort(6379)
+        .withTimeout(Duration.of(10, ChronoUnit.SECONDS))
+        .build();
+RedisClient redisClient = RedisClient.create(redisUri);   // &lt;2&gt; 创建客户端
+StatefulRedisConnection&lt;String, String&gt; connection = redisClient.connect();     // &lt;3&gt; 创建线程安全的连接
+RedisCommands&lt;String, String&gt; redisCommands = connection.sync();                // &lt;4&gt; 创建同步命令
+SetArgs setArgs = SetArgs.Builder.nx().ex(5);
+String result = redisCommands.set(&quot;name&quot;, &quot;throwable&quot;, setArgs);
+Assertions.assertThat(result).isEqualToIgnoringCase(&quot;OK&quot;);
+result = redisCommands.get(&quot;name&quot;);
+Assertions.assertThat(result).isEqualTo(&quot;throwable&quot;);
+// ... 其他操作
+connection.close();   // &lt;5&gt; 关闭连接
+redisClient.shutdown();  // &lt;6&gt; 关闭客户端
+}
+</code></pre></li>
+</ul>
+
+<p>注意：</p>
+
+<ul>
+<li><p><5>：关闭连接一般在应用程序停止之前操作，一个应用程序中的一个<code>Redis</code>驱动实例不需要太多的连接（一般情况下只需要一个连接实例就可以，如果有多个连接的需要可以考虑使用连接池，其实<code>Redis</code>目前处理命令的模块是单线程，在客户端多个连接多线程调用理论上没有效果）。</p></li>
+
+<li><p><6>：关闭客户端一般应用程序停止之前操作，如果条件允许的话，基于后开先闭原则，客户端关闭应该在连接关闭之后操作。</p>
+
+<h2 id="api">API</h2></li>
+</ul>
+
+<p><code>Lettuce</code>主要提供三种<code>API</code>：</p>
+
+<ul>
+<li><p>同步（<code>sync</code>）：<code>RedisCommands</code>。</p></li>
+
+<li><p>异步（<code>async</code>）：<code>RedisAsyncCommands</code>。</p></li>
+
+<li><p>反应式（<code>reactive</code>）：<code>RedisReactiveCommands</code>。
+先准备好一个单机<code>Redis</code>连接备用：</p>
+
+<pre><code class="language-java">private static StatefulRedisConnection&lt;String, String&gt; CONNECTION;
+private static RedisClient CLIENT;
+
+@BeforeClass
+public static void beforeClass() {
+RedisURI redisUri = RedisURI.builder()
+        .withHost(&quot;localhost&quot;)
+        .withPort(6379)
+        .withTimeout(Duration.of(10, ChronoUnit.SECONDS))
+        .build();
+CLIENT = RedisClient.create(redisUri);
+CONNECTION = CLIENT.connect();
+}
+
+@AfterClass
+public static void afterClass() throws Exception {
+CONNECTION.close();
+CLIENT.shutdown();
+}
+</code></pre></li>
+</ul>
+
+<p><code>Redis</code>命令<code>API</code>的具体实现可以直接从<code>StatefulRedisConnection</code>实例获取，见其接口定义：</p>
+
+<pre><code class="language-java">public interface StatefulRedisConnection&lt;K, V&gt; extends StatefulConnection&lt;K, V&gt; {
+
+    boolean isMulti();
+
+    RedisCommands&lt;K, V&gt; sync();
+
+    RedisAsyncCommands&lt;K, V&gt; async();
+
+    RedisReactiveCommands&lt;K, V&gt; reactive();
+}
+</code></pre>
+
+<p>值得注意的是，在不指定编码解码器<code>RedisCodec</code>的前提下，<code>RedisClient</code>创建的<code>StatefulRedisConnection</code>实例一般是泛型实例<code>StatefulRedisConnection&lt;String,String&gt;</code>，也就是所有命令<code>API</code>的<code>KEY</code>和<code>VALUE</code>都是<code>String</code>类型，这种使用方式能满足大部分的使用场景。当然，必要的时候可以定制编码解码器<code>RedisCodec&lt;K,V&gt;</code>。</p>
+
+<h3 id="同步api">同步API</h3>
+
+<p>先构建<code>RedisCommands</code>实例：</p>
+
+<pre><code class="language-java">private static RedisCommands&lt;String, String&gt; COMMAND;
+
+@BeforeClass
+public static void beforeClass() {
+    COMMAND = CONNECTION.sync();
+}
+</code></pre>
+
+<p>基本使用：</p>
+
+<pre><code class="language-java">@Test
+public void testSyncPing() throws Exception {
+   String pong = COMMAND.ping();
+   Assertions.assertThat(pong).isEqualToIgnoringCase(&quot;PONG&quot;);
+}
+
+
+@Test
+public void testSyncSetAndGet() throws Exception {
+    SetArgs setArgs = SetArgs.Builder.nx().ex(5);
+    COMMAND.set(&quot;name&quot;, &quot;throwable&quot;, setArgs);
+    String value = COMMAND.get(&quot;name&quot;);
+    log.info(&quot;Get value: {}&quot;, value);
+}
+
+// Get value: throwable
+</code></pre>
+
+<p>同步<code>API</code>在所有命令调用之后会立即返回结果。如果熟悉<code>Jedis</code>的话，<code>RedisCommands</code>的用法其实和它相差不大。</p>
+
+<h3 id="异步api">异步API</h3>
+
+<p>先构建<code>RedisAsyncCommands</code>实例：</p>
+
+<pre><code class="language-java">private static RedisAsyncCommands&lt;String, String&gt; ASYNC_COMMAND;
+
+@BeforeClass
+public static void beforeClass() {
+    ASYNC_COMMAND = CONNECTION.async();
+}
+</code></pre>
+
+<p>基本使用：</p>
+
+<pre><code class="language-java">@Test
+public void testAsyncPing() throws Exception {
+    RedisFuture&lt;String&gt; redisFuture = ASYNC_COMMAND.ping();
+    log.info(&quot;Ping result:{}&quot;, redisFuture.get());
+}
+// Ping result:PONG
+</code></pre>
+
+<p><code>RedisAsyncCommands</code>所有方法执行返回结果都是<code>RedisFuture</code>实例，而<code>RedisFuture</code>接口的定义如下：</p>
+
+<pre><code class="language-java">public interface RedisFuture&lt;V&gt; extends CompletionStage&lt;V&gt;, Future&lt;V&gt; {
+
+    String getError();
+
+    boolean await(long timeout, TimeUnit unit) throws InterruptedException;
+}
+</code></pre>
+
+<p>也就是，<code>RedisFuture</code>可以无缝使用<code>Future</code>或者<code>JDK</code>1.8中引入的<code>CompletableFuture</code>提供的方法。举个例子：</p>
+
+<pre><code class="language-java">@Test
+public void testAsyncSetAndGet1() throws Exception {
+    SetArgs setArgs = SetArgs.Builder.nx().ex(5);
+    RedisFuture&lt;String&gt; future = ASYNC_COMMAND.set(&quot;name&quot;, &quot;throwable&quot;, setArgs);
+    // CompletableFuture#thenAccept()
+    future.thenAccept(value -&gt; log.info(&quot;Set命令返回:{}&quot;, value));
+    // Future#get()
+    future.get();
+}
+// Set命令返回:OK
+
+@Test
+public void testAsyncSetAndGet2() throws Exception {
+    SetArgs setArgs = SetArgs.Builder.nx().ex(5);
+    CompletableFuture&lt;Void&gt; result =
+            (CompletableFuture&lt;Void&gt;) ASYNC_COMMAND.set(&quot;name&quot;, &quot;throwable&quot;, setArgs)
+                    .thenAcceptBoth(ASYNC_COMMAND.get(&quot;name&quot;),
+                            (s, g) -&gt; {
+                                log.info(&quot;Set命令返回:{}&quot;, s);
+                                log.info(&quot;Get命令返回:{}&quot;, g);
+                            });
+    result.get();
+}
+// Set命令返回:OK
+// Get命令返回:throwable
+</code></pre>
+
+<p>如果能熟练使用<code>CompletableFuture</code>和函数式编程技巧，可以组合多个<code>RedisFuture</code>完成一些列复杂的操作。</p>
+
+<h3 id="反应式api">反应式API</h3>
+
+<p><code>Lettuce</code>引入的反应式编程框架是Project Reactor，如果没有反应式编程经验可以先自行了解一下<code>Project Reactor</code>。</p>
+
+<p>构建<code>RedisReactiveCommands</code>实例：</p>
+
+<pre><code class="language-java">private static RedisReactiveCommands&lt;String, String&gt; REACTIVE_COMMAND;
+
+@BeforeClass
+public static void beforeClass() {
+    REACTIVE_COMMAND = CONNECTION.reactive();
+}
+</code></pre>
+
+<p>根据<code>Project Reactor</code>，<code>RedisReactiveCommands</code>的方法如果返回的结果只包含0或1个元素，那么返回值类型是<code>Mono</code>，如果返回的结果包含0到N（N大于0）个元素，那么返回值是<code>Flux</code>。举个例子：</p>
+
+<pre><code class="language-java">@Test
+public void testReactivePing() throws Exception {
+    Mono&lt;String&gt; ping = REACTIVE_COMMAND.ping();
+    ping.subscribe(v -&gt; log.info(&quot;Ping result:{}&quot;, v));
+    Thread.sleep(1000);
+}
+// Ping result:PONG
+
+@Test
+public void testReactiveSetAndGet() throws Exception {
+    SetArgs setArgs = SetArgs.Builder.nx().ex(5);
+    REACTIVE_COMMAND.set(&quot;name&quot;, &quot;throwable&quot;, setArgs).block();
+    REACTIVE_COMMAND.get(&quot;name&quot;).subscribe(value -&gt; log.info(&quot;Get命令返回:{}&quot;, value));
+    Thread.sleep(1000);
+}
+// Get命令返回:throwable
+
+@Test
+public void testReactiveSet() throws Exception {
+    REACTIVE_COMMAND.sadd(&quot;food&quot;, &quot;bread&quot;, &quot;meat&quot;, &quot;fish&quot;).block();
+    Flux&lt;String&gt; flux = REACTIVE_COMMAND.smembers(&quot;food&quot;);
+    flux.subscribe(log::info);
+    REACTIVE_COMMAND.srem(&quot;food&quot;, &quot;bread&quot;, &quot;meat&quot;, &quot;fish&quot;).block();
+    Thread.sleep(1000);
+}
+// meat
+// bread
+// fish
+</code></pre>
+
+<p>举个更加复杂的例子，包含了事务、函数转换等：</p>
+
+<pre><code class="language-java">@Test
+public void testReactiveFunctional() throws Exception {
+    REACTIVE_COMMAND.multi().doOnSuccess(r -&gt; {
+        REACTIVE_COMMAND.set(&quot;counter&quot;, &quot;1&quot;).doOnNext(log::info).subscribe();
+        REACTIVE_COMMAND.incr(&quot;counter&quot;).doOnNext(c -&gt; log.info(String.valueOf(c))).subscribe();
+    }).flatMap(s -&gt; REACTIVE_COMMAND.exec())
+            .doOnNext(transactionResult -&gt; log.info(&quot;Discarded:{}&quot;, transactionResult.wasDiscarded()))
+            .subscribe();
+    Thread.sleep(1000);
+}
+// OK
+// 2
+// Discarded:false
+</code></pre>
+
+<p>这个方法开启一个事务，先把<code>counter</code>设置为1，再将<code>counter</code>自增1。</p>
+
+<h3 id="发布和订阅">发布和订阅</h3>
+
+<p>非集群模式下的发布订阅依赖于定制的连接<code>StatefulRedisPubSubConnection</code>，集群模式下的发布订阅依赖于定制的连接<code>StatefulRedisClusterPubSubConnection</code>，两者分别来源于<code>RedisClient#connectPubSub()</code>系列方法和<code>RedisClusterClient#connectPubSub()</code>：</p>
+
+<ul>
+<li><p>非集群模式：</p>
+
+<pre><code class="language-java">// 可能是单机、普通主从、哨兵等非集群模式的客户端
+RedisClient client = ...
+StatefulRedisPubSubConnection&lt;String, String&gt; connection = client.connectPubSub();
+connection.addListener(new RedisPubSubListener&lt;String, String&gt;() { ... });
+
+// 同步命令
+RedisPubSubCommands&lt;String, String&gt; sync = connection.sync();
+sync.subscribe(&quot;channel&quot;);
+
+// 异步命令
+RedisPubSubAsyncCommands&lt;String, String&gt; async = connection.async();
+RedisFuture&lt;Void&gt; future = async.subscribe(&quot;channel&quot;);
+
+// 反应式命令
+RedisPubSubReactiveCommands&lt;String, String&gt; reactive = connection.reactive();
+reactive.subscribe(&quot;channel&quot;).subscribe();
+
+reactive.observeChannels().doOnNext(patternMessage -&gt; {...}).subscribe()
+</code></pre></li>
+
+<li><p>集群模式：</p>
+
+<pre><code class="language-java">// 使用方式其实和非集群模式基本一致
+RedisClusterClient clusterClient = ...
+StatefulRedisClusterPubSubConnection&lt;String, String&gt; connection = clusterClient.connectPubSub();
+connection.addListener(new RedisPubSubListener&lt;String, String&gt;() { ... });
+RedisPubSubCommands&lt;String, String&gt; sync = connection.sync();
+sync.subscribe(&quot;channel&quot;);
+// ...
+</code></pre></li>
+</ul>
+
+<p>这里用单机同步命令的模式举一个<code>Redis</code>键空间通知（Redis Keyspace Notifications）的例子：</p>
+
+<pre><code class="language-java">@Test
+public void testSyncKeyspaceNotification() throws Exception {
+    RedisURI redisUri = RedisURI.builder()
+            .withHost(&quot;localhost&quot;)
+            .withPort(6379)
+            // 注意这里只能是0号库
+            .withDatabase(0)
+            .withTimeout(Duration.of(10, ChronoUnit.SECONDS))
+            .build();
+    RedisClient redisClient = RedisClient.create(redisUri);
+    StatefulRedisConnection&lt;String, String&gt; redisConnection = redisClient.connect();
+    RedisCommands&lt;String, String&gt; redisCommands = redisConnection.sync();
+    // 只接收键过期的事件
+    redisCommands.configSet(&quot;notify-keyspace-events&quot;, &quot;Ex&quot;);
+    StatefulRedisPubSubConnection&lt;String, String&gt; connection = redisClient.connectPubSub();
+    connection.addListener(new RedisPubSubAdapter&lt;&gt;() {
+
+        @Override
+        public void psubscribed(String pattern, long count) {
+            log.info(&quot;pattern:{},count:{}&quot;, pattern, count);
+        }
+
+        @Override
+        public void message(String pattern, String channel, String message) {
+            log.info(&quot;pattern:{},channel:{},message:{}&quot;, pattern, channel, message);
+        }
+    });
+    RedisPubSubCommands&lt;String, String&gt; commands = connection.sync();
+    commands.psubscribe(&quot;__keyevent@0__:expired&quot;);
+    redisCommands.setex(&quot;name&quot;, 2, &quot;throwable&quot;);
+    Thread.sleep(10000);
+    redisConnection.close();
+    connection.close();
+    redisClient.shutdown();
+}
+// pattern:__keyevent@0__:expired,count:1
+// pattern:__keyevent@0__:expired,channel:__keyevent@0__:expired,message:name
+</code></pre>
+
+<p>实际上，在实现<code>RedisPubSubListener</code>的时候可以单独抽离，尽量不要设计成匿名内部类的形式。</p>
+
+<h3 id="事务和批量命令执行">事务和批量命令执行</h3>
+
+<p>事务相关的命令就是<code>WATCH</code>、<code>UNWATCH</code>、<code>EXEC</code>、<code>MULTI</code>和<code>DISCARD</code>，在<code>RedisCommands</code>系列接口中有对应的方法。举个例子：</p>
+
+<pre><code class="language-java">// 同步模式
+@Test
+public void testSyncMulti() throws Exception {
+    COMMAND.multi();
+    COMMAND.setex(&quot;name-1&quot;, 2, &quot;throwable&quot;);
+    COMMAND.setex(&quot;name-2&quot;, 2, &quot;doge&quot;);
+    TransactionResult result = COMMAND.exec();
+    int index = 0;
+    for (Object r : result) {
+        log.info(&quot;Result-{}:{}&quot;, index, r);
+        index++;
+    }
+}
+// Result-0:OK
+// Result-1:OK
+</code></pre>
+
+<p><code>Redis</code>的<code>Pipeline</code>也就是管道机制可以理解为把多个命令打包在一次请求发送到<code>Redis</code>服务端，然后<code>Redis</code>服务端把所有的响应结果打包好一次性返回，从而节省不必要的网络资源（最主要是减少网络请求次数）。<code>Redis</code>对于<code>Pipeline</code>机制如何实现并没有明确的规定，也没有提供特殊的命令支持<code>Pipeline</code>机制。<code>Jedis</code>中底层采用<code>BIO</code>（阻塞IO）通讯，所以它的做法是客户端缓存将要发送的命令，最后需要触发然后同步发送一个巨大的命令列表包，再接收和解析一个巨大的响应列表包。<code>Pipeline</code>在<code>Lettuce</code>中对使用者是透明的，由于底层的通讯框架是<code>Netty</code>，所以网络通讯层面的优化<code>Lettuce</code>不需要过多干预，换言之可以这样理解：<code>Netty</code>帮<code>Lettuce</code>从底层实现了<code>Redis</code>的<code>Pipeline</code>机制。但是，<code>Lettuce</code>的异步<code>API</code>也提供了手动<code>Flush</code>的方法：</p>
+
+<pre><code class="language-java">@Test
+public void testAsyncManualFlush() {
+    // 取消自动flush
+    ASYNC_COMMAND.setAutoFlushCommands(false);
+    List&lt;RedisFuture&lt;?&gt;&gt; redisFutures = Lists.newArrayList();
+    int count = 5000;
+    for (int i = 0; i &lt; count; i++) {
+        String key = &quot;key-&quot; + (i + 1);
+        String value = &quot;value-&quot; + (i + 1);
+        redisFutures.add(ASYNC_COMMAND.set(key, value));
+        redisFutures.add(ASYNC_COMMAND.expire(key, 2));
+    }
+    long start = System.currentTimeMillis();
+    ASYNC_COMMAND.flushCommands();
+    boolean result = LettuceFutures.awaitAll(10, TimeUnit.SECONDS, redisFutures.toArray(new RedisFuture[0]));
+    Assertions.assertThat(result).isTrue();
+    log.info(&quot;Lettuce cost:{} ms&quot;, System.currentTimeMillis() - start);
+}
+// Lettuce cost:1302 ms
+</code></pre>
+
+<p>上面只是从文档看到的一些理论术语，但是现实是骨感的，对比了下<code>Jedis</code>的<code>Pipeline</code>提供的方法，发现了<code>Jedis</code>的<code>Pipeline</code>执行耗时比较低：</p>
+
+<pre><code class="language-java">@Test
+public void testJedisPipeline() throws Exception {
+    Jedis jedis = new Jedis();
+    Pipeline pipeline = jedis.pipelined();
+    int count = 5000;
+    for (int i = 0; i &lt; count; i++) {
+        String key = &quot;key-&quot; + (i + 1);
+        String value = &quot;value-&quot; + (i + 1);
+        pipeline.set(key, value);
+        pipeline.expire(key, 2);
+    }
+    long start = System.currentTimeMillis();
+    pipeline.syncAndReturnAll();
+    log.info(&quot;Jedis cost:{} ms&quot;, System.currentTimeMillis()  - start);
+}
+// Jedis cost:9 ms
+</code></pre>
+
+<p>个人猜测<code>Lettuce</code>可能底层并非合并所有命令一次发送（甚至可能是单条发送），具体可能需要抓包才能定位。依此来看，如果真的有大量执行<code>Redis</code>命令的场景，不妨可以使用<code>Jedis</code>的<code>Pipeline</code>。</p>
+
+<p>注意：由上面的测试推断<code>RedisTemplate</code>的<code>executePipelined()</code>方法是假的<code>Pipeline</code>执行方法，使用<code>RedisTemplate</code>的时候请务必注意这一点。</p>
+
+<h3 id="lua脚本执行">Lua脚本执行</h3>
+
+<p><code>Lettuce</code>中执行<code>Redis</code>的<code>Lua</code>命令的同步接口如下：</p>
+
+<pre><code class="language-java">public interface RedisScriptingCommands&lt;K, V&gt; {
+
+    &lt;T&gt; T eval(String var1, ScriptOutputType var2, K... var3);
+
+    &lt;T&gt; T eval(String var1, ScriptOutputType var2, K[] var3, V... var4);
+
+    &lt;T&gt; T evalsha(String var1, ScriptOutputType var2, K... var3);
+
+    &lt;T&gt; T evalsha(String var1, ScriptOutputType var2, K[] var3, V... var4);
+
+    List&lt;Boolean&gt; scriptExists(String... var1);
+
+    String scriptFlush();
+
+    String scriptKill();
+
+    String scriptLoad(V var1);
+
+    String digest(V var1);
+}
+</code></pre>
+
+<p>异步和反应式的接口方法定义差不多，不同的地方就是返回值类型，一般我们常用的是<code>eval()</code>、<code>evalsha()</code>和<code>scriptLoad()</code>方法。举个简单的例子：</p>
+
+<pre><code class="language-java">private static RedisCommands&lt;String, String&gt; COMMANDS;
+private static String RAW_LUA = &quot;local key = KEYS[1]\n&quot; +
+        &quot;local value = ARGV[1]\n&quot; +
+        &quot;local timeout = ARGV[2]\n&quot; +
+        &quot;redis.call('SETEX', key, tonumber(timeout), value)\n&quot; +
+        &quot;local result = redis.call('GET', key)\n&quot; +
+        &quot;return result;&quot;;
+private static AtomicReference&lt;String&gt; LUA_SHA = new AtomicReference&lt;&gt;();
+
+@Test
+public void testLua() throws Exception {
+    LUA_SHA.compareAndSet(null, COMMANDS.scriptLoad(RAW_LUA));
+    String[] keys = new String[]{&quot;name&quot;};
+    String[] args = new String[]{&quot;throwable&quot;, &quot;5000&quot;};
+    String result = COMMANDS.evalsha(LUA_SHA.get(), ScriptOutputType.VALUE, keys, args);
+    log.info(&quot;Get value:{}&quot;, result);
+}
+// Get value:throwable
+</code></pre>
+
+<h2 id="高可用和分片">高可用和分片</h2>
+
+<p>为了<code>Redis</code>的高可用，一般会采用普通主从（<code>Master/Replica</code>，这里笔者称为普通主从模式，也就是仅仅做了主从复制，故障需要手动切换）、哨兵和集群。普通主从模式可以独立运行，也可以配合哨兵运行，只是哨兵提供自动故障转移和主节点提升功能。普通主从和哨兵都可以使用<code>MasterSlave</code>，通过入参包括<code>RedisClient</code>、编码解码器以及一个或者多个<code>RedisURI</code>获取对应的<code>Connection</code>实例。</p>
+
+<p>这里注意一点，<code>MasterSlave</code>中提供的方法如果只要求传入一个<code>RedisURI</code>实例，那么<code>Lettuce</code>会进行拓扑发现机制，自动获取<code>Redis</code>主从节点信息；如果要求传入一个<code>RedisURI</code>集合，那么对于普通主从模式来说所有节点信息是静态的，不会进行发现和更新。</p>
+
+<p>拓扑发现的规则如下：</p>
+
+<ul>
+<li><p>对于普通主从（<code>Master/Replica</code>）模式，不需要感知<code>RedisURI</code>指向从节点还是主节点，只会进行一次性的拓扑查找所有节点信息，此后节点信息会保存在静态缓存中，不会更新。</p></li>
+
+<li><p>对于哨兵模式，会订阅所有哨兵实例并侦听订阅/发布消息以触发拓扑刷新机制，更新缓存的节点信息，也就是哨兵天然就是动态发现节点信息，不支持静态配置。
+拓扑发现机制的提供<code>API</code>为<code>TopologyProvider</code>，需要了解其原理的可以参考具体的实现。</p></li>
+</ul>
+
+<p>对于集群（<code>Cluster</code>）模式，<code>Lettuce</code>提供了一套独立的<code>API</code>。</p>
+
+<p>另外，如果<code>Lettuce</code>连接面向的是非单个<code>Redis</code>节点，连接实例提供了数据读取节点偏好（<code>ReadFrom</code>）设置，可选值有：</p>
+
+<ul>
+<li><p><code>MASTER</code>：只从<code>Master</code>节点中读取。</p></li>
+
+<li><p><code>MASTER_PREFERRED</code>：优先从<code>Master</code>节点中读取。</p></li>
+
+<li><p><code>SLAVE_PREFERRED</code>：优先从<code>Slavor</code>节点中读取。</p></li>
+
+<li><p><code>SLAVE</code>：只从<code>Slavor</code>节点中读取。</p></li>
+
+<li><p><code>NEAREST</code>：使用最近一次连接的<code>Redis</code>实例读取。</p>
+
+<h3 id="普通主从模式">普通主从模式</h3></li>
+</ul>
+
+<p>假设现在有三个<code>Redis</code>服务形成树状主从关系如下：</p>
+
+<ul>
+<li><p>节点一：localhost:6379，角色为Master。</p></li>
+
+<li><p>节点二：localhost:6380，角色为Slavor，节点一的从节点。</p></li>
+
+<li><p>节点三：localhost:6381，角色为Slavor，节点二的从节点。</p></li>
+</ul>
+
+<p>首次动态节点发现主从模式的节点信息需要如下构建连接：</p>
+
+<pre><code class="language-java">@Test
+public void testDynamicReplica() throws Exception {
+    // 这里只需要配置一个节点的连接信息，不一定需要是主节点的信息，从节点也可以
+    RedisURI uri = RedisURI.builder().withHost(&quot;localhost&quot;).withPort(6379).build();
+    RedisClient redisClient = RedisClient.create(uri);
+    StatefulRedisMasterSlaveConnection&lt;String, String&gt; connection = MasterSlave.connect(redisClient, new Utf8StringCodec(), uri);
+    // 只从从节点读取数据
+    connection.setReadFrom(ReadFrom.SLAVE);
+    // 执行其他Redis命令
+    connection.close();
+    redisClient.shutdown();
+}
+</code></pre>
+
+<p>如果需要指定静态的<code>Redis</code>主从节点连接属性，那么可以这样构建连接：</p>
+
+<pre><code class="language-java">@Test
+public void testStaticReplica() throws Exception {
+    List&lt;RedisURI&gt; uris = new ArrayList&lt;&gt;();
+    RedisURI uri1 = RedisURI.builder().withHost(&quot;localhost&quot;).withPort(6379).build();
+    RedisURI uri2 = RedisURI.builder().withHost(&quot;localhost&quot;).withPort(6380).build();
+    RedisURI uri3 = RedisURI.builder().withHost(&quot;localhost&quot;).withPort(6381).build();
+    uris.add(uri1);
+    uris.add(uri2);
+    uris.add(uri3);
+    RedisClient redisClient = RedisClient.create();
+    StatefulRedisMasterSlaveConnection&lt;String, String&gt; connection = MasterSlave.connect(redisClient,
+            new Utf8StringCodec(), uris);
+    // 只从主节点读取数据
+    connection.setReadFrom(ReadFrom.MASTER);
+    // 执行其他Redis命令
+    connection.close();
+    redisClient.shutdown();
+}
+</code></pre>
+
+<h3 id="哨兵模式">哨兵模式</h3>
+
+<p>由于<code>Lettuce</code>自身提供了哨兵的拓扑发现机制，所以只需要随便配置一个哨兵节点的<code>RedisURI</code>实例即可：</p>
+
+<pre><code class="language-java">@Test
+public void testDynamicSentinel() throws Exception {
+    RedisURI redisUri = RedisURI.builder()
+            .withPassword(&quot;你的密码&quot;)
+            .withSentinel(&quot;localhost&quot;, 26379)
+            .withSentinelMasterId(&quot;哨兵Master的ID&quot;)
+            .build();
+    RedisClient redisClient = RedisClient.create();
+    StatefulRedisMasterSlaveConnection&lt;String, String&gt; connection = MasterSlave.connect(redisClient, new Utf8StringCodec(), redisUri);
+    // 只允许从从节点读取数据
+    connection.setReadFrom(ReadFrom.SLAVE);
+    RedisCommands&lt;String, String&gt; command = connection.sync();
+    SetArgs setArgs = SetArgs.Builder.nx().ex(5);
+    command.set(&quot;name&quot;, &quot;throwable&quot;, setArgs);
+    String value = command.get(&quot;name&quot;);
+    log.info(&quot;Get value:{}&quot;, value);
+}
+// Get value:throwable
+</code></pre>
+
+<h3 id="集群模式">集群模式</h3>
+
+<p>鉴于笔者对<code>Redis</code>集群模式并不熟悉，<code>Cluster</code>模式下的<code>API</code>使用本身就有比较多的限制，所以这里只简单介绍一下怎么用。先说几个特性：</p>
+
+<p>下面的API提供跨槽位（<code>Slot</code>）调用的功能：</p>
+
+<ul>
+<li><p><code>RedisAdvancedClusterCommands</code>。</p></li>
+
+<li><p><code>RedisAdvancedClusterAsyncCommands</code>。</p></li>
+
+<li><p><code>RedisAdvancedClusterReactiveCommands</code>。</p></li>
+</ul>
+
+<p>静态节点选择功能：</p>
+
+<ul>
+<li><p><code>masters</code>：选择所有主节点执行命令。</p></li>
+
+<li><p><code>slaves</code>：选择所有从节点执行命令，其实就是只读模式。</p></li>
+
+<li><p><code>all nodes</code>：命令可以在所有节点执行。</p></li>
+</ul>
+
+<p>集群拓扑视图动态更新功能：</p>
+
+<ul>
+<li><p>手动更新，主动调用<code>RedisClusterClient#reloadPartitions()</code>。</p></li>
+
+<li><p>后台定时更新。</p></li>
+
+<li><p>自适应更新，基于连接断开和<code>MOVED/ASK</code>命令重定向自动更新。</p></li>
+</ul>
+
+<p><code>Redis</code>集群搭建详细过程可以参考官方文档，假设已经搭建好集群如下（<code>192.168.56.200</code>是笔者的虚拟机Host）：</p>
+
+<ul>
+<li><p>192.168.56.200:7001 =&gt; 主节点，槽位0-5460。</p></li>
+
+<li><p>192.168.56.200:7002 =&gt; 主节点，槽位5461-10922。</p></li>
+
+<li><p>192.168.56.200:7003 =&gt; 主节点，槽位10923-16383。</p></li>
+
+<li><p>192.168.56.200:7004 =&gt; 7001的从节点。</p></li>
+
+<li><p>192.168.56.200:7005 =&gt; 7002的从节点。</p></li>
+
+<li><p>192.168.56.200:7006 =&gt; 7003的从节点。</p></li>
+</ul>
+
+<p>简单的集群连接和使用方式如下：</p>
+
+<pre><code class="language-java">@Test
+public void testSyncCluster(){
+    RedisURI uri = RedisURI.builder().withHost(&quot;192.168.56.200&quot;).build();
+    RedisClusterClient redisClusterClient = RedisClusterClient.create(uri);
+    StatefulRedisClusterConnection&lt;String, String&gt; connection = redisClusterClient.connect();
+    RedisAdvancedClusterCommands&lt;String, String&gt; commands = connection.sync();
+    commands.setex(&quot;name&quot;,10, &quot;throwable&quot;);
+    String value = commands.get(&quot;name&quot;);
+    log.info(&quot;Get value:{}&quot;, value);
+}
+// Get value:throwable
+</code></pre>
+
+<p>节点选择：</p>
+
+<pre><code class="language-java">@Test
+public void testSyncNodeSelection() {
+    RedisURI uri = RedisURI.builder().withHost(&quot;192.168.56.200&quot;).withPort(7001).build();
+    RedisClusterClient redisClusterClient = RedisClusterClient.create(uri);
+    StatefulRedisClusterConnection&lt;String, String&gt; connection = redisClusterClient.connect();
+    RedisAdvancedClusterCommands&lt;String, String&gt; commands = connection.sync();
+//  commands.all();  // 所有节点
+//  commands.masters();  // 主节点
+    // 从节点只读
+    NodeSelection&lt;String, String&gt; replicas = commands.slaves();
+    NodeSelectionCommands&lt;String, String&gt; nodeSelectionCommands = replicas.commands();
+    // 这里只是演示,一般应该禁用keys *命令
+    Executions&lt;List&lt;String&gt;&gt; keys = nodeSelectionCommands.keys(&quot;*&quot;);
+    keys.forEach(key -&gt; log.info(&quot;key: {}&quot;, key));
+    connection.close();
+    redisClusterClient.shutdown();
+}
+</code></pre>
+
+<p>定时更新集群拓扑视图（每隔十分钟更新一次，这个时间自行考量，不能太频繁）：</p>
+
+<pre><code class="language-java">@Test
+public void testPeriodicClusterTopology() throws Exception {
+    RedisURI uri = RedisURI.builder().withHost(&quot;192.168.56.200&quot;).withPort(7001).build();
+    RedisClusterClient redisClusterClient = RedisClusterClient.create(uri);
+    ClusterTopologyRefreshOptions options = ClusterTopologyRefreshOptions
+            .builder()
+            .enablePeriodicRefresh(Duration.of(10, ChronoUnit.MINUTES))
+            .build();
+    redisClusterClient.setOptions(ClusterClientOptions.builder().topologyRefreshOptions(options).build());
+    StatefulRedisClusterConnection&lt;String, String&gt; connection = redisClusterClient.connect();
+    RedisAdvancedClusterCommands&lt;String, String&gt; commands = connection.sync();
+    commands.setex(&quot;name&quot;, 10, &quot;throwable&quot;);
+    String value = commands.get(&quot;name&quot;);
+    log.info(&quot;Get value:{}&quot;, value);
+    Thread.sleep(Integer.MAX_VALUE);
+    connection.close();
+    redisClusterClient.shutdown();
+}
+</code></pre>
+
+<p>自适应更新集群拓扑视图：</p>
+
+<pre><code class="language-java">@Test
+public void testAdaptiveClusterTopology() throws Exception {
+    RedisURI uri = RedisURI.builder().withHost(&quot;192.168.56.200&quot;).withPort(7001).build();
+    RedisClusterClient redisClusterClient = RedisClusterClient.create(uri);
+    ClusterTopologyRefreshOptions options = ClusterTopologyRefreshOptions.builder()
+            .enableAdaptiveRefreshTrigger(
+                    ClusterTopologyRefreshOptions.RefreshTrigger.MOVED_REDIRECT,
+                    ClusterTopologyRefreshOptions.RefreshTrigger.PERSISTENT_RECONNECTS
+            )
+            .adaptiveRefreshTriggersTimeout(Duration.of(30, ChronoUnit.SECONDS))
+            .build();
+    redisClusterClient.setOptions(ClusterClientOptions.builder().topologyRefreshOptions(options).build());
+    StatefulRedisClusterConnection&lt;String, String&gt; connection = redisClusterClient.connect();
+    RedisAdvancedClusterCommands&lt;String, String&gt; commands = connection.sync();
+    commands.setex(&quot;name&quot;, 10, &quot;throwable&quot;);
+    String value = commands.get(&quot;name&quot;);
+    log.info(&quot;Get value:{}&quot;, value);
+    Thread.sleep(Integer.MAX_VALUE);
+    connection.close();
+    redisClusterClient.shutdown();
+}
+</code></pre>
+
+<h2 id="动态命令和自定义命令">动态命令和自定义命令</h2>
+
+<p>自定义命令是<code>Redis</code>命令有限集，不过可以更细粒度指定<code>KEY</code>、<code>ARGV</code>、命令类型、编码解码器和返回值类型，依赖于<code>dispatch()</code>方法：</p>
+
+<pre><code class="language-java">// 自定义实现PING方法
+@Test
+public void testCustomPing() throws Exception {
+    RedisURI redisUri = RedisURI.builder()
+            .withHost(&quot;localhost&quot;)
+            .withPort(6379)
+            .withTimeout(Duration.of(10, ChronoUnit.SECONDS))
+            .build();
+    RedisClient redisClient = RedisClient.create(redisUri);
+    StatefulRedisConnection&lt;String, String&gt; connect = redisClient.connect();
+    RedisCommands&lt;String, String&gt; sync = connect.sync();
+    RedisCodec&lt;String, String&gt; codec = StringCodec.UTF8;
+    String result = sync.dispatch(CommandType.PING, new StatusOutput&lt;&gt;(codec));
+    log.info(&quot;PING:{}&quot;, result);
+    connect.close();
+    redisClient.shutdown();
+}
+// PING:PONG
+
+// 自定义实现Set方法
+@Test
+public void testCustomSet() throws Exception {
+    RedisURI redisUri = RedisURI.builder()
+            .withHost(&quot;localhost&quot;)
+            .withPort(6379)
+            .withTimeout(Duration.of(10, ChronoUnit.SECONDS))
+            .build();
+    RedisClient redisClient = RedisClient.create(redisUri);
+    StatefulRedisConnection&lt;String, String&gt; connect = redisClient.connect();
+    RedisCommands&lt;String, String&gt; sync = connect.sync();
+    RedisCodec&lt;String, String&gt; codec = StringCodec.UTF8;
+    sync.dispatch(CommandType.SETEX, new StatusOutput&lt;&gt;(codec),
+            new CommandArgs&lt;&gt;(codec).addKey(&quot;name&quot;).add(5).addValue(&quot;throwable&quot;));
+    String result = sync.get(&quot;name&quot;);
+    log.info(&quot;Get value:{}&quot;, result);
+    connect.close();
+    redisClient.shutdown();
+}
+// Get value:throwable
+</code></pre>
+
+<p>动态命令是基于<code>Redis</code>命令有限集，并且通过注解和动态代理完成一些复杂命令组合的实现。主要注解在<code>io.lettuce.core.dynamic.annotation</code>包路径下。简单举个例子：</p>
+
+<pre><code class="language-java">public interface CustomCommand extends Commands {
+
+    // SET [key] [value]
+    @Command(&quot;SET ?0 ?1&quot;)
+    String setKey(String key, String value);
+
+    // SET [key] [value]
+    @Command(&quot;SET :key :value&quot;)
+    String setKeyNamed(@Param(&quot;key&quot;) String key, @Param(&quot;value&quot;) String value);
+
+    // MGET [key1] [key2]
+    @Command(&quot;MGET ?0 ?1&quot;)
+    List&lt;String&gt; mGet(String key1, String key2);
+    /**
+     * 方法名作为命令
+     */
+    @CommandNaming(strategy = CommandNaming.Strategy.METHOD_NAME)
+    String mSet(String key1, String value1, String key2, String value2);
+}
+
+
+@Test
+public void testCustomDynamicSet() throws Exception {
+    RedisURI redisUri = RedisURI.builder()
+            .withHost(&quot;localhost&quot;)
+            .withPort(6379)
+            .withTimeout(Duration.of(10, ChronoUnit.SECONDS))
+            .build();
+    RedisClient redisClient = RedisClient.create(redisUri);
+    StatefulRedisConnection&lt;String, String&gt; connect = redisClient.connect();
+    RedisCommandFactory commandFactory = new RedisCommandFactory(connect);
+    CustomCommand commands = commandFactory.getCommands(CustomCommand.class);
+    commands.setKey(&quot;name&quot;, &quot;throwable&quot;);
+    commands.setKeyNamed(&quot;throwable&quot;, &quot;doge&quot;);
+    log.info(&quot;MGET ===&gt; &quot; + commands.mGet(&quot;name&quot;, &quot;throwable&quot;));
+    commands.mSet(&quot;key1&quot;, &quot;value1&quot;,&quot;key2&quot;, &quot;value2&quot;);
+    log.info(&quot;MGET ===&gt; &quot; + commands.mGet(&quot;key1&quot;, &quot;key2&quot;));
+    connect.close();
+    redisClient.shutdown();
+}
+// MGET ===&gt; [throwable, doge]
+// MGET ===&gt; [value1, value2]
+</code></pre>
+
+<h2 id="高阶特性">高阶特性</h2>
+
+<p><code>Lettuce</code>有很多高阶使用特性，这里只列举个人认为常用的两点：</p>
+
+<ul>
+<li><p>配置客户端资源。</p></li>
+
+<li><p>使用连接池。</p></li>
+</ul>
+
+<p>更多其他特性可以自行参看官方文档。</p>
+
+<h3 id="配置客户端资源">配置客户端资源</h3>
+
+<p>客户端资源的设置与<code>Lettuce</code>的性能、并发和事件处理相关。线程池或者线程组相关配置占据客户端资源配置的大部分（<code>EventLoopGroups</code>和<code>EventExecutorGroup</code>），这些线程池或者线程组是连接程序的基础组件。一般情况下，客户端资源应该在多个<code>Redis</code>客户端之间共享，并且在不再使用的时候需要自行关闭。笔者认为，客户端资源是面向<code>Netty</code>的。注意：除非特别熟悉或者花长时间去测试调整下面提到的参数，否则在没有经验的前提下凭直觉修改默认值，有可能会踩坑。</p>
+
+<p>客户端资源接口是<code>ClientResources</code>，实现类是<code>DefaultClientResources</code>。</p>
+
+<p>构建<code>DefaultClientResources</code>实例：</p>
+
+<pre><code class="language-java">// 默认
+ClientResources resources = DefaultClientResources.create();
+
+// 建造器
+ClientResources resources = DefaultClientResources.builder()
+                        .ioThreadPoolSize(4)
+                        .computationThreadPoolSize(4)
+                        .build()
+</code></pre>
+
+<p>使用：</p>
+
+<pre><code class="language-java">ClientResources resources = DefaultClientResources.create();
+// 非集群
+RedisClient client = RedisClient.create(resources, uri);
+// 集群
+RedisClusterClient clusterClient = RedisClusterClient.create(resources, uris);
+// ......
+client.shutdown();
+clusterClient.shutdown();
+// 关闭资源
+resources.shutdown();
+</code></pre>
+
+<p>客户端资源基本配置：</p>
+
+<table>
+<thead>
+<tr>
+<th align="center">属性</th>
+<th align="center">描述</th>
+<th align="center">默认值</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td align="center"><code>ioThreadPoolSize</code></td>
+<td align="center"><code>I/O</code>线程数</td>
+<td align="center"><code>Runtime.getRuntime().availableProcessors()</code></td>
+</tr>
+
+<tr>
+<td align="center"><code>computationThreadPoolSize</code></td>
+<td align="center">任务线程数</td>
+<td align="center"><code>Runtime.getRuntime().availableProcessors()</code></td>
+</tr>
+</tbody>
+</table>
+
+<p>客户端资源高级配置：</p>
+
+<table>
+<thead>
+<tr>
+<th align="center">属性</th>
+<th align="center">描述</th>
+<th align="center">默认值</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td align="center"><code>eventLoopGroupProvider</code></td>
+<td align="center"><code>EventLoopGroup</code>提供商</td>
+<td align="center">-</td>
+</tr>
+
+<tr>
+<td align="center"><code>eventExecutorGroupProvider</code></td>
+<td align="center"><code>EventExecutorGroup</code>提供商</td>
+<td align="center">-</td>
+</tr>
+
+<tr>
+<td align="center"><code>eventBus</code></td>
+<td align="center">事件总线</td>
+<td align="center"><code>DefaultEventBus</code></td>
+</tr>
+
+<tr>
+<td align="center"><code>commandLatencyCollectorOptions</code></td>
+<td align="center">命令延时收集器配置</td>
+<td align="center"><code>DefaultCommandLatencyCollectorOptions</code></td>
+</tr>
+
+<tr>
+<td align="center"><code>commandLatencyCollector</code></td>
+<td align="center">命令延时收集器</td>
+<td align="center"><code>DefaultCommandLatencyCollector</code></td>
+</tr>
+
+<tr>
+<td align="center"><code>commandLatencyPublisherOptions</code></td>
+<td align="center">命令延时发布器配置</td>
+<td align="center"><code>DefaultEventPublisherOptions</code></td>
+</tr>
+
+<tr>
+<td align="center"><code>dnsResolver</code></td>
+<td align="center"><code>DNS</code>处理器</td>
+<td align="center">JDK或者<code>Netty</code>提供</td>
+</tr>
+
+<tr>
+<td align="center"><code>reconnectDelay</code></td>
+<td align="center">重连延时配置</td>
+<td align="center"><code>Delay.exponential()</code></td>
+</tr>
+
+<tr>
+<td align="center"><code>nettyCustomizer</code></td>
+<td align="center"><code>Netty</code>自定义配置器</td>
+<td align="center">-</td>
+</tr>
+
+<tr>
+<td align="center"><code>tracing</code></td>
+<td align="center">轨迹记录器</td>
+<td align="center">-</td>
+</tr>
+</tbody>
+</table>
+
+<p>非集群客户端<code>RedisClient</code>的属性配置：</p>
+
+<p><code>Redis</code>非集群客户端<code>RedisClient</code>本身提供了配置属性方法：</p>
+
+<pre><code class="language-java">RedisClient client = RedisClient.create(uri);
+client.setOptions(ClientOptions.builder()
+                       .autoReconnect(false)
+                       .pingBeforeActivateConnection(true)
+                       .build());
+</code></pre>
+
+<p>非集群客户端的配置属性列表：</p>
+
+<table>
+<thead>
+<tr>
+<th align="center">属性</th>
+<th align="center">描述</th>
+<th align="center">默认值</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td align="center"><code>pingBeforeActivateConnection</code></td>
+<td align="center">连接激活之前是否执行<code>PING</code>命令</td>
+<td align="center">false</td>
+</tr>
+
+<tr>
+<td align="center"><code>autoReconnect</code></td>
+<td align="center">是否自动重连</td>
+<td align="center">true</td>
+</tr>
+
+<tr>
+<td align="center"><code>cancelCommandsOnReconnectFailure</code></td>
+<td align="center">重连失败是否拒绝命令执行</td>
+<td align="center">false</td>
+</tr>
+
+<tr>
+<td align="center"><code>suspendReconnectOnProtocolFailure</code></td>
+<td align="center">底层协议失败是否挂起重连操作</td>
+<td align="center">false</td>
+</tr>
+
+<tr>
+<td align="center"><code>requestQueueSize</code></td>
+<td align="center">请求队列容量</td>
+<td align="center">2147483647(Integer#MAX_VALUE)</td>
+</tr>
+
+<tr>
+<td align="center"><code>disconnectedBehavior</code></td>
+<td align="center">失去连接时候的行为</td>
+<td align="center"><code>DEFAULT</code></td>
+</tr>
+
+<tr>
+<td align="center"><code>sslOptions</code></td>
+<td align="center"><code>SSL配置</code></td>
+<td align="center">-</td>
+</tr>
+
+<tr>
+<td align="center"><code>socketOptions</code></td>
+<td align="center"><code>Socket</code>配置</td>
+<td align="center"><code>10 seconds Connection-Timeout, no keep-alive, no TCP noDelay</code></td>
+</tr>
+
+<tr>
+<td align="center"><code>timeoutOptions</code></td>
+<td align="center">超时配置</td>
+<td align="center">-</td>
+</tr>
+
+<tr>
+<td align="center"><code>publishOnScheduler</code></td>
+<td align="center">发布反应式信号数据的调度器</td>
+<td align="center">使用<code>I/O</code>线程</td>
+</tr>
+</tbody>
+</table>
+
+<p>集群客户端属性配置：</p>
+
+<p><code>Redis</code>集群客户端<code>RedisClusterClient</code>本身提供了配置属性方法：</p>
+
+<pre><code class="language-java">RedisClusterClient client = RedisClusterClient.create(uri);
+ClusterTopologyRefreshOptions topologyRefreshOptions = ClusterTopologyRefreshOptions.builder()
+                .enablePeriodicRefresh(refreshPeriod(10, TimeUnit.MINUTES))
+                .enableAllAdaptiveRefreshTriggers()
+                .build();
+
+client.setOptions(ClusterClientOptions.builder()
+                       .topologyRefreshOptions(topologyRefreshOptions)
+                       .build());
+</code></pre>
+
+<p>集群客户端的配置属性列表：</p>
+
+<table>
+<thead>
+<tr>
+<th align="center">属性</th>
+<th align="center">描述</th>
+<th align="center">默认值</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td align="center"><code>enablePeriodicRefresh</code></td>
+<td align="center">是否允许周期性更新集群拓扑视图</td>
+<td align="center">false</td>
+</tr>
+
+<tr>
+<td align="center"><code>refreshPeriod</code></td>
+<td align="center">更新集群拓扑视图周期</td>
+<td align="center">60秒</td>
+</tr>
+
+<tr>
+<td align="center"><code>enableAdaptiveRefreshTrigger</code></td>
+<td align="center">设置自适应更新集群拓扑视图触发器<code>RefreshTrigger</code></td>
+<td align="center">-</td>
+</tr>
+
+<tr>
+<td align="center"><code>adaptiveRefreshTriggersTimeout</code></td>
+<td align="center">自适应更新集群拓扑视图触发器超时设置</td>
+<td align="center">30秒</td>
+</tr>
+
+<tr>
+<td align="center"><code>refreshTriggersReconnectAttempts</code></td>
+<td align="center">自适应更新集群拓扑视图触发重连次数</td>
+<td align="center">5</td>
+</tr>
+
+<tr>
+<td align="center"><code>dynamicRefreshSources</code></td>
+<td align="center">是否允许动态刷新拓扑资源</td>
+<td align="center">true</td>
+</tr>
+
+<tr>
+<td align="center"><code>closeStaleConnections</code></td>
+<td align="center">是否允许关闭陈旧的连接</td>
+<td align="center">true</td>
+</tr>
+
+<tr>
+<td align="center"><code>maxRedirects</code></td>
+<td align="center">集群重定向次数上限</td>
+<td align="center">5</td>
+</tr>
+
+<tr>
+<td align="center"><code>validateClusterNodeMembership</code></td>
+<td align="center">是否校验集群节点的成员关系</td>
+<td align="center">true</td>
+</tr>
+</tbody>
+</table>
+
+<h3 id="使用连接池">使用连接池</h3>
+
+<p>引入连接池依赖<code>commons-pool2</code>：</p>
+
+<pre><code class="language-xml">&lt;dependency&gt;
+    &lt;groupId&gt;org.apache.commons&lt;/groupId&gt;
+    &lt;artifactId&gt;commons-pool2&lt;/artifactId&gt;
+    &lt;version&gt;2.7.0&lt;/version&gt;
+&lt;/dependency
+</code></pre>
+
+<p>基本使用如下：</p>
+
+<pre><code class="language-java">@Test
+public void testUseConnectionPool() throws Exception {
+    RedisURI redisUri = RedisURI.builder()
+            .withHost(&quot;localhost&quot;)
+            .withPort(6379)
+            .withTimeout(Duration.of(10, ChronoUnit.SECONDS))
+            .build();
+    RedisClient redisClient = RedisClient.create(redisUri);
+    GenericObjectPoolConfig poolConfig = new GenericObjectPoolConfig();
+    GenericObjectPool&lt;StatefulRedisConnection&lt;String, String&gt;&gt; pool
+            = ConnectionPoolSupport.createGenericObjectPool(redisClient::connect, poolConfig);
+    try (StatefulRedisConnection&lt;String, String&gt; connection = pool.borrowObject()) {
+        RedisCommands&lt;String, String&gt; command = connection.sync();
+        SetArgs setArgs = SetArgs.Builder.nx().ex(5);
+        command.set(&quot;name&quot;, &quot;throwable&quot;, setArgs);
+        String n = command.get(&quot;name&quot;);
+        log.info(&quot;Get value:{}&quot;, n);
+    }
+    pool.close();
+    redisClient.shutdown();
+}
+</code></pre>
+
+<p>其中，同步连接的池化支持需要用<code>ConnectionPoolSupport</code>，异步连接的池化支持需要用<code>AsyncConnectionPoolSupport</code>（<code>Lettuce</code>5.1之后才支持）。</p>
+
+<h2 id="几个常见的渐进式删除例子">几个常见的渐进式删除例子</h2>
+
+<p>渐进式删除Hash中的域-属性：</p>
+
+<pre><code class="language-java">@Test
+public void testDelBigHashKey() throws Exception {
+    // SCAN参数
+    ScanArgs scanArgs = ScanArgs.Builder.limit(2);
+    // TEMP游标
+    ScanCursor cursor = ScanCursor.INITIAL;
+    // 目标KEY
+    String key = &quot;BIG_HASH_KEY&quot;;
+    prepareHashTestData(key);
+    log.info(&quot;开始渐进式删除Hash的元素...&quot;);
+    int counter = 0;
+    do {
+        MapScanCursor&lt;String, String&gt; result = COMMAND.hscan(key, cursor, scanArgs);
+        // 重置TEMP游标
+        cursor = ScanCursor.of(result.getCursor());
+        cursor.setFinished(result.isFinished());
+        Collection&lt;String&gt; fields = result.getMap().values();
+        if (!fields.isEmpty()) {
+            COMMAND.hdel(key, fields.toArray(new String[0]));
+        }
+        counter++;
+    } while (!(ScanCursor.FINISHED.getCursor().equals(cursor.getCursor()) &amp;amp;&amp;amp; ScanCursor.FINISHED.isFinished() == cursor.isFinished()));
+    log.info(&quot;渐进式删除Hash的元素完毕,迭代次数:{} ...&quot;, counter);
+}
+
+private void prepareHashTestData(String key) throws Exception {
+    COMMAND.hset(key, &quot;1&quot;, &quot;1&quot;);
+    COMMAND.hset(key, &quot;2&quot;, &quot;2&quot;);
+    COMMAND.hset(key, &quot;3&quot;, &quot;3&quot;);
+    COMMAND.hset(key, &quot;4&quot;, &quot;4&quot;);
+    COMMAND.hset(key, &quot;5&quot;, &quot;5&quot;);
+}
+</code></pre>
+
+<p>渐进式删除集合中的元素：</p>
+
+<pre><code class="language-java">@Test
+public void testDelBigSetKey() throws Exception {
+    String key = &quot;BIG_SET_KEY&quot;;
+    prepareSetTestData(key);
+    // SCAN参数
+    ScanArgs scanArgs = ScanArgs.Builder.limit(2);
+    // TEMP游标
+    ScanCursor cursor = ScanCursor.INITIAL;
+    log.info(&quot;开始渐进式删除Set的元素...&quot;);
+    int counter = 0;
+    do {
+        ValueScanCursor&lt;String&gt; result = COMMAND.sscan(key, cursor, scanArgs);
+        // 重置TEMP游标
+        cursor = ScanCursor.of(result.getCursor());
+        cursor.setFinished(result.isFinished());
+        List&lt;String&gt; values = result.getValues();
+        if (!values.isEmpty()) {
+            COMMAND.srem(key, values.toArray(new String[0]));
+        }
+        counter++;
+    } while (!(ScanCursor.FINISHED.getCursor().equals(cursor.getCursor()) &amp;amp;&amp;amp; ScanCursor.FINISHED.isFinished() == cursor.isFinished()));
+    log.info(&quot;渐进式删除Set的元素完毕,迭代次数:{} ...&quot;, counter);
+}
+
+private void prepareSetTestData(String key) throws Exception {
+    COMMAND.sadd(key, &quot;1&quot;, &quot;2&quot;, &quot;3&quot;, &quot;4&quot;, &quot;5&quot;);
+}
+</code></pre>
+
+<p>渐进式删除有序集合中的元素：</p>
+
+<pre><code class="language-java">@Test
+public void testDelBigZSetKey() throws Exception {
+    // SCAN参数
+    ScanArgs scanArgs = ScanArgs.Builder.limit(2);
+    // TEMP游标
+    ScanCursor cursor = ScanCursor.INITIAL;
+    // 目标KEY
+    String key = &quot;BIG_ZSET_KEY&quot;;
+    prepareZSetTestData(key);
+    log.info(&quot;开始渐进式删除ZSet的元素...&quot;);
+    int counter = 0;
+    do {
+        ScoredValueScanCursor&lt;String&gt; result = COMMAND.zscan(key, cursor, scanArgs);
+        // 重置TEMP游标
+        cursor = ScanCursor.of(result.getCursor());
+        cursor.setFinished(result.isFinished());
+        List&lt;ScoredValue&lt;String&gt;&gt; scoredValues = result.getValues();
+        if (!scoredValues.isEmpty()) {
+            COMMAND.zrem(key, scoredValues.stream().map(ScoredValue&lt;String&gt;::getValue).toArray(String[]::new));
+        }
+        counter++;
+    } while (!(ScanCursor.FINISHED.getCursor().equals(cursor.getCursor()) &amp;amp;&amp;amp; ScanCursor.FINISHED.isFinished() == cursor.isFinished()));
+    log.info(&quot;渐进式删除ZSet的元素完毕,迭代次数:{} ...&quot;, counter);
+}
+
+private void prepareZSetTestData(String key) throws Exception {
+    COMMAND.zadd(key, 0, &quot;1&quot;);
+    COMMAND.zadd(key, 0, &quot;2&quot;);
+    COMMAND.zadd(key, 0, &quot;3&quot;);
+    COMMAND.zadd(key, 0, &quot;4&quot;);
+    COMMAND.zadd(key, 0, &quot;5&quot;);
+}
+</code></pre>
+
+<h2 id="在springboot中使用lettuce">在SpringBoot中使用Lettuce</h2>
+
+<p>个人认为，<code>spring-data-redis</code>中的<code>API</code>封装并不是很优秀，用起来比较重，不够灵活，这里结合前面的例子和代码，在<code>SpringBoot</code>脚手架项目中配置和整合<code>Lettuce</code>。先引入依赖：</p>
+
+<pre><code class="language-xml">&lt;dependencyManagement&gt;
+    &lt;dependencies&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-boot-dependencies&lt;/artifactId&gt;
+            &lt;version&gt;2.1.8.RELEASE&lt;/version&gt;
+            &lt;type&gt;pom&lt;/type&gt;
+            &lt;scope&gt;import&lt;/scope&gt;
+        &lt;/dependency&gt;
+    &lt;/dependencies&gt;
+&lt;/dependencyManagement&gt;
+&lt;dependencies&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+        &lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt;
+    &lt;/dependency&gt;
+            &lt;dependency&gt;
+        &lt;groupId&gt;io.lettuce&lt;/groupId&gt;
+        &lt;artifactId&gt;lettuce-core&lt;/artifactId&gt;
+        &lt;version&gt;5.1.8.RELEASE&lt;/version&gt;
+    &lt;/dependency&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;org.projectlombok&lt;/groupId&gt;
+        &lt;artifactId&gt;lombok&lt;/artifactId&gt;
+        &lt;version&gt;1.18.10&lt;/version&gt;
+        &lt;scope&gt;provided&lt;/scope&gt;
+    &lt;/dependency&gt;
+&lt;/dependencies&gt;        
+</code></pre>
+
+<p>一般情况下，每个应用应该使用单个<code>Redis</code>客户端实例和单个连接实例，这里设计一个脚手架，适配单机、普通主从、哨兵和集群四种使用场景。对于客户端资源，采用默认的实现即可。对于<code>Redis</code>的连接属性，比较主要的有<code>Host</code>、<code>Port</code>和<code>Password</code>，其他可以暂时忽略。基于约定大于配置的原则，先定制一系列属性配置类（其实有些配置是可以完全共用，但是考虑到要清晰描述类之间的关系，这里拆分多个配置属性类和多个配置方法）：</p>
+
+<pre><code class="language-java">@Data
+@ConfigurationProperties(prefix = &quot;lettuce&quot;)
+public class LettuceProperties {
+
+    private LettuceSingleProperties single;
+    private LettuceReplicaProperties replica;
+    private LettuceSentinelProperties sentinel;
+    private LettuceClusterProperties cluster;
+
+}
+
+@Data
+public class LettuceSingleProperties {
+
+    private String host;
+    private Integer port;
+    private String password;
+}
+
+@EqualsAndHashCode(callSuper = true)
+@Data
+public class LettuceReplicaProperties extends LettuceSingleProperties {
+
+}
+
+@EqualsAndHashCode(callSuper = true)
+@Data
+public class LettuceSentinelProperties extends LettuceSingleProperties {
+
+    private String masterId;
+}
+
+@EqualsAndHashCode(callSuper = true)
+@Data
+public class LettuceClusterProperties extends LettuceSingleProperties {
+
+}
+</code></pre>
+
+<p>配置类如下，主要使用<code>@ConditionalOnProperty</code>做隔离，一般情况下，很少有人会在一个应用使用一种以上的<code>Redis</code>连接场景：</p>
+
+<pre><code class="language-java">@RequiredArgsConstructor
+@Configuration
+@ConditionalOnClass(name = &quot;io.lettuce.core.RedisURI&quot;)
+@EnableConfigurationProperties(value = LettuceProperties.class)
+public class LettuceAutoConfiguration {
+
+    private final LettuceProperties lettuceProperties;
+
+    @Bean(destroyMethod = &quot;shutdown&quot;)
+    public ClientResources clientResources() {
+        return DefaultClientResources.create();
+    }
+
+    @Bean(destroyMethod = &quot;shutdown&quot;)
+    @ConditionalOnProperty(name = &quot;lettuce.single.host&quot;)
+    public RedisClient singleRedisClient(ClientResources clientResources) {
+        LettuceSingleProperties singleProperties = lettuceProperties.getSingle();
+        RedisURI uri = RedisURI.builder()
+                .withHost(singleProperties.getHost())
+                .withPort(singleProperties.getPort())
+                .withPassword(singleProperties.getPassword())
+                .build();
+        return RedisClient.create(clientResources, uri);
+    }
+
+    @Bean(destroyMethod = &quot;close&quot;)
+    @ConditionalOnProperty(name = &quot;lettuce.single.host&quot;)
+    public StatefulRedisConnection&lt;String, String&gt; singleRedisConnection(@Qualifier(&quot;singleRedisClient&quot;) RedisClient singleRedisClient) {
+        return singleRedisClient.connect();
+    }
+
+    @Bean(destroyMethod = &quot;shutdown&quot;)
+    @ConditionalOnProperty(name = &quot;lettuce.replica.host&quot;)
+    public RedisClient replicaRedisClient(ClientResources clientResources) {
+        LettuceReplicaProperties replicaProperties = lettuceProperties.getReplica();
+        RedisURI uri = RedisURI.builder()
+                .withHost(replicaProperties.getHost())
+                .withPort(replicaProperties.getPort())
+                .withPassword(replicaProperties.getPassword())
+                .build();
+        return RedisClient.create(clientResources, uri);
+    }
+
+    @Bean(destroyMethod = &quot;close&quot;)
+    @ConditionalOnProperty(name = &quot;lettuce.replica.host&quot;)
+    public StatefulRedisConnection&lt;String, String&gt; replicaRedisConnection(@Qualifier(&quot;replicaRedisClient&quot;) RedisClient replicaRedisClient) {
+        return replicaRedisClient.connect();
+    }
+
+    @Bean(destroyMethod = &quot;shutdown&quot;)
+    @ConditionalOnProperty(name = &quot;lettuce.sentinel.host&quot;)
+    public RedisClient sentinelRedisClient(ClientResources clientResources) {
+        LettuceSentinelProperties sentinelProperties = lettuceProperties.getSentinel();
+        RedisURI uri = RedisURI.builder()
+                .withHost(sentinelProperties.getHost())
+                .withPort(sentinelProperties.getPort())
+                .withPassword(sentinelProperties.getPassword())
+                .withSentinel(sentinelProperties.getHost(), sentinelProperties.getPort())
+                .withSentinelMasterId(sentinelProperties.getMasterId())
+                .build();
+        return RedisClient.create(clientResources, uri);
+    }
+
+    @Bean(destroyMethod = &quot;close&quot;)
+    @ConditionalOnProperty(name = &quot;lettuce.sentinel.host&quot;)
+    public StatefulRedisConnection&lt;String, String&gt; sentinelRedisConnection(@Qualifier(&quot;sentinelRedisClient&quot;) RedisClient sentinelRedisClient) {
+        return sentinelRedisClient.connect();
+    }
+
+    @Bean(destroyMethod = &quot;shutdown&quot;)
+    @ConditionalOnProperty(name = &quot;lettuce.cluster.host&quot;)
+    public RedisClusterClient redisClusterClient(ClientResources clientResources) {
+        LettuceClusterProperties clusterProperties = lettuceProperties.getCluster();
+        RedisURI uri = RedisURI.builder()
+                .withHost(clusterProperties.getHost())
+                .withPort(clusterProperties.getPort())
+                .withPassword(clusterProperties.getPassword())
+                .build();
+        return RedisClusterClient.create(clientResources, uri);
+    }
+
+    @Bean(destroyMethod = &quot;close&quot;)
+    @ConditionalOnProperty(name = &quot;lettuce.cluster&quot;)
+    public StatefulRedisClusterConnection&lt;String, String&gt; clusterConnection(RedisClusterClient clusterClient) {
+        return clusterClient.connect();
+    }
+}
+</code></pre>
+
+<p>最后为了让<code>IDE</code>识别我们的配置，可以添加<code>IDE</code>亲缘性，<code>/META-INF</code>文件夹下新增一个文件<code>spring-configuration-metadata.json</code>，内容如下：</p>
+
+<pre><code class="language-yaml">{
+  &quot;properties&quot;: [
+    {
+      &quot;name&quot;: &quot;lettuce.single&quot;,
+      &quot;type&quot;: &quot;club.throwable.spring.lettuce.LettuceSingleProperties&quot;,
+      &quot;description&quot;: &quot;单机配置&quot;,
+      &quot;sourceType&quot;: &quot;club.throwable.spring.lettuce.LettuceProperties&quot;
+    },
+    {
+      &quot;name&quot;: &quot;lettuce.replica&quot;,
+      &quot;type&quot;: &quot;club.throwable.spring.lettuce.LettuceReplicaProperties&quot;,
+      &quot;description&quot;: &quot;主从配置&quot;,
+      &quot;sourceType&quot;: &quot;club.throwable.spring.lettuce.LettuceProperties&quot;
+    },
+    {
+      &quot;name&quot;: &quot;lettuce.sentinel&quot;,
+      &quot;type&quot;: &quot;club.throwable.spring.lettuce.LettuceSentinelProperties&quot;,
+      &quot;description&quot;: &quot;哨兵配置&quot;,
+      &quot;sourceType&quot;: &quot;club.throwable.spring.lettuce.LettuceProperties&quot;
+    },
+    {
+      &quot;name&quot;: &quot;lettuce.single&quot;,
+      &quot;type&quot;: &quot;club.throwable.spring.lettuce.LettuceClusterProperties&quot;,
+      &quot;description&quot;: &quot;集群配置&quot;,
+      &quot;sourceType&quot;: &quot;club.throwable.spring.lettuce.LettuceProperties&quot;
+    }
+  ]
+}
+</code></pre>
+
+<p>如果想<code>IDE</code>亲缘性做得更好，可以添加<code>/META-INF/additional-spring-configuration-metadata.json</code>进行更多细节定义。简单使用如下：</p>
+
+<pre><code class="language-java">@Slf4j
+@Component
+public class RedisCommandLineRunner implements CommandLineRunner {
+
+    @Autowired
+    @Qualifier(&quot;singleRedisConnection&quot;)
+    private StatefulRedisConnection&lt;String, String&gt; connection;
+
+    @Override
+    public void run(String... args) throws Exception {
+        RedisCommands&lt;String, String&gt; redisCommands = connection.sync();
+        redisCommands.setex(&quot;name&quot;, 5, &quot;throwable&quot;);
+        log.info(&quot;Get value:{}&quot;, redisCommands.get(&quot;name&quot;));
+    }
+}
+// Get value:throwable
+</code></pre>
+
+<h2 id="小结">小结</h2>
+
+<p>本文算是基于<code>Lettuce</code>的官方文档，对它的使用进行全方位的分析，包括主要功能、配置都做了一些示例，限于篇幅部分特性和配置细节没有分析。<code>Lettuce</code>已经被<code>spring-data-redis</code>接纳作为官方的<code>Redis</code>客户端驱动，所以值得信赖，它的一些<code>API</code>设计确实比较合理，扩展性高的同时灵活性也高。个人建议，基于<code>Lettuce</code>包自行添加配置到<code>SpringBoot</code>应用用起来会得心应手，毕竟<code>RedisTemplate</code>实在太笨重，而且还屏蔽了<code>Lettuce</code>一些高级特性和灵活的<code>API</code>。</p>
+
+<p>参考资料：
+- Lettuce Reference Guide</p>
+
+<h3 id="end">END</h3>
+
+            <p class="post-meta border-bottom pb-3 mb-0">Updated on 30 Oct 2019</p><nav class="pagination mt-3"><a class="nav nav-prev" href="https://hideric.github.io/redis/%E6%AF%94redis%E8%BF%98%E5%BF%AB5%E5%80%8D%E7%9A%84%E4%B8%AD%E9%97%B4%E4%BB%B6%E4%B8%BA%E5%95%A5%E8%BF%99%E4%B9%88%E5%BF%AB/" title="比Redis还快5倍的中间件，为啥这么快？"><i class="ti-arrow-left mr-2"></i>比Redis还快5倍的中间件，为啥这么快？</a>
+            <a class="nav nav-next" href="https://hideric.github.io/vue/" title="Vue">Vue<i class="ti-arrow-right ml-2"></i></a>
+            </nav></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- footer -->
+<footer class="section bg-gray pb-0">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-8 text-md-left text-center">
+        <p>The Hugo Documents are copyright © gethugothemes 2018.</p> 
+      </div>
+      <div class="col-md-4 text-md-right text-center">
+        <ul class="list-inline mb-3">
+          
+          <li class="list-inline-item"><a class="text-color d-inline-block p-2" href="#"><i class="ti-facebook"></i></a></li>
+          
+          <li class="list-inline-item"><a class="text-color d-inline-block p-2" href="#"><i class="ti-twitter-alt"></i></a></li>
+          
+          <li class="list-inline-item"><a class="text-color d-inline-block p-2" href="#"><i class="ti-vimeo-alt"></i></a></li>
+          
+          <li class="list-inline-item"><a class="text-color d-inline-block p-2" href="#"><i class="ti-instagram"></i></a></li>
+          
+        </ul>
+      </div>
+    </div>
+  </div>
+</footer>
+<!-- /footer -->
+
+<!-- Bootstrap JS -->
+<script src="https://hideric.github.io/plugins/bootstrap/bootstrap.min.js"></script>
+<!-- highlight -->
+<script src="https://hideric.github.io/plugins/highlight/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+<!-- Main Script -->
+
+<script src="https://hideric.github.io/js/script.min.js"></script>

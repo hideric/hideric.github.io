@@ -1,0 +1,634 @@
+<head>
+  <meta charset="utf-8">
+  <title>使用dubbo过程中遇到过哪些坑？</title>
+
+  <meta name="generator" content="Hugo 0.58.3" />
+
+  <!-- mobile responsive meta -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <!-- ** Plugins Needed for the Project ** -->
+  <!-- Bootstrap -->
+  <link rel="stylesheet" href="https://hideric.github.io/plugins/bootstrap/bootstrap.min.css">
+  <!-- themefy-icon -->
+  <link rel="stylesheet" href="https://hideric.github.io/plugins/themify-icons/themify-icons.css">
+  <!-- highlight -->
+  <link rel="stylesheet" href="https://hideric.github.io/plugins/highlight/hybrid.css">
+  <!-- fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700" rel="stylesheet">
+
+  <style>
+  :root{
+    --primary-color:#2f1f48;
+    --secondary-color:#f9f9f9;
+    --text-color:#636363;
+    --text-color-dark:#242738;
+    --white-color:#ffffff;
+  }  
+  </style>
+
+  <!-- Main Stylesheet -->
+  
+  <link rel="stylesheet" href="https://hideric.github.io/css/style.min.css" integrity="" media="screen">
+
+  <!-- jquiry -->
+  <script src="https://hideric.github.io/plugins/jquery/jquery-1.12.4.js"></script>
+
+  <!-- jquary ui -->
+  <script src="https://hideric.github.io/plugins/jquery/jquery-ui.js"></script>
+
+  <!--Favicon-->
+  <link rel="icon" href="https://hideric.github.io/images/favicon.png" type="image/x-icon">
+
+</head>
+
+
+<!-- navigation -->
+<header class="shadow-bottom sticky-top bg-white">
+  <div class="container">
+    <nav class="navbar navbar-expand-lg navbar-light">
+  <a class="navbar-brand" href="https://hideric.github.io/">Hideric</a>
+  <button class="navbar-toggler border-0" type="button" data-toggle="collapse" data-target="#navigation"
+    aria-controls="navigation" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse text-center" id="navigation">
+    <ul class="navbar-nav ml-auto">
+      <li class="nav-item">
+        <a class="nav-link text-dark" href="https://hideric.github.io/">Home</a>
+      </li>
+      
+      
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle text-dark" href="#" role="button" data-toggle="dropdown" aria-haspopup="true"
+          aria-expanded="false">
+          Back-End
+        </a>
+        <div class="dropdown-menu" >
+          
+          <a class="dropdown-item" href="https://hideric.github.io/java">Java</a>
+          
+          <a class="dropdown-item" href="https://hideric.github.io/python">Python</a>
+          
+          <a class="dropdown-item" href="https://hideric.github.io/go">Go</a>
+          
+          <a class="dropdown-item" href="https://hideric.github.io/cpp">C&#43;&#43;</a>
+          
+        </div>
+      </li>
+      
+      
+      
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle text-dark" href="#" role="button" data-toggle="dropdown" aria-haspopup="true"
+          aria-expanded="false">
+          DB
+        </a>
+        <div class="dropdown-menu" >
+          
+          <a class="dropdown-item" href="https://hideric.github.io/mysql">Mysql</a>
+          
+          <a class="dropdown-item" href="https://hideric.github.io/oracle">Oracle</a>
+          
+        </div>
+      </li>
+      
+      
+      
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle text-dark" href="#" role="button" data-toggle="dropdown" aria-haspopup="true"
+          aria-expanded="false">
+          Front-End
+        </a>
+        <div class="dropdown-menu" >
+          
+          <a class="dropdown-item" href="https://hideric.github.io/js">JavaScript</a>
+          
+          <a class="dropdown-item" href="https://hideric.github.io/vue">Vue</a>
+          
+          <a class="dropdown-item" href="https://hideric.github.io/react">React</a>
+          
+          <a class="dropdown-item" href="https://hideric.github.io/rn">React Native</a>
+          
+        </div>
+      </li>
+      
+      
+      
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle text-dark" href="#" role="button" data-toggle="dropdown" aria-haspopup="true"
+          aria-expanded="false">
+          Mid-Ware
+        </a>
+        <div class="dropdown-menu" >
+          
+          <a class="dropdown-item" href="https://hideric.github.io/redis">Redis</a>
+          
+          <a class="dropdown-item" href="https://hideric.github.io/nginx">Nginx</a>
+          
+        </div>
+      </li>
+      
+      
+      
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle text-dark" href="#" role="button" data-toggle="dropdown" aria-haspopup="true"
+          aria-expanded="false">
+          Mobile
+        </a>
+        <div class="dropdown-menu" >
+          
+          <a class="dropdown-item" href="https://hideric.github.io/android">Android</a>
+          
+          <a class="dropdown-item" href="https://hideric.github.io/ios">IOS</a>
+          
+        </div>
+      </li>
+      
+      
+      
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle text-dark" href="#" role="button" data-toggle="dropdown" aria-haspopup="true"
+          aria-expanded="false">
+          OPS
+        </a>
+        <div class="dropdown-menu" >
+          
+          <a class="dropdown-item" href="https://hideric.github.io/k8s">kubernetes</a>
+          
+          <a class="dropdown-item" href="https://hideric.github.io/docker">Docker</a>
+          
+          <a class="dropdown-item" href="https://hideric.github.io/leetcode">Leetcode</a>
+          
+          <a class="dropdown-item" href="https://hideric.github.io/linux">Linux</a>
+          
+        </div>
+      </li>
+      
+      
+      
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle text-dark" href="#" role="button" data-toggle="dropdown" aria-haspopup="true"
+          aria-expanded="false">
+          pages
+        </a>
+        <div class="dropdown-menu" >
+          
+          <a class="dropdown-item" href="https://hideric.github.io/faq">FAQ</a>
+          
+          <a class="dropdown-item" href="https://hideric.github.io/contact">CONTACT</a>
+          
+          <a class="dropdown-item" href="https://hideric.github.io/elements">ELEMENTS</a>
+          
+          <a class="dropdown-item" href="https://hideric.github.io/others">OTHERS</a>
+          
+        </div>
+      </li>
+      
+      
+    </ul>
+    
+    <ul class="list-inline text-center mb-0">
+      
+    </ul>
+  </div>
+</nav>
+  </div>
+</header>
+<!-- /navigation -->
+
+
+<section class="single pt-5 bg-gray">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-3">
+        <div class="p-4 bg-white sticky-top top-100">
+            
+            <nav class="sidebar-menu">
+              <ul class="list-styled">
+            <li class=""><a href="https://hideric.github.io/android/">Android</a>
+              <ul class="">
+            <li class=""><a href="https://hideric.github.io/android/tool/f-droidapps/">F-Droid Apps Recommendation</a>
+            </li></ul>
+              
+            </li>
+            <li class=""><a href="https://hideric.github.io/cpp/">C&#43;&#43;</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/docker/">Docker</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/go/">Go</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/ios/">IOS</a>
+            </li>
+            <li class="parent d-block "><a href="https://hideric.github.io/java/">Java</a>
+              <ul class="sub-menu">
+            <li class=""><a href="https://hideric.github.io/java/basis/http%E6%96%AD%E7%82%B9%E7%BB%AD%E4%BC%A0/">HTTP断点续传</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/basis/java-%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8/">Java 垃圾收集器</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/basis/java-%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%8B%BC%E6%8E%A5%E5%A7%BF%E5%8A%BF/">Java 字符串拼接姿势</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/basis/java-%E5%A6%82%E4%BD%95%E6%9B%B4%E4%BC%98%E9%9B%85%E7%9A%84%E5%A4%84%E7%90%86%E7%A9%BA%E5%80%BC/">Java-如何更优雅的处理空值</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/basis/jvm/jvm-%E5%A0%86%E5%86%85%E5%AD%98%E6%BA%A2%E5%87%BA%E5%90%8E%E5%85%B6%E4%BB%96%E7%BA%BF%E7%A8%8B%E6%98%AF%E5%90%A6%E5%8F%AF%E7%BB%A7%E7%BB%AD%E5%B7%A5%E4%BD%9C/">JVM 堆内存溢出后，其他线程是否可继续工作？</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/framework/mybatis/mybatis%E4%B8%ADlike-%E7%9A%84%E4%BD%BF%E7%94%A8%E6%96%B9%E5%BC%8F%E4%BB%A5%E5%8F%8A%E4%B8%80%E4%BA%9B%E6%B3%A8%E6%84%8F%E7%82%B9/">Mybatis中Like 的使用方式以及一些注意点</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/framework/mybatis/mybatis%E5%B1%85%E7%84%B6%E6%9C%89%E5%9D%91%E5%8D%83%E4%B8%87%E5%88%AB%E8%B8%A9/">Mybatis居然有坑，千万别踩！</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/framework/spring/spring%E5%BE%AA%E7%8E%AF%E4%BE%9D%E8%B5%96%E7%9A%84%E5%9D%91/">Spring循环依赖的坑</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/framework/spring/spring%E7%9A%84%E5%90%84%E7%A7%8D%E6%B3%A8%E8%A7%A3/">Spring的各种注解</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/basis/%E4%BB%8E%E5%AE%9E%E8%B7%B5%E8%A7%92%E5%BA%A6%E9%87%8D%E6%96%B0%E7%90%86%E8%A7%A3bio%E5%92%8Cnio/">从实践角度重新理解BIO和NIO</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/basis/%E5%85%B3%E4%BA%8E-git-%E6%8F%90%E4%BA%A4%E8%A7%84%E8%8C%83/">关于 Git 提交规范</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/basis/jvm/%E6%B3%A8%E6%84%8Fcode-cache%E6%89%93%E6%BB%A1%E5%8F%AF%E5%AF%BC%E8%87%B4%E5%BA%94%E7%94%A8%E6%80%A7%E8%83%BD%E9%99%8D%E4%BD%8E/">注意，Code Cache打满可导致应用性能降低</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/framework/spring/spring-%E5%AE%B9%E5%99%A8%E5%90%AF%E5%8A%A8%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/">Spring 容器启动源码解析</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/framework/spring/spring-%E7%9A%84-beanutils-%E5%A1%AB%E5%9D%91%E8%AE%B0/">Spring 的 BeanUtils 填坑记</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/basis/weakhashmap%E7%94%9F%E4%BA%86%E7%97%85%E7%9A%84-hashmap-/">WeakHashMap，生了病的 HashMap ？</a>
+            </li>
+            <li class=" active "><a href="https://hideric.github.io/java/framework/dubbo/%E4%BD%BF%E7%94%A8dubbo%E8%BF%87%E7%A8%8B%E4%B8%AD%E9%81%87%E5%88%B0%E8%BF%87%E5%93%AA%E4%BA%9B%E5%9D%91/">使用dubbo过程中遇到过哪些坑？</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/basis/%E4%B8%80%E4%B8%AAjava%E5%AF%B9%E8%B1%A1%E5%88%B0%E5%BA%95%E5%8D%A0%E7%94%A8%E5%A4%9A%E5%A4%A7%E5%86%85%E5%AD%98/">一个Java对象到底占用多大内存？</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/basis/%E4%BD%A0%E7%9C%9F%E7%9A%84%E4%BA%86%E8%A7%A3logback%E5%90%97/">你真的了解logback吗？</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/basis/%E8%BF%99%E5%8F%AF%E8%83%BD%E6%98%AFgithub%E4%B8%8A%E6%9C%80%E5%8F%8B%E5%A5%BD%E7%9A%84%E5%88%86%E5%B8%83%E5%BC%8F%E5%8D%B3%E6%97%B6%E9%80%9A%E8%AE%AF%E9%A1%B9%E7%9B%AE..../">这可能是Github上最友好的分布式即时通讯项目.....</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/basis/java-8-stream-%E9%9B%86%E5%90%88%E6%93%8D%E4%BD%9C%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B/">Java 8 - Stream 集合操作快速上手</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/basis/concurrency/stringbuilder-%E4%B8%BA%E4%BB%80%E4%B9%88%E7%BA%BF%E7%A8%8B%E4%B8%8D%E5%AE%89%E5%85%A8/">StringBuilder 为什么线程不安全？</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/basis/jvm/jvm%E4%BC%98%E5%8C%96%E4%B9%8B%E9%80%83%E9%80%B8%E5%88%86%E6%9E%90%E4%B8%8E%E5%88%86%E9%85%8D%E6%B6%88%E9%99%A4/">JVM优化之逃逸分析与分配消除</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/framework/security/shiro%E6%A1%86%E6%9E%B6-%E7%94%A8%E6%88%B7%E6%9D%83%E9%99%90%E7%AE%A1%E7%90%86/">Shiro框架 - 用户权限管理</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/basis/concurrency/threadlocal%E9%9D%A2%E8%AF%95%E9%A2%98/">ThreadLocal面试题</a>
+            </li></ul>
+              
+            </li>
+            <li class=""><a href="https://hideric.github.io/js/">JavaScript</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/k8s/">Kubernets</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/leetcode/">Leetcode</a>
+              <ul class="">
+            <li class=""><a href="https://hideric.github.io/leetcode/leetcode-5/">LeetCode #5 最长回文子字符串</a>
+            </li></ul>
+              
+            </li>
+            <li class=""><a href="https://hideric.github.io/linux/">Linux</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/mysql/">Mysql</a>
+              <ul class="">
+            <li class=""><a href="https://hideric.github.io/mysql/mysql%E9%9D%A2%E8%AF%95%E9%A2%98%E5%8F%8A%E5%8D%83%E4%B8%87%E7%BA%A7%E6%95%B0%E6%8D%AE%E6%9F%A5%E8%AF%A2%E4%BC%98%E5%8C%96/">Mysql面试题及千万级数据查询优化</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/mysql/mysql%E7%9A%84count%E8%AF%AD%E5%8F%A5/">MySQL的COUNT语句</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/mysql/mysql-%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E6%80%9D%E8%B7%AF/">MySQL 性能优化思路</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/mysql/%E5%AE%98%E6%96%B9%E5%B7%A5%E5%85%B7mysql-router-%E9%AB%98%E5%8F%AF%E7%94%A8%E5%8E%9F%E7%90%86%E4%B8%8E%E5%AE%9E%E6%88%98/">官方工具｜MySQL Router 高可用原理与实战</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/mysql/mysql-%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%968-%E7%A7%8D%E5%B8%B8%E8%A7%81-sql-%E9%94%99%E8%AF%AF%E7%94%A8%E6%B3%95/">MySQL 性能优化：8 种常见 SQL 错误用法！</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/mysql/index/null%E8%83%BD%E7%94%A8%E7%B4%A2%E5%BC%95/">MySQL中IS NULL、IS NOT NULL、!=不能用索引？</a>
+            </li></ul>
+              
+            </li>
+            <li class=""><a href="https://hideric.github.io/nginx/">Nginx</a>
+              <ul class="">
+            <li class=""><a href="https://hideric.github.io/nginx/%E5%90%8E%E7%AB%AF%E5%AE%9E%E8%B7%B5nginx%E6%97%A5%E5%BF%97%E9%85%8D%E7%BD%AE%E8%B6%85%E8%AF%A6%E7%BB%86/">后端实践：Nginx日志配置（超详细）</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/nginx/%E4%BD%BF%E7%94%A8nginx%E8%BF%9B%E8%A1%8C%E5%9B%9B%E5%B1%82%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1/">使用Nginx进行四层负载均衡</a>
+            </li></ul>
+              
+            </li>
+            <li class=""><a href="https://hideric.github.io/oracle/">Oracle</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/others/">OTHERS</a>
+              <ul class="">
+            <li class=""><a href="https://hideric.github.io/others/term/qps%E6%9C%AF%E8%AF%AD/">秒懂 QPS、TPS、PV、UV、GMV、IP、RPS！</a>
+            </li></ul>
+              
+            </li>
+            <li class=""><a href="https://hideric.github.io/python/">Python</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/react/">React</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/rn/">React Native</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/redis/">Redis</a>
+              <ul class="">
+            <li class=""><a href="https://hideric.github.io/redis/%E5%A6%82%E4%BD%95%E7%94%A8-redis-%E7%BB%9F%E8%AE%A1%E7%8B%AC%E7%AB%8B%E7%94%A8%E6%88%B7%E8%AE%BF%E9%97%AE%E9%87%8F/">如何用 Redis 统计独立用户访问量？</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/redis/redis-%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81%E7%9A%84%E6%AD%A3%E7%A1%AE%E5%AE%9E%E7%8E%B0%E6%96%B9%E5%BC%8Fjava%E7%89%88/">Redis 分布式锁的正确实现方式（Java版）</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/redis/redis-%E5%AE%9E%E7%8E%B0%E9%99%84%E8%BF%91%E7%9A%84%E4%BA%BA%E5%8A%9F%E8%83%BD/">Redis 实现“附近的人”功能</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/redis/%E4%B8%BA%E4%BB%80%E4%B9%88rediscluster%E6%9C%8916384%E4%B8%AA%E6%A7%BD/">为什么RedisCluster有16384个槽?</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/redis/%E5%AD%A6%E4%BC%9A%E8%BF%99%E5%87%A0%E4%B8%AAredis%E6%8A%80%E5%B7%A7%E8%AE%A9%E4%BD%A0%E7%9A%84%E7%A8%8B%E5%BA%8F%E5%BF%AB%E5%A6%82%E9%97%AA%E7%94%B5/">学会这几个Redis技巧，让你的程序快如闪电</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/redis/%E6%AF%94redis%E8%BF%98%E5%BF%AB5%E5%80%8D%E7%9A%84%E4%B8%AD%E9%97%B4%E4%BB%B6%E4%B8%BA%E5%95%A5%E8%BF%99%E4%B9%88%E5%BF%AB/">比Redis还快5倍的中间件，为啥这么快？</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/redis/redis%E9%AB%98%E7%BA%A7%E5%AE%A2%E6%88%B7%E7%AB%AFlettuce%E8%AF%A6%E8%A7%A3/">Redis高级客户端Lettuce详解</a>
+            </li></ul>
+              
+            </li>
+            <li class=""><a href="https://hideric.github.io/vue/">Vue</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/contact/">Contact</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/elements/">Elements</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/faq/">Frequently Asked Questions</a>
+            </li></ul>
+            </nav>
+
+            
+        </div>
+      </div>
+      <div class="col-lg-9">
+        <div class="p-5 bg-white">
+            <h2>使用dubbo过程中遇到过哪些坑？</h2>
+            
+
+<h1 id="使用dubbo过程中遇到过哪些坑">使用dubbo过程中遇到过哪些坑？</h1>
+
+<p>Dubbo[  |ˈdʌbəʊ| ,发音为<code>打波</code>] 稳如狗，哪有坑？</p>
+
+<p>如果你用过Dubbo，但是没碰到过什么坑，那只能说明你还没有深交Dubbo，看看笔者那些年使用Dubbo踩过的坑！</p>
+
+<h1 id="父子类有相同属性时值丢失">父子类有相同属性时值丢失</h1>
+
+<p>假设Provider提供的服务中某个服务的参数是WordDTO，并且WordDTO继承自BaseDTO，两个类的定义如下：</p>
+
+<pre><code class="language-java">@Data
+public class BaseDTO implements Serializable {
+	private Long id;
+}
+@Data
+public class WordDTO extends BaseDTO {
+	private Long id;
+  private String uuid;
+  private Long timestamp;
+  private String word;
+}
+</code></pre>
+
+<p><strong>问题描述</strong>：在Consumer侧给WordDTO赋的值，其id属性的值无法在Provider侧获取到。假设Consumer传的值是：{&ldquo;id&rdquo;:68,&ldquo;timestamp&rdquo;:1570928394380,&ldquo;uuid&rdquo;:&ldquo;f774f99f-987c-4506-8ab8-366cd619bb15&rdquo;,&ldquo;word&rdquo;:&ldquo;hello world&rdquo;}，在Provider拿到的却是：{&ldquo;timestamp&rdquo;:1570928394380,&ldquo;uuid&rdquo;:&ldquo;f774f99f-987c-4506-8ab8-366cd619bb15&rdquo;,&ldquo;word&rdquo;:&ldquo;hello world&rdquo;}。</p>
+
+<p><strong>原因分析</strong>：dubbo默认采用的是hessian序列化&amp;反序列化方式，JavaDeserializer在获取fileds时，采用了Map去重。但是在读取值时，根据serializer的顺序，对于同名字段，子类的该字段值会被赋值两次，总是被父类的值覆盖，导致子类的字段值丢失。</p>
+
+<p><strong>解决方案</strong>：
+1. 更改序列化方式（不建议）；1. 删掉子类中与父类同名属性（<strong>建议</strong>）；</p>
+
+<h1 id="自定义异常被包装成runtimeexception">自定义异常被包装成RuntimeException</h1>
+
+<p>首先需要说明的是，出现这个问题有一定的条件。如果Provider中的api和自定义Exception定义都是在一个api.jar中，那么是不会有任何问题的。但是<strong>如果自定义Exception是在一个单独的比如common.jar包中就会出现这个问题</strong>（此时api和model在另一个api.jar中）。</p>
+
+<p>下面是一段调用一个会抛出自定义异常的服务的代码：</p>
+
+<pre><code class="language-java">try {
+  String hello = demoService.saySomething(wordDTO);
+  System.out.println(hello);
+}catch (WrongArgumentException e){
+  System.err.println(&quot;wrong argument 1: &quot; + e.getMessage());
+}catch (RuntimeException e){
+  System.err.println(&quot;wrong argument 2: &quot; + e.getMessage());
+}
+</code></pre>
+
+<p>但是，调用的日志却是如下所示，通过日志我们可以发现，在Consumer中并没有捕获到自定义的WrongArgumentException异常，只能捕获到RuntimeException中的异常，且这个异常信息是封装自定义的WrongArgumentException异常：</p>
+
+<pre><code class="language-java">wrong argument 2: com.afei.dev.maven.exception.WrongArgumentException: word不允许为空
+com.afei.dev.maven.exception.WrongArgumentException: word不允许为空
+at com.afei.test.dubbo.provider.facade.impl.DemoServiceImpl.saySomething(DemoServiceImpl.java:11)
+at com.alibaba.dubbo.common.bytecode.Wrapper1.invokeMethod(Wrapper1.java)
+</code></pre>
+
+<p>这是什么原因呢？这是因为dubbo Provider的<strong>ExceptionFilter.java</strong>对异常统一封装导致的，其封装的核心源码我就不贴出来了，你如果有兴趣可以自己下载查看。我这里只贴出它的处理逻辑，当碰到如下这些情况时，dubbo会直接抛出异常：</p>
+
+<ol>
+<li>如果是checked异常（不是RuntimeException但是是Exception.java类型的异常），直接抛出；</li>
+<li>在方法签名上有声明（例如String saySomething()throws MyException ），直接抛出；</li>
+<li>异常类和接口类在同一jar包里，直接抛出；</li>
+<li>是JDK自带的异常（全类名以java或者javax开头，例如java.lang.IllegalStateException），直接抛出；</li>
+
+<li><p>是Dubbo本身的异常RpcException，直接抛出；
+否则，Dubbo通过如下代码将异常包装成RuntimeException抛给客户端：</p>
+
+<pre><code class="language-java">return new RpcResult(new RuntimeException(StringUtils.toString(exception)));
+</code></pre></li>
+</ol>
+
+<p>通过上面对ExceptionFilter的源码分析可知，如果要让Provider抛出自定义异常，有如下几个解决办法：</p>
+
+<ol>
+<li>将自定义异常和接口类放到一个包中即可（<strong>推荐</strong>）；</li>
+<li>方法签名上申明自定义异常；
+那么Dubbo为什么这样设计？我相信没有谁比Dubbo的作者梁飞更有发言权了！这里就引用Dubbo作者梁飞在Github上的原话（原话出处：<a href="https://github.com/apache/dubbo/issues/111）：">https://github.com/apache/dubbo/issues/111）：</a></li>
+</ol>
+
+<blockquote>
+<p>这个是为了防止服务提供方抛出了消费方没有的异常，比如数据库异常类，导致消费方反序列化失败，使异常信息更奇怪，建议在业务接口上RuntimeException也声明在throws中。</p>
+</blockquote>
+
+<h1 id="ip暴露问题">IP暴露问题</h1>
+
+<p>在某些复杂环境下，例如Docker、双网卡、虚拟机等环境下，Dubbo默认绑定的IP可能并不是我们期望的正确IP，Dubbo绑定IP默认行为如下（核心源码在NetUtils.java中）：</p>
+
+<ul>
+<li><p>通过InetAddress.getLocalHost()获取本机地址，如果本机地址有效则返回（有效地址需要满足这几点：</p>
+
+<ol>
+<li>不能为空，</li>
+<li>不是loopback地址（类似127.x.x.x），</li>
+<li>不能是0.0.0.0，也不能是127.0.0.1）；</li>
+<li>如果本机地址无效，那么再遍历网卡地址，然后通过isValidAddress校验ip是否正常并返回第一个有效的IP地址。这样的话，Dubbo就不能保证返回的是内网IP还是外网IP。</li>
+</ol></li>
+
+<li><p>事实上，复杂环境下这个IP绑定问题不太好自动化解决，不过我们可以利用dubbo的扩展能力解决这些问题。</p>
+
+<ol>
+<li><p>Docker环境
+如果你的dubbo部署在Docker上，那么需要注意了。我们需要解决Dubbo几个特定参数来解决这个问题：</p>
+
+<ol>
+<li><p>DUBBO_IP_TO_REGISTRY &mdash; Registering to the IP address of the registration center1. DUBBO_PORT_TO_REGISTRY &mdash; Registering to the port of the registration center1. DUBBO_IP_TO_BIND &mdash; Listening IP addresses1. DUBBO_PORT_TO_BIND &mdash; Listening ports
+假设主机IP地址为30.5.97.6，docker启动dubbo服务参考命令，启动后，这个Provider服务注册的地址就是30.5.97.6:20881，我们可以通过命令（telnet 30.5.97.6 20881，invoke org.apache.dubbo.test.docker.DemoService.hello(&ldquo;world&rdquo;)）检查并调用Provider提供的服务：</p>
+
+<pre><code class="language-shell">docker run -e DUBBO_IP_TO_REGISTRY=30.5.97.6 -e DUBBO_PORT_TO_REGISTRY=20881 -p 30.5.97.6:20881:20880 --link zkserver:zkserver -it --rm dubbo-docker-sample
+</code></pre></li>
+</ol></li>
+</ol></li>
+</ul>
+
+<blockquote>
+<p>参考地址：<a href="https://github.com/apache/dubbo-samples/tree/master/dubbo-samples-docker。">https://github.com/apache/dubbo-samples/tree/master/dubbo-samples-docker。</a>
+- 暴露外网IP
+如果你服务的调用方和消费方不在同一个内网中，那么就会希望Dubbo服务通过外网IP暴露。不过不好意思，dubbo默认的服务暴露行为搞不定，因为dubbo默认暴露的是内网IP地址。</p>
+</blockquote>
+
+<p>这个时候，我们就需要借助两个参数：dubbo.protocol.host和dubbo.protocol.port，通过这两个参数显示申明我们暴露服务的IP和Port，这两个参数即可以通过配置文件方式指定，也可以通过JVM参数方式指定，具体怎么使用，UP TO YOU！！！</p>
+
+<ul>
+<li>双网卡问题
+当服务器上有多个网卡时，Dubbo服务提供者启动时，会将错误的IP注册到注册中心，从而导致消费端连接不上。这种情况的笔者提供两种解决办法：
+
+<ol>
+<li>配置dubbo.protocol.host=192.168.0.11. 配置/etc/hosts，例如afeiserver01 = 192.168.0.1，其中afeiserver01是机器名；</li>
+</ol></li>
+</ul>
+
+<h1 id="data-length-too-large"><strong>Data length too large</strong></h1>
+
+<p>这个异常的详细堆栈信息如下所示：</p>
+
+<pre><code class="language-java">org.apache.dubbo.remoting.transport.ExceedPayloadLimitException:
+Data length too large: 10356612, max payload: 8388608,
+channel: NettyChannel [channel=[id: 0xd36132c0, L:/192.168.1.6:55078 - R:/192.168.1.6:20880]]
+</code></pre>
+
+<p>日志中提到max payload为8388608，等价于<code>8 * 1024 * 1024</code>，即8k。所以这个问题的原因非常清晰了，就是请求或者响应的报文体长度超过了8k。</p>
+
+<p>这个问题比较简单，笔者在这里提供两个解决方案：
+1. 修改payload的值，将其调大，例如16777216，即16k，<strong>不推荐</strong>；1. 减少请求/响应报文长度。例如Provider提供的服务，最大批量限制为1000，比如最多只能批量查询1000个用户ID的用户信息，<strong>推荐</strong>；
+说明：</p>
+
+<blockquote>
+<p>dubbo在小报文的场景下表现最佳，所以，除非确实无法饶过。否则强烈不建议调大payload的值；</p>
+</blockquote>
+
+<h1 id="线程耗尽"><strong>线程耗尽</strong></h1>
+
+<p>dubbo服务Provider侧如果线程耗尽，会跑出类似如下的异常信息：</p>
+
+<pre><code class="language-java">19-10-17 00:00:00.033 [New I/O server worker #1-6] WARN  com.alibaba.dubbo.common.threadpool.support.AbortPolicyWithReport -  [DUBBO] Thread pool is EXHAUSTED! Thread Name: DubboServerHandler-10.0.0.77:20703, Pool Size: 200 (active: 200, core: 200, max: 200, largest: 200), Task: 5897697 (completed: 5897197), Executor status:(isShutdown:false, isTerminated:false, isTerminating:false), in dubbo://10.0.0.77:20703!, dubbo version: 2.5.3, current host: 127.0.0.1
+</code></pre>
+
+<p>对dubbo有基本了解的都知道，Provider默认是fixed线程池，且线程数为200。那么什么时候会出现这种异常呢：</p>
+
+<ol>
+<li><p><strong>Provider侧接口处理太慢</strong>。如果是这种原因的话，我们可以通过jstack命令，在线程栈中看到超过200个状态为RUNNING、且命名为&rdquo;DubboServerHandler-&ldquo;的线程，通过线程栈我们大概知道是哪部分代码引起的，然后优化问题代码，提升处理能力从而解决这个问题；</p></li>
+
+<li><p><strong>Provider处理能力确实不够</strong>。这个原因是指，Consumer可能会达到10000TPS，但是Provider单机处理能力可能只有1000TPS，如果没有10台以上的Provider服务实例，那么就确实需要扩容了。</p></li>
+
+<li><p><strong>Provier由于某些原因阻塞</strong>。这个原因一般是Provider侧依赖的某些服务或者中间件出问题导致的；
+根据下面这段日志可知，Dubbo线程都阻塞在发送ActiveMQ消息的地方，我们可以通过异步发送MQ消息，或者检查是不是ActiveMQ服务吞吐量不行并优化它的吞吐量等手段来解决：</p></li>
+</ol>
+
+<p><br /></p>
+
+<pre><code class="language-java">&quot;DubboServerHandler-127.0.0.1:20880-thread-128&quot; daemon prio=10 tid=0x00007fd574193811 nid=0x16cf1 waiting for monitor entry [0x00007fd691887000..0x00007fd691888810]
+   java.lang.Thread.State: BLOCKED (on object monitor)
+    at org.apache.activemq.transport.MutexTransport.oneway(MutexTransport.java:40)
+    - waiting to lock &amp;lt;0x00007fd6c9fa4ba8&amp;gt; (a java.lang.Object)
+    at org.apache.activemq.transport.ResponseCorrelator.oneway(ResponseCorrelator.java:60)
+    at org.apache.activemq.ActiveMQConnection.doAsyncSendPacket(ActiveMQConnection.java:1265)
+    at org.apache.activemq.ActiveMQConnection.asyncSendPacket(ActiveMQConnection.java:1259)
+</code></pre>
+
+<h1 id="服务调用失败">服务调用失败</h1>
+
+<p>异常堆栈信息如下所示：</p>
+
+<pre><code class="language-java">Forbid consumer 0 access service com.afei.dubbo.demo.api.QueryService from registry 127.0.0.1:2181 use dubbo version 2.5.3,
+Please check registry access list (whitelist/blacklist)
+</code></pre>
+
+<p>或者异常堆栈信息如下所示：</p>
+
+<pre><code class="language-java">org.apache.dubbo.rpc.RpcException:
+Failed to invoke the method saySomething in the service com.afei.test.dubbo.provider.facade.DemoService.
+No provider available for the service com.afei.test.dubbo.provider.facade.DemoService:2.0.0
+from registry 224.5.6.7:1234
+</code></pre>
+
+<p>我相信，每一个使用过dubbo服务的同学，肯定会碰到上面这两个ERROR日志。这两个问题一般有如下几种原因：</p>
+
+<ol>
+<li><p>Provider服务全部下线，即没有一个存活的Provider服务进程。</p></li>
+
+<li><p>存在一个或多个Provider服务，但是<strong>version或者group不匹配</strong>。例如Consumer侧申明version=1.0.0，而Provider侧申明version=2.0.0，或者group不匹配，都会出现这个ERROR。</p></li>
+
+<li><p>暴露的IP有问题。例如暴露的是内网IP，但是调用却是通过外网IP；</p></li>
+</ol>
+
+<h1 id="dubbo-spring-schema">dubbo spring schema</h1>
+
+<p>在dubbo进入apache之前，dubbo的spring schema申明如下：</p>
+
+<pre><code class="language-java">http://code.alibabatech.com/schema/dubbo
+</code></pre>
+
+<p>当dubbo进入apache后，dubbo的spring schema能兼容两种方式：</p>
+
+<pre><code class="language-java">http://dubbo.apache.org/schema/dubbo
+http://code.alibabatech.com/schema/dubbo
+</code></pre>
+
+<p>这是由dubbo.jar中META-INF/spring.schemas文件决定的：</p>
+
+<pre><code class="language-java">http://dubbo.apache.org/schema/dubbo/dubbo.xsd=META-INF/dubbo.xsd
+http://code.alibabatech.com/schema/dubbo/dubbo.xsd=META-INF/compat/dubbo.xsd
+</code></pre>
+
+<p>dubbo新版本是即能兼容<a href="http://dubbo.apache.org/schema/dubbo，也能兼容http://code.alibabatech.com/schema/dubbo。但是dubbo老版本只能兼容http://code.alibabatech.com/schema/dubbo。如果老版本也配置http://dubbo.apache.org/schema/dubbo，就会抛出如下日常：">http://dubbo.apache.org/schema/dubbo，也能兼容http://code.alibabatech.com/schema/dubbo。但是dubbo老版本只能兼容http://code.alibabatech.com/schema/dubbo。如果老版本也配置http://dubbo.apache.org/schema/dubbo，就会抛出如下日常：</a></p>
+
+<pre><code class="language-java">org.springframework.beans.factory.parsing.BeanDefinitionParsingException:
+Configuration problem: Unable to locate Spring NamespaceHandler for XML schema namespace [http://dubbo.apache.org/schema/dubbo]
+</code></pre>
+
+<h3 id="end">END</h3>
+
+            <p class="post-meta border-bottom pb-3 mb-0">Updated on 30 Oct 2019</p><nav class="pagination mt-3"><a class="nav nav-prev" href="https://hideric.github.io/java/basis/weakhashmap%E7%94%9F%E4%BA%86%E7%97%85%E7%9A%84-hashmap-/" title="WeakHashMap，生了病的 HashMap ？"><i class="ti-arrow-left mr-2"></i>WeakHashMap，生了病的 HashMap ？</a>
+            <a class="nav nav-next" href="https://hideric.github.io/java/basis/%E4%B8%80%E4%B8%AAjava%E5%AF%B9%E8%B1%A1%E5%88%B0%E5%BA%95%E5%8D%A0%E7%94%A8%E5%A4%9A%E5%A4%A7%E5%86%85%E5%AD%98/" title="一个Java对象到底占用多大内存？">一个Java对象到底占用多大内存？<i class="ti-arrow-right ml-2"></i></a>
+            </nav></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- footer -->
+<footer class="section bg-gray pb-0">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-8 text-md-left text-center">
+        <p>The Hugo Documents are copyright © gethugothemes 2018.</p> 
+      </div>
+      <div class="col-md-4 text-md-right text-center">
+        <ul class="list-inline mb-3">
+          
+          <li class="list-inline-item"><a class="text-color d-inline-block p-2" href="#"><i class="ti-facebook"></i></a></li>
+          
+          <li class="list-inline-item"><a class="text-color d-inline-block p-2" href="#"><i class="ti-twitter-alt"></i></a></li>
+          
+          <li class="list-inline-item"><a class="text-color d-inline-block p-2" href="#"><i class="ti-vimeo-alt"></i></a></li>
+          
+          <li class="list-inline-item"><a class="text-color d-inline-block p-2" href="#"><i class="ti-instagram"></i></a></li>
+          
+        </ul>
+      </div>
+    </div>
+  </div>
+</footer>
+<!-- /footer -->
+
+<!-- Bootstrap JS -->
+<script src="https://hideric.github.io/plugins/bootstrap/bootstrap.min.js"></script>
+<!-- highlight -->
+<script src="https://hideric.github.io/plugins/highlight/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+<!-- Main Script -->
+
+<script src="https://hideric.github.io/js/script.min.js"></script>

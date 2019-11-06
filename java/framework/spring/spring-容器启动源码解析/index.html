@@ -1,0 +1,695 @@
+<head>
+  <meta charset="utf-8">
+  <title>Spring 容器启动源码解析</title>
+
+  <meta name="generator" content="Hugo 0.58.3" />
+
+  <!-- mobile responsive meta -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <!-- ** Plugins Needed for the Project ** -->
+  <!-- Bootstrap -->
+  <link rel="stylesheet" href="https://hideric.github.io/plugins/bootstrap/bootstrap.min.css">
+  <!-- themefy-icon -->
+  <link rel="stylesheet" href="https://hideric.github.io/plugins/themify-icons/themify-icons.css">
+  <!-- highlight -->
+  <link rel="stylesheet" href="https://hideric.github.io/plugins/highlight/hybrid.css">
+  <!-- fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700" rel="stylesheet">
+
+  <style>
+  :root{
+    --primary-color:#2f1f48;
+    --secondary-color:#f9f9f9;
+    --text-color:#636363;
+    --text-color-dark:#242738;
+    --white-color:#ffffff;
+  }  
+  </style>
+
+  <!-- Main Stylesheet -->
+  
+  <link rel="stylesheet" href="https://hideric.github.io/css/style.min.css" integrity="" media="screen">
+
+  <!-- jquiry -->
+  <script src="https://hideric.github.io/plugins/jquery/jquery-1.12.4.js"></script>
+
+  <!-- jquary ui -->
+  <script src="https://hideric.github.io/plugins/jquery/jquery-ui.js"></script>
+
+  <!--Favicon-->
+  <link rel="icon" href="https://hideric.github.io/images/favicon.png" type="image/x-icon">
+
+</head>
+
+
+<!-- navigation -->
+<header class="shadow-bottom sticky-top bg-white">
+  <div class="container">
+    <nav class="navbar navbar-expand-lg navbar-light">
+  <a class="navbar-brand" href="https://hideric.github.io/">Hideric</a>
+  <button class="navbar-toggler border-0" type="button" data-toggle="collapse" data-target="#navigation"
+    aria-controls="navigation" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse text-center" id="navigation">
+    <ul class="navbar-nav ml-auto">
+      <li class="nav-item">
+        <a class="nav-link text-dark" href="https://hideric.github.io/">Home</a>
+      </li>
+      
+      
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle text-dark" href="#" role="button" data-toggle="dropdown" aria-haspopup="true"
+          aria-expanded="false">
+          Back-End
+        </a>
+        <div class="dropdown-menu" >
+          
+          <a class="dropdown-item" href="https://hideric.github.io/java">Java</a>
+          
+          <a class="dropdown-item" href="https://hideric.github.io/python">Python</a>
+          
+          <a class="dropdown-item" href="https://hideric.github.io/go">Go</a>
+          
+          <a class="dropdown-item" href="https://hideric.github.io/cpp">C&#43;&#43;</a>
+          
+        </div>
+      </li>
+      
+      
+      
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle text-dark" href="#" role="button" data-toggle="dropdown" aria-haspopup="true"
+          aria-expanded="false">
+          DB
+        </a>
+        <div class="dropdown-menu" >
+          
+          <a class="dropdown-item" href="https://hideric.github.io/mysql">Mysql</a>
+          
+          <a class="dropdown-item" href="https://hideric.github.io/oracle">Oracle</a>
+          
+        </div>
+      </li>
+      
+      
+      
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle text-dark" href="#" role="button" data-toggle="dropdown" aria-haspopup="true"
+          aria-expanded="false">
+          Front-End
+        </a>
+        <div class="dropdown-menu" >
+          
+          <a class="dropdown-item" href="https://hideric.github.io/js">JavaScript</a>
+          
+          <a class="dropdown-item" href="https://hideric.github.io/vue">Vue</a>
+          
+          <a class="dropdown-item" href="https://hideric.github.io/react">React</a>
+          
+          <a class="dropdown-item" href="https://hideric.github.io/rn">React Native</a>
+          
+        </div>
+      </li>
+      
+      
+      
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle text-dark" href="#" role="button" data-toggle="dropdown" aria-haspopup="true"
+          aria-expanded="false">
+          Mid-Ware
+        </a>
+        <div class="dropdown-menu" >
+          
+          <a class="dropdown-item" href="https://hideric.github.io/redis">Redis</a>
+          
+          <a class="dropdown-item" href="https://hideric.github.io/nginx">Nginx</a>
+          
+        </div>
+      </li>
+      
+      
+      
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle text-dark" href="#" role="button" data-toggle="dropdown" aria-haspopup="true"
+          aria-expanded="false">
+          Mobile
+        </a>
+        <div class="dropdown-menu" >
+          
+          <a class="dropdown-item" href="https://hideric.github.io/android">Android</a>
+          
+          <a class="dropdown-item" href="https://hideric.github.io/ios">IOS</a>
+          
+        </div>
+      </li>
+      
+      
+      
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle text-dark" href="#" role="button" data-toggle="dropdown" aria-haspopup="true"
+          aria-expanded="false">
+          OPS
+        </a>
+        <div class="dropdown-menu" >
+          
+          <a class="dropdown-item" href="https://hideric.github.io/k8s">kubernetes</a>
+          
+          <a class="dropdown-item" href="https://hideric.github.io/docker">Docker</a>
+          
+          <a class="dropdown-item" href="https://hideric.github.io/leetcode">Leetcode</a>
+          
+          <a class="dropdown-item" href="https://hideric.github.io/linux">Linux</a>
+          
+        </div>
+      </li>
+      
+      
+      
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle text-dark" href="#" role="button" data-toggle="dropdown" aria-haspopup="true"
+          aria-expanded="false">
+          pages
+        </a>
+        <div class="dropdown-menu" >
+          
+          <a class="dropdown-item" href="https://hideric.github.io/faq">FAQ</a>
+          
+          <a class="dropdown-item" href="https://hideric.github.io/contact">CONTACT</a>
+          
+          <a class="dropdown-item" href="https://hideric.github.io/elements">ELEMENTS</a>
+          
+          <a class="dropdown-item" href="https://hideric.github.io/others">OTHERS</a>
+          
+        </div>
+      </li>
+      
+      
+    </ul>
+    
+    <ul class="list-inline text-center mb-0">
+      
+    </ul>
+  </div>
+</nav>
+  </div>
+</header>
+<!-- /navigation -->
+
+
+<section class="single pt-5 bg-gray">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-3">
+        <div class="p-4 bg-white sticky-top top-100">
+            
+            <nav class="sidebar-menu">
+              <ul class="list-styled">
+            <li class=""><a href="https://hideric.github.io/android/">Android</a>
+              <ul class="">
+            <li class=""><a href="https://hideric.github.io/android/tool/f-droidapps/">F-Droid Apps Recommendation</a>
+            </li></ul>
+              
+            </li>
+            <li class=""><a href="https://hideric.github.io/cpp/">C&#43;&#43;</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/docker/">Docker</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/go/">Go</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/ios/">IOS</a>
+            </li>
+            <li class="parent d-block "><a href="https://hideric.github.io/java/">Java</a>
+              <ul class="sub-menu">
+            <li class=""><a href="https://hideric.github.io/java/basis/http%E6%96%AD%E7%82%B9%E7%BB%AD%E4%BC%A0/">HTTP断点续传</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/basis/java-%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8/">Java 垃圾收集器</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/basis/java-%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%8B%BC%E6%8E%A5%E5%A7%BF%E5%8A%BF/">Java 字符串拼接姿势</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/basis/java-%E5%A6%82%E4%BD%95%E6%9B%B4%E4%BC%98%E9%9B%85%E7%9A%84%E5%A4%84%E7%90%86%E7%A9%BA%E5%80%BC/">Java-如何更优雅的处理空值</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/basis/jvm/jvm-%E5%A0%86%E5%86%85%E5%AD%98%E6%BA%A2%E5%87%BA%E5%90%8E%E5%85%B6%E4%BB%96%E7%BA%BF%E7%A8%8B%E6%98%AF%E5%90%A6%E5%8F%AF%E7%BB%A7%E7%BB%AD%E5%B7%A5%E4%BD%9C/">JVM 堆内存溢出后，其他线程是否可继续工作？</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/framework/mybatis/mybatis%E4%B8%ADlike-%E7%9A%84%E4%BD%BF%E7%94%A8%E6%96%B9%E5%BC%8F%E4%BB%A5%E5%8F%8A%E4%B8%80%E4%BA%9B%E6%B3%A8%E6%84%8F%E7%82%B9/">Mybatis中Like 的使用方式以及一些注意点</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/framework/mybatis/mybatis%E5%B1%85%E7%84%B6%E6%9C%89%E5%9D%91%E5%8D%83%E4%B8%87%E5%88%AB%E8%B8%A9/">Mybatis居然有坑，千万别踩！</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/framework/spring/spring%E5%BE%AA%E7%8E%AF%E4%BE%9D%E8%B5%96%E7%9A%84%E5%9D%91/">Spring循环依赖的坑</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/framework/spring/spring%E7%9A%84%E5%90%84%E7%A7%8D%E6%B3%A8%E8%A7%A3/">Spring的各种注解</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/basis/%E4%BB%8E%E5%AE%9E%E8%B7%B5%E8%A7%92%E5%BA%A6%E9%87%8D%E6%96%B0%E7%90%86%E8%A7%A3bio%E5%92%8Cnio/">从实践角度重新理解BIO和NIO</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/basis/%E5%85%B3%E4%BA%8E-git-%E6%8F%90%E4%BA%A4%E8%A7%84%E8%8C%83/">关于 Git 提交规范</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/basis/jvm/%E6%B3%A8%E6%84%8Fcode-cache%E6%89%93%E6%BB%A1%E5%8F%AF%E5%AF%BC%E8%87%B4%E5%BA%94%E7%94%A8%E6%80%A7%E8%83%BD%E9%99%8D%E4%BD%8E/">注意，Code Cache打满可导致应用性能降低</a>
+            </li>
+            <li class=" active "><a href="https://hideric.github.io/java/framework/spring/spring-%E5%AE%B9%E5%99%A8%E5%90%AF%E5%8A%A8%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/">Spring 容器启动源码解析</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/framework/spring/spring-%E7%9A%84-beanutils-%E5%A1%AB%E5%9D%91%E8%AE%B0/">Spring 的 BeanUtils 填坑记</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/basis/weakhashmap%E7%94%9F%E4%BA%86%E7%97%85%E7%9A%84-hashmap-/">WeakHashMap，生了病的 HashMap ？</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/framework/dubbo/%E4%BD%BF%E7%94%A8dubbo%E8%BF%87%E7%A8%8B%E4%B8%AD%E9%81%87%E5%88%B0%E8%BF%87%E5%93%AA%E4%BA%9B%E5%9D%91/">使用dubbo过程中遇到过哪些坑？</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/basis/%E4%B8%80%E4%B8%AAjava%E5%AF%B9%E8%B1%A1%E5%88%B0%E5%BA%95%E5%8D%A0%E7%94%A8%E5%A4%9A%E5%A4%A7%E5%86%85%E5%AD%98/">一个Java对象到底占用多大内存？</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/basis/%E4%BD%A0%E7%9C%9F%E7%9A%84%E4%BA%86%E8%A7%A3logback%E5%90%97/">你真的了解logback吗？</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/basis/%E8%BF%99%E5%8F%AF%E8%83%BD%E6%98%AFgithub%E4%B8%8A%E6%9C%80%E5%8F%8B%E5%A5%BD%E7%9A%84%E5%88%86%E5%B8%83%E5%BC%8F%E5%8D%B3%E6%97%B6%E9%80%9A%E8%AE%AF%E9%A1%B9%E7%9B%AE..../">这可能是Github上最友好的分布式即时通讯项目.....</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/basis/java-8-stream-%E9%9B%86%E5%90%88%E6%93%8D%E4%BD%9C%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B/">Java 8 - Stream 集合操作快速上手</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/basis/concurrency/stringbuilder-%E4%B8%BA%E4%BB%80%E4%B9%88%E7%BA%BF%E7%A8%8B%E4%B8%8D%E5%AE%89%E5%85%A8/">StringBuilder 为什么线程不安全？</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/basis/jvm/jvm%E4%BC%98%E5%8C%96%E4%B9%8B%E9%80%83%E9%80%B8%E5%88%86%E6%9E%90%E4%B8%8E%E5%88%86%E9%85%8D%E6%B6%88%E9%99%A4/">JVM优化之逃逸分析与分配消除</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/framework/security/shiro%E6%A1%86%E6%9E%B6-%E7%94%A8%E6%88%B7%E6%9D%83%E9%99%90%E7%AE%A1%E7%90%86/">Shiro框架 - 用户权限管理</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/basis/concurrency/threadlocal%E9%9D%A2%E8%AF%95%E9%A2%98/">ThreadLocal面试题</a>
+            </li></ul>
+              
+            </li>
+            <li class=""><a href="https://hideric.github.io/js/">JavaScript</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/k8s/">Kubernets</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/leetcode/">Leetcode</a>
+              <ul class="">
+            <li class=""><a href="https://hideric.github.io/leetcode/leetcode-5/">LeetCode #5 最长回文子字符串</a>
+            </li></ul>
+              
+            </li>
+            <li class=""><a href="https://hideric.github.io/linux/">Linux</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/mysql/">Mysql</a>
+              <ul class="">
+            <li class=""><a href="https://hideric.github.io/mysql/mysql%E9%9D%A2%E8%AF%95%E9%A2%98%E5%8F%8A%E5%8D%83%E4%B8%87%E7%BA%A7%E6%95%B0%E6%8D%AE%E6%9F%A5%E8%AF%A2%E4%BC%98%E5%8C%96/">Mysql面试题及千万级数据查询优化</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/mysql/mysql%E7%9A%84count%E8%AF%AD%E5%8F%A5/">MySQL的COUNT语句</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/mysql/mysql-%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E6%80%9D%E8%B7%AF/">MySQL 性能优化思路</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/mysql/%E5%AE%98%E6%96%B9%E5%B7%A5%E5%85%B7mysql-router-%E9%AB%98%E5%8F%AF%E7%94%A8%E5%8E%9F%E7%90%86%E4%B8%8E%E5%AE%9E%E6%88%98/">官方工具｜MySQL Router 高可用原理与实战</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/mysql/mysql-%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%968-%E7%A7%8D%E5%B8%B8%E8%A7%81-sql-%E9%94%99%E8%AF%AF%E7%94%A8%E6%B3%95/">MySQL 性能优化：8 种常见 SQL 错误用法！</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/mysql/index/null%E8%83%BD%E7%94%A8%E7%B4%A2%E5%BC%95/">MySQL中IS NULL、IS NOT NULL、!=不能用索引？</a>
+            </li></ul>
+              
+            </li>
+            <li class=""><a href="https://hideric.github.io/nginx/">Nginx</a>
+              <ul class="">
+            <li class=""><a href="https://hideric.github.io/nginx/%E5%90%8E%E7%AB%AF%E5%AE%9E%E8%B7%B5nginx%E6%97%A5%E5%BF%97%E9%85%8D%E7%BD%AE%E8%B6%85%E8%AF%A6%E7%BB%86/">后端实践：Nginx日志配置（超详细）</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/nginx/%E4%BD%BF%E7%94%A8nginx%E8%BF%9B%E8%A1%8C%E5%9B%9B%E5%B1%82%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1/">使用Nginx进行四层负载均衡</a>
+            </li></ul>
+              
+            </li>
+            <li class=""><a href="https://hideric.github.io/oracle/">Oracle</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/others/">OTHERS</a>
+              <ul class="">
+            <li class=""><a href="https://hideric.github.io/others/term/qps%E6%9C%AF%E8%AF%AD/">秒懂 QPS、TPS、PV、UV、GMV、IP、RPS！</a>
+            </li></ul>
+              
+            </li>
+            <li class=""><a href="https://hideric.github.io/python/">Python</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/react/">React</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/rn/">React Native</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/redis/">Redis</a>
+              <ul class="">
+            <li class=""><a href="https://hideric.github.io/redis/%E5%A6%82%E4%BD%95%E7%94%A8-redis-%E7%BB%9F%E8%AE%A1%E7%8B%AC%E7%AB%8B%E7%94%A8%E6%88%B7%E8%AE%BF%E9%97%AE%E9%87%8F/">如何用 Redis 统计独立用户访问量？</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/redis/redis-%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81%E7%9A%84%E6%AD%A3%E7%A1%AE%E5%AE%9E%E7%8E%B0%E6%96%B9%E5%BC%8Fjava%E7%89%88/">Redis 分布式锁的正确实现方式（Java版）</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/redis/redis-%E5%AE%9E%E7%8E%B0%E9%99%84%E8%BF%91%E7%9A%84%E4%BA%BA%E5%8A%9F%E8%83%BD/">Redis 实现“附近的人”功能</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/redis/%E4%B8%BA%E4%BB%80%E4%B9%88rediscluster%E6%9C%8916384%E4%B8%AA%E6%A7%BD/">为什么RedisCluster有16384个槽?</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/redis/%E5%AD%A6%E4%BC%9A%E8%BF%99%E5%87%A0%E4%B8%AAredis%E6%8A%80%E5%B7%A7%E8%AE%A9%E4%BD%A0%E7%9A%84%E7%A8%8B%E5%BA%8F%E5%BF%AB%E5%A6%82%E9%97%AA%E7%94%B5/">学会这几个Redis技巧，让你的程序快如闪电</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/redis/%E6%AF%94redis%E8%BF%98%E5%BF%AB5%E5%80%8D%E7%9A%84%E4%B8%AD%E9%97%B4%E4%BB%B6%E4%B8%BA%E5%95%A5%E8%BF%99%E4%B9%88%E5%BF%AB/">比Redis还快5倍的中间件，为啥这么快？</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/redis/redis%E9%AB%98%E7%BA%A7%E5%AE%A2%E6%88%B7%E7%AB%AFlettuce%E8%AF%A6%E8%A7%A3/">Redis高级客户端Lettuce详解</a>
+            </li></ul>
+              
+            </li>
+            <li class=""><a href="https://hideric.github.io/vue/">Vue</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/contact/">Contact</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/elements/">Elements</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/faq/">Frequently Asked Questions</a>
+            </li></ul>
+            </nav>
+
+            
+        </div>
+      </div>
+      <div class="col-lg-9">
+        <div class="p-5 bg-white">
+            <h2>Spring 容器启动源码解析</h2>
+            
+
+<h2 id="spring-容器启动源码解析">Spring 容器启动源码解析</h2>
+
+<p><strong>&nbsp; &nbsp;01&nbsp;前言&nbsp; &nbsp;</strong></p>
+
+<p>最近搭建的工程都是基于SpringBoot，简化配置的感觉真爽。但有个以前的项目还是用SpringMvc写的，看到满满的配置xml文件，却有一种想去深入了解的冲动。折腾了好几天，决心去写这篇关于Spring启动的博客，自己是个刚入职的小白，技术水平有限，也是硬着头皮看源码去Debug，很多不懂的地方还请谅解！</p>
+
+<p><strong>&nbsp; &nbsp;02 概念&nbsp; &nbsp;</strong></p>
+
+<p>先给出几个让我头皮发麻的概念：<strong>web容器，Spring容器，SpringMvc容器</strong></p>
+
+<p>容器就是管理对象的地方，例如web容器就是管理servlet的地方，Spring容器就是管理Service,dao等Bean的地方，SpringMvc就是管理Controller等bean的地方(下文会做解释)。一个SpringMvc项目的启动离不开上述三个容器。所以这就是这篇文章的讲点，各个容器的启动过程解析。</p>
+
+<p><strong>&nbsp; &nbsp;03&nbsp;Web容器初始化过程&nbsp; &nbsp;</strong></p>
+
+<p><strong>官方文档是对于Web容器初始化时是这样描述的（英文不懂，已翻译成中文）</strong></p>
+
+<p>1.　部署描述文件（web.xml）中的&lt;listener&gt;标记的监听器会被创建和初始化</p>
+
+<p>2.　对于实现了ServletContextListener的监听器，会执行它的初始化方法 contextInitialized()</p>
+
+<p>3.　部署描述文件中的&lt;filter&gt;标记的过滤器会被创建和初始化，调用其init()方法</p>
+
+<p>4.　部署描述文件中的&lt;servlet&gt;标记的servlet会根据&lt;load-on-startup&gt;中的序号创建和初始化，调用init()方法</p>
+
+<p>　　</p>
+
+<p><img class="rich_pages" data-ratio="0.5082956259426847" data-s="300,640" src="data:image/JPG;base64,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 " src="j0ROiac4adEuQKCFSfPQGnqHRiaXYzZJ28V2PQzOfprQibETvINia5q19GPMgHoELzEsKbQUYfZ7o4Mq8Cn2kquPwQ"  data-type="png" data-w="663" style=""  /></p>
+
+<p><strong>大致流程了解之后，结合自己的SpringMvc项目一步步深入，先贴一下基本的web.xml文件</strong>****</p>
+
+<hr />
+
+<pre><code class="language-xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;web-app xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xmlns:web=&quot;http://java.sun.com/xml/ns/javaee&quot; xmlns=&quot;http://java.sun.com/xml/ns/javaee&quot; xsi:schemaLocation=&quot;http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd&quot; id=&quot;WebApp_ID&quot; version=&quot;2.5&quot;&gt;
+  &lt;display-name&gt;dmpserver&lt;/display-name&gt;
+  &lt;welcome-file-list&gt;
+    &lt;welcome-file&gt;login.jsp&lt;/welcome-file&gt;
+  &lt;/welcome-file-list&gt;
+  &lt;context-param&gt;
+    &lt;param-name&gt;contextConfigLocation&lt;/param-name&gt;
+    &lt;param-value&gt;classpath:spring.xml&lt;/param-value&gt;
+  &lt;/context-param&gt;
+  &lt;context-param&gt;
+    &lt;param-name&gt;log4jConfigLocation&lt;/param-name&gt;
+    &lt;param-value&gt;classpath:log4jConfig.xml&lt;/param-value&gt;
+  &lt;/context-param&gt;
+
+  &lt;filter&gt;
+    &lt;filter-name&gt;encodingFilter&lt;/filter-name&gt;
+    &lt;filter-class&gt;org.springframework.web.filter.CharacterEncodingFilter&lt;/filter-class&gt;
+    &lt;init-param&gt;
+      &lt;param-name&gt;encoding&lt;/param-name&gt;
+      &lt;param-value&gt;utf-8&lt;/param-value&gt;
+    &lt;/init-param&gt;
+  &lt;/filter&gt;
+  &lt;filter-mapping&gt;
+    &lt;filter-name&gt;encodingFilter&lt;/filter-name&gt;
+    &lt;url-pattern&gt;/*&lt;/url-pattern&gt;
+  &lt;/filter-mapping&gt;  
+  &lt;listener&gt;
+    &lt;listener-class&gt;org.springframework.web.context.ContextLoaderListener&lt;/listener-class&gt;
+  &lt;/listener&gt;
+   &lt;listener&gt;
+    &lt;listener-class&gt;org.springframework.web.util.Log4jConfigListener&lt;/listener-class&gt;
+  &lt;/listener&gt;
+  &lt;servlet&gt;
+    &lt;description&gt;spring mvc servlet&lt;/description&gt;
+    &lt;servlet-name&gt;rest&lt;/servlet-name&gt;
+    &lt;servlet-class&gt;org.springframework.web.servlet.DispatcherServlet&lt;/servlet-class&gt;
+    &lt;init-param&gt;
+        &lt;param-name&gt;contextConfigLocation&lt;/param-name&gt;
+        &lt;param-value&gt;
+            classpath:spring-mvc.xml
+        &lt;/param-value&gt;
+    &lt;/init-param&gt;
+    &lt;load-on-startup&gt;1&lt;/load-on-startup&gt;
+  &lt;/servlet&gt;
+
+&lt;/web-app&gt;
+</code></pre>
+
+<p>1.　容器会先解析&lt;context-param&gt;中的键值对（上述代码重点关注Spring配置文件Spring.xml）</p>
+
+<p>2.　容器创建一个application内置对象servletContext（可以理解为servlet上下文或web容器），用于全局变量共享</p>
+
+<p>3.　将解析的&lt;context-param&gt;键值对存放在application即servletContext中</p>
+
+<p>4.　读取&lt;listener&gt;中的监听器，一般会使用ContextLoaderListener类，调用其contextInitialized方法，创建IOC容器（Spring容器）webApplicationContext。将webApplication容器放入application（servlet上下文）中作为根IOC容器，键名为WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE &nbsp;&nbsp;&nbsp;</p>
+
+<p>注意的是，webApplicationContext是全局唯一的，一个web应用只能有一个根IOC容器。因为这个根IOC容器是读取&lt;context-param&gt;配置的键值对来创建Bean，这个根IOC容器只能访问spring.xml中配置的Bean，我们在Spring.xml中一般配置的是service，dao等Bean。所以根IOC容器（Spring容器）只能管理service，dao等Bean</p>
+
+<p>5.　listener加载完毕后，加载filter过滤器</p>
+
+<p>6.　加载servlet，一般springMvc项目中会优先加载&nbsp;DispatcherServlet（现在开始加载SpringMvc容器了）</p>
+
+<p>7.　DispatcherServlet的父类FrameworkServlet重写了其父类的initServletBean()方法，在初始化时调用initWebApplicationContext()方法和onRefresh()方法</p>
+
+<p>8.　initWebApplicationContext()方法会在servletContext（即当前servlet上下文）创建一个子IOC容器（即SpringMvc容器），如果存在上述的根IOC容器，就设置根IOC容器作为父容器，如果不存在，就将父容器设置为NULL</p>
+
+<p>9.　读取&lt;servlet&gt;标签的&lt;init-param&gt;配置的xml文件并加载相关Bean。此时加载的是Spring-mvc.xml配置文件，管理的是Controller等Bean</p>
+
+<p>10.&nbsp; &nbsp;onRefresh()加载其他组件</p>
+
+<p><strong>&nbsp; &nbsp;04&nbsp;启动过程分析&nbsp; &nbsp;</strong></p>
+
+<p><strong>4.1　listener初始化Spring容器</strong></p>
+
+<p>tomcat启动后，&lt;context-param&gt;标签的内容读取后会被放进application中，做为Web应用的全局变量使用，接下来创建listener时会使用到这个全局变量，因此，Web应用在容器中部署后，进行初始化时会先读取这个全局变量，之后再进行上述讲解的初始化启动过程。</p>
+
+<p>查看ContextLoaderListener源码</p>
+
+<hr />
+
+<pre><code class="language-java">public class ContextLoaderListener extends ContextLoader implements ServletContextListener {
+    public ContextLoaderListener() {
+    }
+
+    public ContextLoaderListener(WebApplicationContext context) {
+        super(context);
+    }
+
+    public void contextInitialized(ServletContextEvent event) {
+        this.initWebApplicationContext(event.getServletContext());
+    }
+
+    public void contextDestroyed(ServletContextEvent event) {
+        this.closeWebApplicationContext(event.getServletContext());
+        ContextCleanupListener.cleanupAttributes(event.getServletContext());
+    }
+}
+</code></pre>
+
+<p>据官方文档说明，实现ServletContextListener接口，执行contextInitialized()，进入initWebApplicationContext方法。contextInitialized()和contextDestroyed()方法会在web容器启动或销毁时执行。网上查了下此处设计模式用到的是观察者模式和代理模式，自己也不懂就不做详解了</p>
+
+<p>查看ContextLoader.class中的initWebApplicationContext方法</p>
+
+<hr />
+
+<pre><code class="language-java">public WebApplicationContext initWebApplicationContext(ServletContext servletContext) {
+        /*
+        首先通过WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE
+        这个String类型的静态变量获取一个根IoC容器，根IoC容器作为全局变量
+        存储在application对象中，如果存在则有且只能有一个
+        如果在初始化根WebApplicationContext即根IoC容器时发现已经存在
+        则直接抛出异常，因此web.xml中只允许存在一个ContextLoader类或其子类的对象
+        */
+        if (servletContext.getAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE) != null) {
+            throw new IllegalStateException(&quot;Cannot initialize context because there is already a root application context present - check whether you have multiple ContextLoader* definitions in your web.xml!&quot;);
+        } else {
+            Log logger = LogFactory.getLog(ContextLoader.class);
+            servletContext.log(&quot;Initializing Spring root WebApplicationContext&quot;);
+            if (logger.isInfoEnabled()) {
+                logger.info(&quot;Root WebApplicationContext: initialization started&quot;);
+            }
+
+            long startTime = System.currentTimeMillis();
+
+            try {
+                if (this.context == null) {
+                    // 创建一个根IOC容器
+                    this.context = this.createWebApplicationContext(servletContext);
+                }
+
+                if (this.context instanceof ConfigurableWebApplicationContext) {
+                    ConfigurableWebApplicationContext cwac = (ConfigurableWebApplicationContext)this.context;
+                    if (!cwac.isActive()) {
+                        if (cwac.getParent() == null) {
+                            // 为根IOC容器设置一个父容器
+                            ApplicationContext parent = this.loadParentContext(servletContext);
+                            cwac.setParent(parent);
+                        }
+
+                        this.configureAndRefreshWebApplicationContext(cwac, servletContext);
+                    }
+                }
+                //将创建好的IoC容器放入到application对象中，并设置key为WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE
+                servletContext.setAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE, this.context);
+                ClassLoader ccl = Thread.currentThread().getContextClassLoader();
+                if (ccl == ContextLoader.class.getClassLoader()) {
+                    currentContext = this.context;
+                } else if (ccl != null) {
+                    currentContextPerThread.put(ccl, this.context);
+                }
+
+                if (logger.isDebugEnabled()) {
+                    logger.debug(&quot;Published root WebApplicationContext as ServletContext attribute with name [&quot; + WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE + &quot;]&quot;);
+                }
+
+                if (logger.isInfoEnabled()) {
+                    long elapsedTime = System.currentTimeMillis() - startTime;
+                    logger.info(&quot;Root WebApplicationContext: initialization completed in &quot; + elapsedTime + &quot; ms&quot;);
+                }
+
+                return this.context;
+            } catch (RuntimeException var8) {
+                logger.error(&quot;Context initialization failed&quot;, var8);
+                servletContext.setAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE, var8);
+                throw var8;
+            } catch (Error var9) {
+                logger.error(&quot;Context initialization failed&quot;, var9);
+                servletContext.setAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE, var9);
+                throw var9;
+            }
+        }
+    }
+</code></pre>
+
+<p>initWebApplicationContext方法的主要目的是创建一个根IOC容器，并放入servlet上下文中。看上述源码可知，根IOC容器只能仅有一个，作为全局变量存储在servletContext中。将根IoC容器放入到application对象之前进行了IoC容器的配置和刷新操作，调用了configureAndRefreshWebApplicationContext()方法，该方法源码如下:</p>
+
+<hr />
+
+<pre><code class="language-java">protected void configureAndRefreshWebApplicationContext(ConfigurableWebApplicationContext wac, ServletContext sc) {
+        String configLocationParam;
+        if (ObjectUtils.identityToString(wac).equals(wac.getId())) {
+            configLocationParam = sc.getInitParameter(&quot;contextId&quot;);
+            if (configLocationParam != null) {
+                wac.setId(configLocationParam);
+            } else {
+                wac.setId(ConfigurableWebApplicationContext.APPLICATION_CONTEXT_ID_PREFIX + ObjectUtils.getDisplayString(sc.getContextPath()));
+            }
+        }
+
+        wac.setServletContext(sc);
+        /*
+            在容器启动时，会把&lt;context-param&gt;中的内容放入servlet上下文的全局变量中，
+            此时获取key为contextConfigLocation的变量，及Spring.xml配置文件
+            将其放入到webApplicationContext中
+        */
+        configLocationParam = sc.getInitParameter(&quot;contextConfigLocation&quot;);
+        if (configLocationParam != null) {
+            wac.setConfigLocation(configLocationParam);
+        }
+
+        ConfigurableEnvironment env = wac.getEnvironment();
+        if (env instanceof ConfigurableWebEnvironment) {
+            ((ConfigurableWebEnvironment)env).initPropertySources(sc, (ServletConfig)null);
+        }
+
+        this.customizeContext(sc, wac);
+        wac.refresh();
+    }
+</code></pre>
+
+<p>configureAndRefreshWebApplicationContext方法比较重要的是把配置文件信息放入根IOC容器中。方法最后调用了refresh()方法，对配置文件信息（Bean）进行加载。因为refresh()这是个ConfigurableApplication-Context接口方法，想到了它的常用实现类ClassPathXmlApplicationContext，一层层进去找到了Abstract-ApplicationContext，实现了refresh()，见如下源码：</p>
+
+<hr />
+
+<pre><code class="language-java">public void refresh() throws BeansException, IllegalStateException {
+        Object var1 = this.startupShutdownMonitor;
+        synchronized(this.startupShutdownMonitor) {
+            this.prepareRefresh();
+            ConfigurableListableBeanFactory beanFactory = this.obtainFreshBeanFactory();
+            this.prepareBeanFactory(beanFactory);
+
+            try {
+                this.postProcessBeanFactory(beanFactory);
+                this.invokeBeanFactoryPostProcessors(beanFactory);
+                this.registerBeanPostProcessors(beanFactory);
+                this.initMessageSource();
+                this.initApplicationEventMulticaster();
+                this.onRefresh();
+                this.registerListeners();
+                this.finishBeanFactoryInitialization(beanFactory);
+                this.finishRefresh();
+            } catch (BeansException var9) {
+                if (this.logger.isWarnEnabled()) {
+                    this.logger.warn(&quot;Exception encountered during context initialization - cancelling refresh attempt: &quot; + var9);
+                }
+
+                this.destroyBeans();
+                this.cancelRefresh(var9);
+                throw var9;
+            } finally {
+                this.resetCommonCaches();
+            }
+
+        }
+    }
+</code></pre>
+
+<p>该方法主要用于创建并初始化contextConfigLocation类配置的xml文件中的Bean，因此，如果我们在配置Bean时出错，在Web应用启动时就会抛出异常，而不是等到运行时才抛出异常。因为技术能力有限加上此处方法太多，就不在一一解析了。到此为止，整个Spring容器加载完毕，下面开始加载SpringMVC容器</p>
+
+<h3 id="4-2-filter初始化">4.2　Filter初始化</h3>
+
+<p>因为Filter的操作没有涉及IOC容器，此处不做详解，上面web.xml中配置的是一个UTF8编码过滤器</p>
+
+<hr />
+
+<h3 id="end">END</h3>
+
+            <p class="post-meta border-bottom pb-3 mb-0">Updated on 30 Oct 2019</p><nav class="pagination mt-3"><a class="nav nav-prev" href="https://hideric.github.io/java/basis/jvm/%E6%B3%A8%E6%84%8Fcode-cache%E6%89%93%E6%BB%A1%E5%8F%AF%E5%AF%BC%E8%87%B4%E5%BA%94%E7%94%A8%E6%80%A7%E8%83%BD%E9%99%8D%E4%BD%8E/" title="注意，Code Cache打满可导致应用性能降低"><i class="ti-arrow-left mr-2"></i>注意，Code Cache打满可导致应用性能降低</a>
+            <a class="nav nav-next" href="https://hideric.github.io/java/framework/spring/spring-%E7%9A%84-beanutils-%E5%A1%AB%E5%9D%91%E8%AE%B0/" title="Spring 的 BeanUtils 填坑记">Spring 的 BeanUtils 填坑记<i class="ti-arrow-right ml-2"></i></a>
+            </nav></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- footer -->
+<footer class="section bg-gray pb-0">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-8 text-md-left text-center">
+        <p>The Hugo Documents are copyright © gethugothemes 2018.</p> 
+      </div>
+      <div class="col-md-4 text-md-right text-center">
+        <ul class="list-inline mb-3">
+          
+          <li class="list-inline-item"><a class="text-color d-inline-block p-2" href="#"><i class="ti-facebook"></i></a></li>
+          
+          <li class="list-inline-item"><a class="text-color d-inline-block p-2" href="#"><i class="ti-twitter-alt"></i></a></li>
+          
+          <li class="list-inline-item"><a class="text-color d-inline-block p-2" href="#"><i class="ti-vimeo-alt"></i></a></li>
+          
+          <li class="list-inline-item"><a class="text-color d-inline-block p-2" href="#"><i class="ti-instagram"></i></a></li>
+          
+        </ul>
+      </div>
+    </div>
+  </div>
+</footer>
+<!-- /footer -->
+
+<!-- Bootstrap JS -->
+<script src="https://hideric.github.io/plugins/bootstrap/bootstrap.min.js"></script>
+<!-- highlight -->
+<script src="https://hideric.github.io/plugins/highlight/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+<!-- Main Script -->
+
+<script src="https://hideric.github.io/js/script.min.js"></script>

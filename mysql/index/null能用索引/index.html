@@ -1,0 +1,570 @@
+<head>
+  <meta charset="utf-8">
+  <title>MySQL中IS NULL、IS NOT NULL、!=不能用索引？</title>
+
+  <meta name="generator" content="Hugo 0.58.3" />
+
+  <!-- mobile responsive meta -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <!-- ** Plugins Needed for the Project ** -->
+  <!-- Bootstrap -->
+  <link rel="stylesheet" href="https://hideric.github.io/plugins/bootstrap/bootstrap.min.css">
+  <!-- themefy-icon -->
+  <link rel="stylesheet" href="https://hideric.github.io/plugins/themify-icons/themify-icons.css">
+  <!-- highlight -->
+  <link rel="stylesheet" href="https://hideric.github.io/plugins/highlight/hybrid.css">
+  <!-- fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700" rel="stylesheet">
+
+  <style>
+  :root{
+    --primary-color:#2f1f48;
+    --secondary-color:#f9f9f9;
+    --text-color:#636363;
+    --text-color-dark:#242738;
+    --white-color:#ffffff;
+  }  
+  </style>
+
+  <!-- Main Stylesheet -->
+  
+  <link rel="stylesheet" href="https://hideric.github.io/css/style.min.css" integrity="" media="screen">
+
+  <!-- jquiry -->
+  <script src="https://hideric.github.io/plugins/jquery/jquery-1.12.4.js"></script>
+
+  <!-- jquary ui -->
+  <script src="https://hideric.github.io/plugins/jquery/jquery-ui.js"></script>
+
+  <!--Favicon-->
+  <link rel="icon" href="https://hideric.github.io/images/favicon.png" type="image/x-icon">
+
+</head>
+
+
+<!-- navigation -->
+<header class="shadow-bottom sticky-top bg-white">
+  <div class="container">
+    <nav class="navbar navbar-expand-lg navbar-light">
+  <a class="navbar-brand" href="https://hideric.github.io/">Hideric</a>
+  <button class="navbar-toggler border-0" type="button" data-toggle="collapse" data-target="#navigation"
+    aria-controls="navigation" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse text-center" id="navigation">
+    <ul class="navbar-nav ml-auto">
+      <li class="nav-item">
+        <a class="nav-link text-dark" href="https://hideric.github.io/">Home</a>
+      </li>
+      
+      
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle text-dark" href="#" role="button" data-toggle="dropdown" aria-haspopup="true"
+          aria-expanded="false">
+          Back-End
+        </a>
+        <div class="dropdown-menu" >
+          
+          <a class="dropdown-item" href="https://hideric.github.io/java">Java</a>
+          
+          <a class="dropdown-item" href="https://hideric.github.io/python">Python</a>
+          
+          <a class="dropdown-item" href="https://hideric.github.io/go">Go</a>
+          
+          <a class="dropdown-item" href="https://hideric.github.io/cpp">C&#43;&#43;</a>
+          
+        </div>
+      </li>
+      
+      
+      
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle text-dark" href="#" role="button" data-toggle="dropdown" aria-haspopup="true"
+          aria-expanded="false">
+          DB
+        </a>
+        <div class="dropdown-menu" >
+          
+          <a class="dropdown-item" href="https://hideric.github.io/mysql">Mysql</a>
+          
+          <a class="dropdown-item" href="https://hideric.github.io/oracle">Oracle</a>
+          
+        </div>
+      </li>
+      
+      
+      
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle text-dark" href="#" role="button" data-toggle="dropdown" aria-haspopup="true"
+          aria-expanded="false">
+          Front-End
+        </a>
+        <div class="dropdown-menu" >
+          
+          <a class="dropdown-item" href="https://hideric.github.io/js">JavaScript</a>
+          
+          <a class="dropdown-item" href="https://hideric.github.io/vue">Vue</a>
+          
+          <a class="dropdown-item" href="https://hideric.github.io/react">React</a>
+          
+          <a class="dropdown-item" href="https://hideric.github.io/rn">React Native</a>
+          
+        </div>
+      </li>
+      
+      
+      
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle text-dark" href="#" role="button" data-toggle="dropdown" aria-haspopup="true"
+          aria-expanded="false">
+          Mid-Ware
+        </a>
+        <div class="dropdown-menu" >
+          
+          <a class="dropdown-item" href="https://hideric.github.io/redis">Redis</a>
+          
+          <a class="dropdown-item" href="https://hideric.github.io/nginx">Nginx</a>
+          
+        </div>
+      </li>
+      
+      
+      
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle text-dark" href="#" role="button" data-toggle="dropdown" aria-haspopup="true"
+          aria-expanded="false">
+          Mobile
+        </a>
+        <div class="dropdown-menu" >
+          
+          <a class="dropdown-item" href="https://hideric.github.io/android">Android</a>
+          
+          <a class="dropdown-item" href="https://hideric.github.io/ios">IOS</a>
+          
+        </div>
+      </li>
+      
+      
+      
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle text-dark" href="#" role="button" data-toggle="dropdown" aria-haspopup="true"
+          aria-expanded="false">
+          OPS
+        </a>
+        <div class="dropdown-menu" >
+          
+          <a class="dropdown-item" href="https://hideric.github.io/k8s">kubernetes</a>
+          
+          <a class="dropdown-item" href="https://hideric.github.io/docker">Docker</a>
+          
+          <a class="dropdown-item" href="https://hideric.github.io/leetcode">Leetcode</a>
+          
+          <a class="dropdown-item" href="https://hideric.github.io/linux">Linux</a>
+          
+        </div>
+      </li>
+      
+      
+      
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle text-dark" href="#" role="button" data-toggle="dropdown" aria-haspopup="true"
+          aria-expanded="false">
+          pages
+        </a>
+        <div class="dropdown-menu" >
+          
+          <a class="dropdown-item" href="https://hideric.github.io/faq">FAQ</a>
+          
+          <a class="dropdown-item" href="https://hideric.github.io/contact">CONTACT</a>
+          
+          <a class="dropdown-item" href="https://hideric.github.io/elements">ELEMENTS</a>
+          
+          <a class="dropdown-item" href="https://hideric.github.io/others">OTHERS</a>
+          
+        </div>
+      </li>
+      
+      
+    </ul>
+    
+    <ul class="list-inline text-center mb-0">
+      
+    </ul>
+  </div>
+</nav>
+  </div>
+</header>
+<!-- /navigation -->
+
+
+<section class="single pt-5 bg-gray">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-3">
+        <div class="p-4 bg-white sticky-top top-100">
+            
+            <nav class="sidebar-menu">
+              <ul class="list-styled">
+            <li class=""><a href="https://hideric.github.io/android/">Android</a>
+              <ul class="">
+            <li class=""><a href="https://hideric.github.io/android/tool/f-droidapps/">F-Droid Apps Recommendation</a>
+            </li></ul>
+              
+            </li>
+            <li class=""><a href="https://hideric.github.io/cpp/">C&#43;&#43;</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/docker/">Docker</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/go/">Go</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/ios/">IOS</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/">Java</a>
+              <ul class="">
+            <li class=""><a href="https://hideric.github.io/java/basis/http%E6%96%AD%E7%82%B9%E7%BB%AD%E4%BC%A0/">HTTP断点续传</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/basis/java-%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8/">Java 垃圾收集器</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/basis/java-%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%8B%BC%E6%8E%A5%E5%A7%BF%E5%8A%BF/">Java 字符串拼接姿势</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/basis/java-%E5%A6%82%E4%BD%95%E6%9B%B4%E4%BC%98%E9%9B%85%E7%9A%84%E5%A4%84%E7%90%86%E7%A9%BA%E5%80%BC/">Java-如何更优雅的处理空值</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/basis/jvm/jvm-%E5%A0%86%E5%86%85%E5%AD%98%E6%BA%A2%E5%87%BA%E5%90%8E%E5%85%B6%E4%BB%96%E7%BA%BF%E7%A8%8B%E6%98%AF%E5%90%A6%E5%8F%AF%E7%BB%A7%E7%BB%AD%E5%B7%A5%E4%BD%9C/">JVM 堆内存溢出后，其他线程是否可继续工作？</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/framework/mybatis/mybatis%E4%B8%ADlike-%E7%9A%84%E4%BD%BF%E7%94%A8%E6%96%B9%E5%BC%8F%E4%BB%A5%E5%8F%8A%E4%B8%80%E4%BA%9B%E6%B3%A8%E6%84%8F%E7%82%B9/">Mybatis中Like 的使用方式以及一些注意点</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/framework/mybatis/mybatis%E5%B1%85%E7%84%B6%E6%9C%89%E5%9D%91%E5%8D%83%E4%B8%87%E5%88%AB%E8%B8%A9/">Mybatis居然有坑，千万别踩！</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/framework/spring/spring%E5%BE%AA%E7%8E%AF%E4%BE%9D%E8%B5%96%E7%9A%84%E5%9D%91/">Spring循环依赖的坑</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/framework/spring/spring%E7%9A%84%E5%90%84%E7%A7%8D%E6%B3%A8%E8%A7%A3/">Spring的各种注解</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/basis/%E4%BB%8E%E5%AE%9E%E8%B7%B5%E8%A7%92%E5%BA%A6%E9%87%8D%E6%96%B0%E7%90%86%E8%A7%A3bio%E5%92%8Cnio/">从实践角度重新理解BIO和NIO</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/basis/%E5%85%B3%E4%BA%8E-git-%E6%8F%90%E4%BA%A4%E8%A7%84%E8%8C%83/">关于 Git 提交规范</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/basis/jvm/%E6%B3%A8%E6%84%8Fcode-cache%E6%89%93%E6%BB%A1%E5%8F%AF%E5%AF%BC%E8%87%B4%E5%BA%94%E7%94%A8%E6%80%A7%E8%83%BD%E9%99%8D%E4%BD%8E/">注意，Code Cache打满可导致应用性能降低</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/framework/spring/spring-%E5%AE%B9%E5%99%A8%E5%90%AF%E5%8A%A8%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/">Spring 容器启动源码解析</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/framework/spring/spring-%E7%9A%84-beanutils-%E5%A1%AB%E5%9D%91%E8%AE%B0/">Spring 的 BeanUtils 填坑记</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/basis/weakhashmap%E7%94%9F%E4%BA%86%E7%97%85%E7%9A%84-hashmap-/">WeakHashMap，生了病的 HashMap ？</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/framework/dubbo/%E4%BD%BF%E7%94%A8dubbo%E8%BF%87%E7%A8%8B%E4%B8%AD%E9%81%87%E5%88%B0%E8%BF%87%E5%93%AA%E4%BA%9B%E5%9D%91/">使用dubbo过程中遇到过哪些坑？</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/basis/%E4%B8%80%E4%B8%AAjava%E5%AF%B9%E8%B1%A1%E5%88%B0%E5%BA%95%E5%8D%A0%E7%94%A8%E5%A4%9A%E5%A4%A7%E5%86%85%E5%AD%98/">一个Java对象到底占用多大内存？</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/basis/%E4%BD%A0%E7%9C%9F%E7%9A%84%E4%BA%86%E8%A7%A3logback%E5%90%97/">你真的了解logback吗？</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/basis/%E8%BF%99%E5%8F%AF%E8%83%BD%E6%98%AFgithub%E4%B8%8A%E6%9C%80%E5%8F%8B%E5%A5%BD%E7%9A%84%E5%88%86%E5%B8%83%E5%BC%8F%E5%8D%B3%E6%97%B6%E9%80%9A%E8%AE%AF%E9%A1%B9%E7%9B%AE..../">这可能是Github上最友好的分布式即时通讯项目.....</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/basis/java-8-stream-%E9%9B%86%E5%90%88%E6%93%8D%E4%BD%9C%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B/">Java 8 - Stream 集合操作快速上手</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/basis/concurrency/stringbuilder-%E4%B8%BA%E4%BB%80%E4%B9%88%E7%BA%BF%E7%A8%8B%E4%B8%8D%E5%AE%89%E5%85%A8/">StringBuilder 为什么线程不安全？</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/basis/jvm/jvm%E4%BC%98%E5%8C%96%E4%B9%8B%E9%80%83%E9%80%B8%E5%88%86%E6%9E%90%E4%B8%8E%E5%88%86%E9%85%8D%E6%B6%88%E9%99%A4/">JVM优化之逃逸分析与分配消除</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/framework/security/shiro%E6%A1%86%E6%9E%B6-%E7%94%A8%E6%88%B7%E6%9D%83%E9%99%90%E7%AE%A1%E7%90%86/">Shiro框架 - 用户权限管理</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/basis/concurrency/threadlocal%E9%9D%A2%E8%AF%95%E9%A2%98/">ThreadLocal面试题</a>
+            </li></ul>
+              
+            </li>
+            <li class=""><a href="https://hideric.github.io/js/">JavaScript</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/k8s/">Kubernets</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/leetcode/">Leetcode</a>
+              <ul class="">
+            <li class=""><a href="https://hideric.github.io/leetcode/leetcode-5/">LeetCode #5 最长回文子字符串</a>
+            </li></ul>
+              
+            </li>
+            <li class=""><a href="https://hideric.github.io/linux/">Linux</a>
+            </li>
+            <li class="parent d-block "><a href="https://hideric.github.io/mysql/">Mysql</a>
+              <ul class="sub-menu">
+            <li class="parent d-block "><a href="https://hideric.github.io/mysql/mysql%E9%9D%A2%E8%AF%95%E9%A2%98%E5%8F%8A%E5%8D%83%E4%B8%87%E7%BA%A7%E6%95%B0%E6%8D%AE%E6%9F%A5%E8%AF%A2%E4%BC%98%E5%8C%96/">Mysql面试题及千万级数据查询优化</a>
+            </li>
+            <li class="parent d-block "><a href="https://hideric.github.io/mysql/mysql%E7%9A%84count%E8%AF%AD%E5%8F%A5/">MySQL的COUNT语句</a>
+            </li>
+            <li class="parent d-block "><a href="https://hideric.github.io/mysql/mysql-%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E6%80%9D%E8%B7%AF/">MySQL 性能优化思路</a>
+            </li>
+            <li class="parent d-block "><a href="https://hideric.github.io/mysql/%E5%AE%98%E6%96%B9%E5%B7%A5%E5%85%B7mysql-router-%E9%AB%98%E5%8F%AF%E7%94%A8%E5%8E%9F%E7%90%86%E4%B8%8E%E5%AE%9E%E6%88%98/">官方工具｜MySQL Router 高可用原理与实战</a>
+            </li>
+            <li class="parent d-block "><a href="https://hideric.github.io/mysql/mysql-%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%968-%E7%A7%8D%E5%B8%B8%E8%A7%81-sql-%E9%94%99%E8%AF%AF%E7%94%A8%E6%B3%95/">MySQL 性能优化：8 种常见 SQL 错误用法！</a>
+            </li>
+            <li class=" active "><a href="https://hideric.github.io/mysql/index/null%E8%83%BD%E7%94%A8%E7%B4%A2%E5%BC%95/">MySQL中IS NULL、IS NOT NULL、!=不能用索引？</a>
+            </li></ul>
+              
+            </li>
+            <li class=""><a href="https://hideric.github.io/nginx/">Nginx</a>
+              <ul class="">
+            <li class=""><a href="https://hideric.github.io/nginx/%E5%90%8E%E7%AB%AF%E5%AE%9E%E8%B7%B5nginx%E6%97%A5%E5%BF%97%E9%85%8D%E7%BD%AE%E8%B6%85%E8%AF%A6%E7%BB%86/">后端实践：Nginx日志配置（超详细）</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/nginx/%E4%BD%BF%E7%94%A8nginx%E8%BF%9B%E8%A1%8C%E5%9B%9B%E5%B1%82%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1/">使用Nginx进行四层负载均衡</a>
+            </li></ul>
+              
+            </li>
+            <li class=""><a href="https://hideric.github.io/oracle/">Oracle</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/others/">OTHERS</a>
+              <ul class="">
+            <li class=""><a href="https://hideric.github.io/others/term/qps%E6%9C%AF%E8%AF%AD/">秒懂 QPS、TPS、PV、UV、GMV、IP、RPS！</a>
+            </li></ul>
+              
+            </li>
+            <li class=""><a href="https://hideric.github.io/python/">Python</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/react/">React</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/rn/">React Native</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/redis/">Redis</a>
+              <ul class="">
+            <li class=""><a href="https://hideric.github.io/redis/%E5%A6%82%E4%BD%95%E7%94%A8-redis-%E7%BB%9F%E8%AE%A1%E7%8B%AC%E7%AB%8B%E7%94%A8%E6%88%B7%E8%AE%BF%E9%97%AE%E9%87%8F/">如何用 Redis 统计独立用户访问量？</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/redis/redis-%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81%E7%9A%84%E6%AD%A3%E7%A1%AE%E5%AE%9E%E7%8E%B0%E6%96%B9%E5%BC%8Fjava%E7%89%88/">Redis 分布式锁的正确实现方式（Java版）</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/redis/redis-%E5%AE%9E%E7%8E%B0%E9%99%84%E8%BF%91%E7%9A%84%E4%BA%BA%E5%8A%9F%E8%83%BD/">Redis 实现“附近的人”功能</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/redis/%E4%B8%BA%E4%BB%80%E4%B9%88rediscluster%E6%9C%8916384%E4%B8%AA%E6%A7%BD/">为什么RedisCluster有16384个槽?</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/redis/%E5%AD%A6%E4%BC%9A%E8%BF%99%E5%87%A0%E4%B8%AAredis%E6%8A%80%E5%B7%A7%E8%AE%A9%E4%BD%A0%E7%9A%84%E7%A8%8B%E5%BA%8F%E5%BF%AB%E5%A6%82%E9%97%AA%E7%94%B5/">学会这几个Redis技巧，让你的程序快如闪电</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/redis/%E6%AF%94redis%E8%BF%98%E5%BF%AB5%E5%80%8D%E7%9A%84%E4%B8%AD%E9%97%B4%E4%BB%B6%E4%B8%BA%E5%95%A5%E8%BF%99%E4%B9%88%E5%BF%AB/">比Redis还快5倍的中间件，为啥这么快？</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/redis/redis%E9%AB%98%E7%BA%A7%E5%AE%A2%E6%88%B7%E7%AB%AFlettuce%E8%AF%A6%E8%A7%A3/">Redis高级客户端Lettuce详解</a>
+            </li></ul>
+              
+            </li>
+            <li class=""><a href="https://hideric.github.io/vue/">Vue</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/contact/">Contact</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/elements/">Elements</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/faq/">Frequently Asked Questions</a>
+            </li></ul>
+            </nav>
+
+            
+        </div>
+      </div>
+      <div class="col-lg-9">
+        <div class="p-5 bg-white">
+            <h2>MySQL中IS NULL、IS NOT NULL、!=不能用索引？</h2>
+            
+
+<p>不知道从什么时候开始，网上流传着这么一个说法：</p>
+
+<blockquote>
+<p>MySQL的WHERE子句中包含 IS NULL、IS NOT NULL、!= 这些条件时便不能使用索引查询，只能使用全表扫描。</p>
+</blockquote>
+
+<p>这种说法愈演愈烈，甚至被很多同学奉为真理。咱啥话也不说，举个例子。假如我们有个表<code>s1</code>，结构如下：</p>
+
+<pre><code class="language-mysql">CREATE TABLE s1 (
+    id INT NOT NULL AUTO_INCREMENT,
+    key1 VARCHAR(100),
+    key2 VARCHAR(100),
+    key3 VARCHAR(100),
+    key_part1 VARCHAR(100),
+    key_part2 VARCHAR(100),
+    key_part3 VARCHAR(100),
+    common_field VARCHAR(100),
+    PRIMARY KEY (id),
+    KEY idx_key1 (key1),
+    KEY idx_key2 (key2),
+    KEY idx_key3 (key3),
+    KEY idx_key_part(key_part1, key_part2, key_part3)
+) Engine=InnoDB CHARSET=utf8;
+</code></pre>
+
+<p>这个表里有10000条记录：</p>
+
+<pre><code class="language-mysql">mysql&gt; SELECT COUNT(*) FROM s1;
++----------+
+| COUNT(*) |
++----------+
+|    10000 |
++----------+
+1 row in set (0.00 sec)
+</code></pre>
+
+<p>下边我们直接贴几个图：</p>
+
+<p><pic></p>
+
+<p>上边几个查询语句的<font color='#dc3545'><code>WHERE</code></font>子句中用了<font color='#dc3545'><code>IS NULL</code>、<code>IS NOT NULL</code>、<code>!=</code></font>这些条件，但是从它们的执行计划中可以看出来，这些语句都采用了相应的二级索引执行查询，而不是使用所谓的全表扫描，谣言不攻自破。当然，戳破这些谣言并不是本文的目的，本文来更细致的分析一下这些查询到底是怎么执行的。</p>
+
+<h2 id="null值是怎么在记录中存储的"><strong>NULL值是怎么在记录中存储的</strong></h2>
+
+<p>在MySQL中，每一条记录都有它固定的格式，我们以<font color='#dc3545'><code>InnoDB</code></font>存储引擎的<font color='#dc3545'><code>Compact</code></font>行格式为例，来看一下<font color='#dc3545'><code>NULL</code></font>值是怎样存储的。在<font color='#dc3545'><code>Compact</code></font>行格式下，一条记录是由下边这几个部分构成的：</p>
+
+<p><pic></p>
+
+<p>为了故事的顺利发展，我们新建一个称之为<font color='#dc3545'><code>record_format_demo</code></font>的表：</p>
+
+<pre><code class="language-mysql">CREATE TABLE record_format_demo (
+     c1 VARCHAR(10),
+     c2 VARCHAR(10) NOT NULL,
+     c3 CHAR(10),
+     c4 VARCHAR(10)
+ ) CHARSET=ascii ROW_FORMAT=COMPACT;
+</code></pre>
+
+<p>因为我们的重点是<font color='#dc3545'><code>NULL</code></font>值是如何存储在记录中的，所以重点唠叨一下行格式的<font color='#dc3545'><code>NULL值列表</code></font>部分，其他的部分可以到小册中查看。存储<font color='#dc3545'><code>NULL</code></font>值的过程如下：</p>
+
+<p><strong>1、</strong>首先统计表中允许存储<font color='#dc3545'><code>NULL</code></font>的列有哪些。</p>
+
+<p>我们前边说过，主键列、被<font color='#dc3545'><code>NOT NULL</code></font>修饰的列都是不可以存储<font color='#dc3545'><code>NULL</code></font>值的，所以在统计的时候不会把这些列算进去。比方说表<font color='#dc3545'><code>record_format_demo</code></font>的3个列<font color='#dc3545'><code>c1</code>、<code>c3</code>、<code>c4</code></font>都是允许存储<font color='#dc3545'><code>NULL</code></font>值的，而<font color='#dc3545'><code>c2</code></font>列是被<font color='#dc3545'><code>NOT NULL</code></font>修饰，不允许存储<font color='#dc3545'><code>NULL</code></font>值。</p>
+
+<p><strong>2、</strong>如果表中没有允许存储<font color='#dc3545'><code>NULL</code></font>的列，则<font color='#dc3545'><code>NULL值列表</code></font>也不存在了，否则将每个允许存储<font color='#dc3545'><code>NULL</code></font>的列对应一个二进制位，二进制位按照列的顺序逆序排列，二进制位表示的意义如下：</p>
+
+<p>因为表<font color='#dc3545'><code>record_format_demo</code></font>有3个值允许为<font color='#dc3545'><code>NULL</code></font>的列，所以这3个列和二进制位的对应关系就是这样：</p>
+
+<p><pic></p>
+
+<p>再一次强调，二进制位按照列的顺序逆序排列，所以第一个列<font color='#dc3545'><code>c1</code></font>和最后一个二进制位对应。</p>
+
+<ul>
+<li><p>二进制位的值为<font color='#dc3545'><code>1</code></font>时，代表该列的值为<font color='#dc3545'><code>NULL</code></font>。</p></li>
+
+<li><p>二进制位的值为<font color='#dc3545'><code>0</code></font>时，代表该列的值不为<font color='#dc3545'><code>NULL</code></font>。</p></li>
+</ul>
+
+<p><strong>3</strong>、设计<font color='#dc3545'><code>InnoDB</code></font>的大叔规定<font color='#dc3545'><code>NULL值列表</code></font>必须用整数个字节的位表示，如果使用的二进制位个数不是整数个字节，则在字节的高位补0。</p>
+
+<ul>
+<li><p>表<font color='#dc3545'><code>record_format_demo</code></font>只有3个值允许为<font color='#dc3545'><code>NULL</code></font>的列，对应3个二进制位，不足一个字节，所以在字节的高位补0，效果就是这样：</p></li>
+
+<li><p>以此类推，如果一个表中有9个允许为<code>NULL</code>，那这个记录的<code>NULL值列表</code>部分就需要2个字节来表示了。</p></li>
+</ul>
+
+<p>假设我们现在向<code>record_format_demo</code>表中插入一条记录：</p>
+
+<pre><code class="language-mysql">INSERT INTO record_format_demo(c1, c2, c3, c4)
+    VALUES('eeee', 'fff', NULL, NULL);
+</code></pre>
+
+<p>这条记录的<font color='#dc3545'><code>c1</code></font>、<font color='#dc3545'><code>c3</code></font>、<font color='#dc3545'><code>c4</code></font>这3个列中<font color='#dc3545'><code>c3</code></font>和<font color='#dc3545'><code>c4</code></font>的值都为<font color='#dc3545'><code>NULL</code></font>，所以这3个列对应的二进制位的情况就是：</p>
+
+<p><pic></p>
+
+<p>所以这记录的<font color='#dc3545'><code>NULL值列表</code></font>用十六进制表示就是：<font color='#dc3545'><code>0x06</code></font>。</p>
+
+<h2 id="键值为null的记录是怎么在b-树中存放的"><strong>键值为NULL的记录是怎么在B+树中存放的</strong></h2>
+
+<p>对于InnoDB存储引擎来说，记录都是存储在页面中的（一个页面默认是16KB大小），这些页面可以作为<font color='#dc3545'><code>B+</code></font>树的节点而组成一个索引，类似这种样子（只是用下边的图举个B+树的例子而已，跟我们上边列举的表没关系）：</p>
+
+<p><pic></p>
+
+<p>聚簇索引和二级索引都对应着像上图一样的<font color='#dc3545'><code>B+</code></font>树（也就是说有多少个索引就有多少棵对应的<font color='#dc3545'><code>B+</code></font>树），不过：</p>
+
+<ul>
+<li>对于聚簇索引索引来说，页面中的记录是按照主键值进行排序的；而对于二级索引来说，页面中的记录是按照给定的索引列的值进行排序的。</li>
+<li>对于聚簇索引来说，B+树每一层节点（页面）都是按照页中记录的主键值大小进行排序的；而对于二级索引来说，B+树每一层节点（页面）都是按照页中记录的给定的索引列的值进行排序的。</li>
+<li>对于聚簇索引来说，B+树叶子节点对应的页面中存储的是完整的用户记录（就是一条记录中包含我们定义的所有列值，还包含一些InnoDB自己添加的一些隐藏列）；而对于二级索引来说，B+树叶子节点对应的页面中存储的只是<font color='#dc3545'><code>索引列的值 + 主键值</code></font>。</li>
+</ul>
+
+<p>按规定，一条记录的主键值不允许存储<font color='#dc3545'><code>NULL</code></font>值，所以下边语句中的WHERE子句结果肯定为<font color='#dc3545'><code>FALSE</code></font>：</p>
+
+<pre><code class="language-mysql">SELECT * FROM tbl_name WHERE primary_key IS NULL;
+</code></pre>
+
+<p>像这样的语句优化器自己就能判定出WHERE子句必定为NULL，所以压根儿不会去执行它，不信我们看（Extra信息提示WHERE子句压根儿不成立）：</p>
+
+<p><pic></p>
+
+<p>对于二级索引来说，索引列的值可能为<font color='#dc3545'><code>NULL</code></font>。那对于索引列值为<font color='#dc3545'><code>NULL</code></font>的二级索引记录来说，它们被放在<font color='#dc3545'><code>B+</code></font>树的哪里呢？答案是：放在B+树的最左边。比方说我们有如下查询语句：</p>
+
+<pre><code class="language-mysql">SELECT * FROM s1 WHERE key1 IS NULL;
+</code></pre>
+
+<p>那它的查询示意图就如下所示：</p>
+
+<p><pic></p>
+
+<p>从图中可以看出，对于<font color='#dc3545'><code>s1</code></font>表的二级索引<font color='#dc3545'><code>idx_key1</code></font>来说，值为<font color='#dc3545'><code>NULL</code></font>的二级索引记录都被放在了<font color='#dc3545'><code>B+</code></font>树的最左边，这是因为设计<font color='#dc3545'><code>InnoDB</code></font>的大叔有这样的规定：</p>
+
+<blockquote>
+<p>小贴士： 通过B+树快速定位到叶子节点的记录的过程是靠一个所谓的页目录（Page Directory）做到的，不过这不是本文的重点，大家可以到小册中翻看，都有详细解释。</p>
+</blockquote>
+
+<h2 id="使不使用索引的依据到底是什么"><strong>使不使用索引的依据到底是什么？</strong></h2>
+
+<p>那既然<font color='#dc3545'><code>IS NULL</code></font>、<font color='#dc3545'><code>IS NOT NULL</code></font>、<font color='#dc3545'><code>!=</code></font>这些条件都可能使用到索引，那到底什么时候索引，什么时候采用全表扫描呢？</p>
+
+<p>答案很简单：成本。当然，关于如何定量的计算使用某个索引执行查询的成本比较复杂，我们在小册中花了很大的篇幅来唠叨了。不过因为篇幅有限，我们在这里只准备定性的分析一下。对于使用二级索引进行查询来说，成本组成主要有两个方面：</p>
+
+<ul>
+<li>读取二级索引记录的成本</li>
+<li>将二级索引记录执行回表操作，也就是到聚簇索引中找到完整的用户记录的操作所付出的成本。</li>
+</ul>
+
+<p>很显然，<font color='#dc3545'>要扫描的二级索引记录条数越多，那么需要执行的回表操作的次数也就越多</font>，达到了某个比例时，使用二级索引执行查询的成本也就超过了全表扫描的成本（举一个极端的例子，比方说要扫描的全部的二级索引记录，那就要对每条记录执行一遍回表操作，自然不如直接扫描聚簇索引来的快）。</p>
+
+<p>所以MySQL优化器在真正执行查询之前，对于每个可能使用到的索引来说，都会预先计算一下需要扫描的二级索引记录的数量，比方说对于下边这个查询：</p>
+
+<pre><code class="language-mysql">SELECT * FROM s1 WHERE key1 IS NULL;
+</code></pre>
+
+<p>优化器会分析出此查询只需要查找<font color='#dc3545'><code>key1</code></font>值为<font color='#dc3545'><code>NULL</code></font>的记录，然后访问一下二级索引<font color='#dc3545'><code>idx_key1</code></font>，看一下值为<font color='#dc3545'><code>NULL</code></font>的记录有多少（如果符合条件的二级索引记录数量较少，那么统计结果是精确的，如果太多的话，会采用一定的手段计算一个模糊的值，当然算法也比较麻烦，我们就不展开说了，小册里有说），这种在查询真正执行前优化器就率先访问索引来计算需要扫描的索引记录数量的方式称之为<font color='#dc3545'><code>index dive</code></font>。当然，对于某些查询，比方说WHERE子句中有IN条件，并且IN条件中包含许多参数的话，比方说这样：</p>
+
+<pre><code class="language-mysql">SELECT * FROM s1 WHERE key1 IN ('a', 'b', 'c', ... , 'zzzzzzz');
+</code></pre>
+
+<p>这样的话需要统计的<font color='#dc3545'><code>key1</code></font>值所在的区间就太多了，这样就不能采用<font color='#dc3545'><code>index dive</code></font>的方式去真正的访问二级索引<font color='#dc3545'><code>idx_key1</code></font>，而是需要采用之前在背地里产生的一些统计数据去估算匹配的二级索引记录有多少条（很显然根据统计数据去估算记录条数比<font color='#dc3545'><code>index dive</code></font>的方式精确性差了很多）。</p>
+
+<p>反正不论采用<font color='#dc3545'><code>index dive</code></font>还是依据统计数据估算，最终要得到一个需要扫描的二级索引记录条数，<font color='#dc3545'>如果这个条数占整个记录条数的比例特别大，那么就趋向于使用全表扫描执行查询，否则趋向于使用这个索引执行查询</font>。</p>
+
+<p>理解了这个也就好理解为什么在WHERE子句中出现<font color='#dc3545'><code>IS NULL</code></font>、<font color='#dc3545'><code>IS NOT NULL</code></font>、<font color='#dc3545'><code>!=</code></font>这些条件仍然可以使用索引，本质上都是优化器去计算一下对应的二级索引数量占所有记录数量的比值而已。</p>
+
+            <p class="post-meta border-bottom pb-3 mb-0">Updated on 07 Aug 2019</p><nav class="pagination mt-3"><a class="nav nav-prev" href="https://hideric.github.io/mysql/mysql-%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%968-%E7%A7%8D%E5%B8%B8%E8%A7%81-sql-%E9%94%99%E8%AF%AF%E7%94%A8%E6%B3%95/" title="MySQL 性能优化：8 种常见 SQL 错误用法！"><i class="ti-arrow-left mr-2"></i>MySQL 性能优化：8 种常见 SQL 错误用法！</a>
+            <a class="nav nav-next" href="https://hideric.github.io/nginx/" title="Nginx">Nginx<i class="ti-arrow-right ml-2"></i></a>
+            </nav></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- footer -->
+<footer class="section bg-gray pb-0">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-8 text-md-left text-center">
+        <p>The Hugo Documents are copyright © gethugothemes 2018.</p> 
+      </div>
+      <div class="col-md-4 text-md-right text-center">
+        <ul class="list-inline mb-3">
+          
+          <li class="list-inline-item"><a class="text-color d-inline-block p-2" href="#"><i class="ti-facebook"></i></a></li>
+          
+          <li class="list-inline-item"><a class="text-color d-inline-block p-2" href="#"><i class="ti-twitter-alt"></i></a></li>
+          
+          <li class="list-inline-item"><a class="text-color d-inline-block p-2" href="#"><i class="ti-vimeo-alt"></i></a></li>
+          
+          <li class="list-inline-item"><a class="text-color d-inline-block p-2" href="#"><i class="ti-instagram"></i></a></li>
+          
+        </ul>
+      </div>
+    </div>
+  </div>
+</footer>
+<!-- /footer -->
+
+<!-- Bootstrap JS -->
+<script src="https://hideric.github.io/plugins/bootstrap/bootstrap.min.js"></script>
+<!-- highlight -->
+<script src="https://hideric.github.io/plugins/highlight/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+<!-- Main Script -->
+
+<script src="https://hideric.github.io/js/script.min.js"></script>

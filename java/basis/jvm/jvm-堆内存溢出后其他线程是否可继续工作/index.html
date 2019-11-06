@@ -1,0 +1,480 @@
+<head>
+  <meta charset="utf-8">
+  <title>JVM 堆内存溢出后，其他线程是否可继续工作？</title>
+
+  <meta name="generator" content="Hugo 0.58.3" />
+
+  <!-- mobile responsive meta -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <!-- ** Plugins Needed for the Project ** -->
+  <!-- Bootstrap -->
+  <link rel="stylesheet" href="https://hideric.github.io/plugins/bootstrap/bootstrap.min.css">
+  <!-- themefy-icon -->
+  <link rel="stylesheet" href="https://hideric.github.io/plugins/themify-icons/themify-icons.css">
+  <!-- highlight -->
+  <link rel="stylesheet" href="https://hideric.github.io/plugins/highlight/hybrid.css">
+  <!-- fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700" rel="stylesheet">
+
+  <style>
+  :root{
+    --primary-color:#2f1f48;
+    --secondary-color:#f9f9f9;
+    --text-color:#636363;
+    --text-color-dark:#242738;
+    --white-color:#ffffff;
+  }  
+  </style>
+
+  <!-- Main Stylesheet -->
+  
+  <link rel="stylesheet" href="https://hideric.github.io/css/style.min.css" integrity="" media="screen">
+
+  <!-- jquiry -->
+  <script src="https://hideric.github.io/plugins/jquery/jquery-1.12.4.js"></script>
+
+  <!-- jquary ui -->
+  <script src="https://hideric.github.io/plugins/jquery/jquery-ui.js"></script>
+
+  <!--Favicon-->
+  <link rel="icon" href="https://hideric.github.io/images/favicon.png" type="image/x-icon">
+
+</head>
+
+
+<!-- navigation -->
+<header class="shadow-bottom sticky-top bg-white">
+  <div class="container">
+    <nav class="navbar navbar-expand-lg navbar-light">
+  <a class="navbar-brand" href="https://hideric.github.io/">Hideric</a>
+  <button class="navbar-toggler border-0" type="button" data-toggle="collapse" data-target="#navigation"
+    aria-controls="navigation" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse text-center" id="navigation">
+    <ul class="navbar-nav ml-auto">
+      <li class="nav-item">
+        <a class="nav-link text-dark" href="https://hideric.github.io/">Home</a>
+      </li>
+      
+      
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle text-dark" href="#" role="button" data-toggle="dropdown" aria-haspopup="true"
+          aria-expanded="false">
+          Back-End
+        </a>
+        <div class="dropdown-menu" >
+          
+          <a class="dropdown-item" href="https://hideric.github.io/java">Java</a>
+          
+          <a class="dropdown-item" href="https://hideric.github.io/python">Python</a>
+          
+          <a class="dropdown-item" href="https://hideric.github.io/go">Go</a>
+          
+          <a class="dropdown-item" href="https://hideric.github.io/cpp">C&#43;&#43;</a>
+          
+        </div>
+      </li>
+      
+      
+      
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle text-dark" href="#" role="button" data-toggle="dropdown" aria-haspopup="true"
+          aria-expanded="false">
+          DB
+        </a>
+        <div class="dropdown-menu" >
+          
+          <a class="dropdown-item" href="https://hideric.github.io/mysql">Mysql</a>
+          
+          <a class="dropdown-item" href="https://hideric.github.io/oracle">Oracle</a>
+          
+        </div>
+      </li>
+      
+      
+      
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle text-dark" href="#" role="button" data-toggle="dropdown" aria-haspopup="true"
+          aria-expanded="false">
+          Front-End
+        </a>
+        <div class="dropdown-menu" >
+          
+          <a class="dropdown-item" href="https://hideric.github.io/js">JavaScript</a>
+          
+          <a class="dropdown-item" href="https://hideric.github.io/vue">Vue</a>
+          
+          <a class="dropdown-item" href="https://hideric.github.io/react">React</a>
+          
+          <a class="dropdown-item" href="https://hideric.github.io/rn">React Native</a>
+          
+        </div>
+      </li>
+      
+      
+      
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle text-dark" href="#" role="button" data-toggle="dropdown" aria-haspopup="true"
+          aria-expanded="false">
+          Mid-Ware
+        </a>
+        <div class="dropdown-menu" >
+          
+          <a class="dropdown-item" href="https://hideric.github.io/redis">Redis</a>
+          
+          <a class="dropdown-item" href="https://hideric.github.io/nginx">Nginx</a>
+          
+        </div>
+      </li>
+      
+      
+      
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle text-dark" href="#" role="button" data-toggle="dropdown" aria-haspopup="true"
+          aria-expanded="false">
+          Mobile
+        </a>
+        <div class="dropdown-menu" >
+          
+          <a class="dropdown-item" href="https://hideric.github.io/android">Android</a>
+          
+          <a class="dropdown-item" href="https://hideric.github.io/ios">IOS</a>
+          
+        </div>
+      </li>
+      
+      
+      
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle text-dark" href="#" role="button" data-toggle="dropdown" aria-haspopup="true"
+          aria-expanded="false">
+          OPS
+        </a>
+        <div class="dropdown-menu" >
+          
+          <a class="dropdown-item" href="https://hideric.github.io/k8s">kubernetes</a>
+          
+          <a class="dropdown-item" href="https://hideric.github.io/docker">Docker</a>
+          
+          <a class="dropdown-item" href="https://hideric.github.io/leetcode">Leetcode</a>
+          
+          <a class="dropdown-item" href="https://hideric.github.io/linux">Linux</a>
+          
+        </div>
+      </li>
+      
+      
+      
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle text-dark" href="#" role="button" data-toggle="dropdown" aria-haspopup="true"
+          aria-expanded="false">
+          pages
+        </a>
+        <div class="dropdown-menu" >
+          
+          <a class="dropdown-item" href="https://hideric.github.io/faq">FAQ</a>
+          
+          <a class="dropdown-item" href="https://hideric.github.io/contact">CONTACT</a>
+          
+          <a class="dropdown-item" href="https://hideric.github.io/elements">ELEMENTS</a>
+          
+          <a class="dropdown-item" href="https://hideric.github.io/others">OTHERS</a>
+          
+        </div>
+      </li>
+      
+      
+    </ul>
+    
+    <ul class="list-inline text-center mb-0">
+      
+    </ul>
+  </div>
+</nav>
+  </div>
+</header>
+<!-- /navigation -->
+
+
+<section class="single pt-5 bg-gray">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-3">
+        <div class="p-4 bg-white sticky-top top-100">
+            
+            <nav class="sidebar-menu">
+              <ul class="list-styled">
+            <li class=""><a href="https://hideric.github.io/android/">Android</a>
+              <ul class="">
+            <li class=""><a href="https://hideric.github.io/android/tool/f-droidapps/">F-Droid Apps Recommendation</a>
+            </li></ul>
+              
+            </li>
+            <li class=""><a href="https://hideric.github.io/cpp/">C&#43;&#43;</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/docker/">Docker</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/go/">Go</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/ios/">IOS</a>
+            </li>
+            <li class="parent d-block "><a href="https://hideric.github.io/java/">Java</a>
+              <ul class="sub-menu">
+            <li class="parent d-block "><a href="https://hideric.github.io/java/basis/http%E6%96%AD%E7%82%B9%E7%BB%AD%E4%BC%A0/">HTTP断点续传</a>
+            </li>
+            <li class="parent d-block "><a href="https://hideric.github.io/java/basis/java-%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8/">Java 垃圾收集器</a>
+            </li>
+            <li class="parent d-block "><a href="https://hideric.github.io/java/basis/java-%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%8B%BC%E6%8E%A5%E5%A7%BF%E5%8A%BF/">Java 字符串拼接姿势</a>
+            </li>
+            <li class="parent d-block "><a href="https://hideric.github.io/java/basis/java-%E5%A6%82%E4%BD%95%E6%9B%B4%E4%BC%98%E9%9B%85%E7%9A%84%E5%A4%84%E7%90%86%E7%A9%BA%E5%80%BC/">Java-如何更优雅的处理空值</a>
+            </li>
+            <li class=" active "><a href="https://hideric.github.io/java/basis/jvm/jvm-%E5%A0%86%E5%86%85%E5%AD%98%E6%BA%A2%E5%87%BA%E5%90%8E%E5%85%B6%E4%BB%96%E7%BA%BF%E7%A8%8B%E6%98%AF%E5%90%A6%E5%8F%AF%E7%BB%A7%E7%BB%AD%E5%B7%A5%E4%BD%9C/">JVM 堆内存溢出后，其他线程是否可继续工作？</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/framework/mybatis/mybatis%E4%B8%ADlike-%E7%9A%84%E4%BD%BF%E7%94%A8%E6%96%B9%E5%BC%8F%E4%BB%A5%E5%8F%8A%E4%B8%80%E4%BA%9B%E6%B3%A8%E6%84%8F%E7%82%B9/">Mybatis中Like 的使用方式以及一些注意点</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/framework/mybatis/mybatis%E5%B1%85%E7%84%B6%E6%9C%89%E5%9D%91%E5%8D%83%E4%B8%87%E5%88%AB%E8%B8%A9/">Mybatis居然有坑，千万别踩！</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/framework/spring/spring%E5%BE%AA%E7%8E%AF%E4%BE%9D%E8%B5%96%E7%9A%84%E5%9D%91/">Spring循环依赖的坑</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/framework/spring/spring%E7%9A%84%E5%90%84%E7%A7%8D%E6%B3%A8%E8%A7%A3/">Spring的各种注解</a>
+            </li>
+            <li class="parent d-block "><a href="https://hideric.github.io/java/basis/%E4%BB%8E%E5%AE%9E%E8%B7%B5%E8%A7%92%E5%BA%A6%E9%87%8D%E6%96%B0%E7%90%86%E8%A7%A3bio%E5%92%8Cnio/">从实践角度重新理解BIO和NIO</a>
+            </li>
+            <li class="parent d-block "><a href="https://hideric.github.io/java/basis/%E5%85%B3%E4%BA%8E-git-%E6%8F%90%E4%BA%A4%E8%A7%84%E8%8C%83/">关于 Git 提交规范</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/basis/jvm/%E6%B3%A8%E6%84%8Fcode-cache%E6%89%93%E6%BB%A1%E5%8F%AF%E5%AF%BC%E8%87%B4%E5%BA%94%E7%94%A8%E6%80%A7%E8%83%BD%E9%99%8D%E4%BD%8E/">注意，Code Cache打满可导致应用性能降低</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/framework/spring/spring-%E5%AE%B9%E5%99%A8%E5%90%AF%E5%8A%A8%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/">Spring 容器启动源码解析</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/framework/spring/spring-%E7%9A%84-beanutils-%E5%A1%AB%E5%9D%91%E8%AE%B0/">Spring 的 BeanUtils 填坑记</a>
+            </li>
+            <li class="parent d-block "><a href="https://hideric.github.io/java/basis/weakhashmap%E7%94%9F%E4%BA%86%E7%97%85%E7%9A%84-hashmap-/">WeakHashMap，生了病的 HashMap ？</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/framework/dubbo/%E4%BD%BF%E7%94%A8dubbo%E8%BF%87%E7%A8%8B%E4%B8%AD%E9%81%87%E5%88%B0%E8%BF%87%E5%93%AA%E4%BA%9B%E5%9D%91/">使用dubbo过程中遇到过哪些坑？</a>
+            </li>
+            <li class="parent d-block "><a href="https://hideric.github.io/java/basis/%E4%B8%80%E4%B8%AAjava%E5%AF%B9%E8%B1%A1%E5%88%B0%E5%BA%95%E5%8D%A0%E7%94%A8%E5%A4%9A%E5%A4%A7%E5%86%85%E5%AD%98/">一个Java对象到底占用多大内存？</a>
+            </li>
+            <li class="parent d-block "><a href="https://hideric.github.io/java/basis/%E4%BD%A0%E7%9C%9F%E7%9A%84%E4%BA%86%E8%A7%A3logback%E5%90%97/">你真的了解logback吗？</a>
+            </li>
+            <li class="parent d-block "><a href="https://hideric.github.io/java/basis/%E8%BF%99%E5%8F%AF%E8%83%BD%E6%98%AFgithub%E4%B8%8A%E6%9C%80%E5%8F%8B%E5%A5%BD%E7%9A%84%E5%88%86%E5%B8%83%E5%BC%8F%E5%8D%B3%E6%97%B6%E9%80%9A%E8%AE%AF%E9%A1%B9%E7%9B%AE..../">这可能是Github上最友好的分布式即时通讯项目.....</a>
+            </li>
+            <li class="parent d-block "><a href="https://hideric.github.io/java/basis/java-8-stream-%E9%9B%86%E5%90%88%E6%93%8D%E4%BD%9C%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B/">Java 8 - Stream 集合操作快速上手</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/basis/concurrency/stringbuilder-%E4%B8%BA%E4%BB%80%E4%B9%88%E7%BA%BF%E7%A8%8B%E4%B8%8D%E5%AE%89%E5%85%A8/">StringBuilder 为什么线程不安全？</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/basis/jvm/jvm%E4%BC%98%E5%8C%96%E4%B9%8B%E9%80%83%E9%80%B8%E5%88%86%E6%9E%90%E4%B8%8E%E5%88%86%E9%85%8D%E6%B6%88%E9%99%A4/">JVM优化之逃逸分析与分配消除</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/framework/security/shiro%E6%A1%86%E6%9E%B6-%E7%94%A8%E6%88%B7%E6%9D%83%E9%99%90%E7%AE%A1%E7%90%86/">Shiro框架 - 用户权限管理</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/basis/concurrency/threadlocal%E9%9D%A2%E8%AF%95%E9%A2%98/">ThreadLocal面试题</a>
+            </li></ul>
+              
+            </li>
+            <li class=""><a href="https://hideric.github.io/js/">JavaScript</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/k8s/">Kubernets</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/leetcode/">Leetcode</a>
+              <ul class="">
+            <li class=""><a href="https://hideric.github.io/leetcode/leetcode-5/">LeetCode #5 最长回文子字符串</a>
+            </li></ul>
+              
+            </li>
+            <li class=""><a href="https://hideric.github.io/linux/">Linux</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/mysql/">Mysql</a>
+              <ul class="">
+            <li class=""><a href="https://hideric.github.io/mysql/mysql%E9%9D%A2%E8%AF%95%E9%A2%98%E5%8F%8A%E5%8D%83%E4%B8%87%E7%BA%A7%E6%95%B0%E6%8D%AE%E6%9F%A5%E8%AF%A2%E4%BC%98%E5%8C%96/">Mysql面试题及千万级数据查询优化</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/mysql/mysql%E7%9A%84count%E8%AF%AD%E5%8F%A5/">MySQL的COUNT语句</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/mysql/mysql-%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E6%80%9D%E8%B7%AF/">MySQL 性能优化思路</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/mysql/%E5%AE%98%E6%96%B9%E5%B7%A5%E5%85%B7mysql-router-%E9%AB%98%E5%8F%AF%E7%94%A8%E5%8E%9F%E7%90%86%E4%B8%8E%E5%AE%9E%E6%88%98/">官方工具｜MySQL Router 高可用原理与实战</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/mysql/mysql-%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%968-%E7%A7%8D%E5%B8%B8%E8%A7%81-sql-%E9%94%99%E8%AF%AF%E7%94%A8%E6%B3%95/">MySQL 性能优化：8 种常见 SQL 错误用法！</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/mysql/index/null%E8%83%BD%E7%94%A8%E7%B4%A2%E5%BC%95/">MySQL中IS NULL、IS NOT NULL、!=不能用索引？</a>
+            </li></ul>
+              
+            </li>
+            <li class=""><a href="https://hideric.github.io/nginx/">Nginx</a>
+              <ul class="">
+            <li class=""><a href="https://hideric.github.io/nginx/%E5%90%8E%E7%AB%AF%E5%AE%9E%E8%B7%B5nginx%E6%97%A5%E5%BF%97%E9%85%8D%E7%BD%AE%E8%B6%85%E8%AF%A6%E7%BB%86/">后端实践：Nginx日志配置（超详细）</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/nginx/%E4%BD%BF%E7%94%A8nginx%E8%BF%9B%E8%A1%8C%E5%9B%9B%E5%B1%82%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1/">使用Nginx进行四层负载均衡</a>
+            </li></ul>
+              
+            </li>
+            <li class=""><a href="https://hideric.github.io/oracle/">Oracle</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/others/">OTHERS</a>
+              <ul class="">
+            <li class=""><a href="https://hideric.github.io/others/term/qps%E6%9C%AF%E8%AF%AD/">秒懂 QPS、TPS、PV、UV、GMV、IP、RPS！</a>
+            </li></ul>
+              
+            </li>
+            <li class=""><a href="https://hideric.github.io/python/">Python</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/react/">React</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/rn/">React Native</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/redis/">Redis</a>
+              <ul class="">
+            <li class=""><a href="https://hideric.github.io/redis/%E5%A6%82%E4%BD%95%E7%94%A8-redis-%E7%BB%9F%E8%AE%A1%E7%8B%AC%E7%AB%8B%E7%94%A8%E6%88%B7%E8%AE%BF%E9%97%AE%E9%87%8F/">如何用 Redis 统计独立用户访问量？</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/redis/redis-%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81%E7%9A%84%E6%AD%A3%E7%A1%AE%E5%AE%9E%E7%8E%B0%E6%96%B9%E5%BC%8Fjava%E7%89%88/">Redis 分布式锁的正确实现方式（Java版）</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/redis/redis-%E5%AE%9E%E7%8E%B0%E9%99%84%E8%BF%91%E7%9A%84%E4%BA%BA%E5%8A%9F%E8%83%BD/">Redis 实现“附近的人”功能</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/redis/%E4%B8%BA%E4%BB%80%E4%B9%88rediscluster%E6%9C%8916384%E4%B8%AA%E6%A7%BD/">为什么RedisCluster有16384个槽?</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/redis/%E5%AD%A6%E4%BC%9A%E8%BF%99%E5%87%A0%E4%B8%AAredis%E6%8A%80%E5%B7%A7%E8%AE%A9%E4%BD%A0%E7%9A%84%E7%A8%8B%E5%BA%8F%E5%BF%AB%E5%A6%82%E9%97%AA%E7%94%B5/">学会这几个Redis技巧，让你的程序快如闪电</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/redis/%E6%AF%94redis%E8%BF%98%E5%BF%AB5%E5%80%8D%E7%9A%84%E4%B8%AD%E9%97%B4%E4%BB%B6%E4%B8%BA%E5%95%A5%E8%BF%99%E4%B9%88%E5%BF%AB/">比Redis还快5倍的中间件，为啥这么快？</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/redis/redis%E9%AB%98%E7%BA%A7%E5%AE%A2%E6%88%B7%E7%AB%AFlettuce%E8%AF%A6%E8%A7%A3/">Redis高级客户端Lettuce详解</a>
+            </li></ul>
+              
+            </li>
+            <li class=""><a href="https://hideric.github.io/vue/">Vue</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/contact/">Contact</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/elements/">Elements</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/faq/">Frequently Asked Questions</a>
+            </li></ul>
+            </nav>
+
+            
+        </div>
+      </div>
+      <div class="col-lg-9">
+        <div class="p-5 bg-white">
+            <h2>JVM 堆内存溢出后，其他线程是否可继续工作？</h2>
+            
+
+<h2 id="jvm-堆内存溢出后-其他线程是否可继续工作">JVM 堆内存溢出后，其他线程是否可继续工作？</h2>
+
+<p>最近网上出现一个美团面试题：“一个线程OOM后，其他线程还能运行吗？”。我看网上出现了很多不靠谱的答案。这道题其实很有难度，涉及的知识点有jvm内存分配、作用域、gc等，不是简单的是与否的问题。</p>
+
+<p>由于题目中给出的OOM，java中OOM又分很多类型；比如：堆溢出（“java.lang.OutOfMemoryError: Java heap space”）、永久带溢出（“java.lang.OutOfMemoryError:Permgen space”）、不能创建线程（“java.lang.OutOfMemoryError:Unable to create new native thread”）等很多种情况。</p>
+
+<p>本文主要是分析堆溢出对应用带来的影响。</p>
+
+<p><strong>先说一下答案，答案是还能运行</strong>。</p>
+
+<p>代码如下：</p>
+
+<pre><code>public class JvmThread {
+
+    public static void main(String[] args) {
+        new Thread(() -&gt; {
+            List&lt;byte[]&gt; list = new ArrayList&lt;byte[]&gt;();
+            while (true) {
+                System.out.println(new Date().toString() + Thread.currentThread() + &quot;==&quot;);
+                byte[] b = new byte[1024 * 1024 * 1];
+                list.add(b);
+                try {
+                    Thread.sleep(1000);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+
+        // 线程二
+        new Thread(() -&gt; {
+            while (true) {
+                System.out.println(new Date().toString() + Thread.currentThread() + &quot;==&quot;);
+                try {
+                    Thread.sleep(1000);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+    }
+}
+
+</code></pre>
+
+<p>结果展示：</p>
+
+<pre><code>Wed Nov 07 14:42:18 CST 2018Thread[Thread-1,5,main]==
+Wed Nov 07 14:42:18 CST 2018Thread[Thread-0,5,main]==
+Wed Nov 07 14:42:19 CST 2018Thread[Thread-1,5,main]==
+Wed Nov 07 14:42:19 CST 2018Thread[Thread-0,5,main]==
+Exception in thread &quot;Thread-0&quot; java.lang.OutOfMemoryError: Java heap space
+	at com.gosaint.util.JvmThread.lambda$main$0(JvmThread.java:21)
+	at com.gosaint.util.JvmThread$$Lambda$1/521645586.run(Unknown Source)
+	at java.lang.Thread.run(Thread.java:748)
+Wed Nov 07 14:42:20 CST 2018Thread[Thread-1,5,main]==
+Wed Nov 07 14:42:21 CST 2018Thread[Thread-1,5,main]==
+Wed Nov 07 14:42:22 CST 2018Thread[Thread-1,5,main]==
+
+</code></pre>
+
+<p>JVM启动参数设置：</p>
+
+<p><img class="" data-ratio="0.24946236559139784" data-type="png" data-w="930" src="data:image/PNG;base64,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FRERERERkT6lQFRERERERET6lAJRERERERER6VMKREVERERERKRPKRAVERERERGRPvWlXDVX5FzU2NhIUmICSQn9XRIRERERORd4PJW9lrYCUZFzRPmpCspPVfR3MUREREREOqShuSIiIiIiItKnFIiKiIiIiIhIn1IgKiIiIiIiIn1KgaiIiIiIiIj0KQWiIiIiIiIi0qcUiIqIiIiIiEifUiAqIiIiIiIifUqBqIiIiIiIiPQpBaIiIiIiIiLSpxSIioiIiIiISJ9SICoiIiIiIiJ9SoGoiIiIiIiI9CkFoiIiIiIiItKnFIiKiIiIiIhIn1IgKiIiIiIiIn3K3N8FEJGekW63ER8Xi8fj7e+iiIiIiMhZzmwycqLESU1NTe+k398VFJGeU15RQX2Dq7+LISIiIiJnueTEhF5NX0NzRUREREREpE8pEBUREREREZE+pUBURERERERE+pQCUREREREREelTCkRFRERERESkTykQFRERERERkT6lQFRERERERET6lPYRFREREREROQclpqSQlGIDrzfs+SOfH+i3sikQFREREREROQdVlpfj9XhJSknDYDD0d3FCKBAVkVYefOB+ABoaGnjid//L7JkzmHTJJQA8+tjjPZ6fwWAgPi6OWTNn8Opr68JeExUVxcycHMaMGY3H7WZTXj57Cgr6u6nOiDaMjo5m6uWXMWb0aGJjY6mqrGT33gI++OgjPB5P4LqJF1/MxRdOICk5mZqaGor37WPrtu00NTX1d3OJiIhIL6mqOAVwxgWj3QtEMxewfGFGq8MleSt5Os/R33UTkS763e9XcMftt7H+9TcA2PjOJtxNbt59771eye+Be+/BZDK1ed5gMHD9dddy9Nhxnn3ueVwuF3d++1tndCDal2145cwZ7PxkF+9u96U9cMAAZubmEB8fz8Z33gHg8ksvxVnq5K8vvQzAoIEDuXLWTKxWK29ufLu/m0tERER6UVXFKWLj4rFGRfd3UQJ6YLEiB5tXPMJDD/v/WV1Ees7isAGqSM/IYNGypSzJsfd3Qc5ZNbW1fPzJLs4/bwQAyUlJHPjsM1wuV6/k9+snnuTpP6xs8/zoUSMpcTjZ8u67VFVV0dDQwN/8AdWZqi/bcOCAgRw7fpyGhgYaGho4dPgwr762jnFZmYFrYqKj+fSzz3G5XLhcLg4dPsz6f7/O2DFj+rup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dy/2bQsScrzFSrGFa3hotW9bj8C8Q0c+T69wsPDu7M7ludoekk7B6pVstvXR0Nyeyr+z7VG4hqfzfFutLM8Jyjenl+rtyOfphx0sWhY6T7Qze6221jwX1Jfm6bSKWFWwgOXLFrTIX1u3iIiIiMi5xWAwYI2Kpsnlwun4As6eGNRX/um5M70ApU4nabYzfrZh2/yrzzpXa7VUtceXU7rdRmNTI/UNmscnIiIicq4adv6okM9evFSUOqmqrOjRfJITE6isqqGmpmtzTjuKL8+MHtEe4JsT6aDwzF5Es1OWL1va7vmH/PMgvyztISIiIiIioQwYSEqzgcEQsoDRme6sC0TTcxazxJ4fugqrf05kSV6E28icJdoLNL+M7SEiIiIiIq0ZMJCcasNgNITd2uVMdFYOzU3PWdxiMZ5O7GV6DlJ7CBqaKyIiIiI9qLeH5p6VgaiItKZAVERERER6Sm8Hosb+rqCIiIiIiIh8uSgQFRERERERkT6lQFRERERERET6lAJRERERERER6VMKREVERERERKRPnXX7iIpI2+JiYomOiurvYoiIiIjIWS7KGgV0bcXcSCgQFTlHnKqoxGKx9HcxREREROScUENdfX2vpa5AVOQc4XK5cLm0h6iIiIiInPk0R1RERERERET6lAJRERERERER6VMKREVERERERKRPKRAVERERERGRPqVAVERERERERPqUAlERERERERHpUwpERUREREREpE8pEBUREREREZE+pUBURERERERE+pQCUREREREREelTCkRFRERERESkTykQFRERERERkT5l7u8CiIiIiIhI/7JYzPx82U/JGDs27PktW9/l5VWv8MUXX/R3UeUcoUBURERERORL6oopl3P/D+/r8Lrp065g+rQr8Hi9PPijH3Po8JH+Lrqc5RSIipxjjEYj8fFxRFmtGAyG/i6OiIiInIGMRiNPPfkERmPnZuoZgcd+/T9UVVXxnw/+SN81gni9XhpcLqqra/B4PJ2612A0kpiQgNVq6e9qAFBXW0d1TU2v5mGYnjvTC1DqdJJms/V3nUWkG2JiohkycAB1DQ00NLhwe9z9XSQRERE5w1gtFv73t7/tkbS+feedmEym/q5SWPGxsZw46eiz/IwGI1armdSUZBylZdTV1Ud0n8FoZPiwITQ2NtHY2NiPLRYoENFWM26Ph+PHuz4Uu6P4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 " src="JdLkEI9sZffdHuLmWODcfAmsJdMq4ye6opiaBIkF12ibSia9LQNV2w3Y9bYibW7m4ghxP4e20Bj8TgfCGgy7FF7Avw"   /></p>
+
+<p>上图是JVM堆空间的变化。我们仔细观察一下在14:42:05~14:42:25之间曲线变化，你会发现使用堆的数量，突然间急剧下滑！这代表这一点，当一个线程抛出OOM异常后，它所占据的内存资源会全部被释放掉，从而不会影响其他线程的运行！</p>
+
+<p>讲到这里大家应该懂了，此题的答案为一个线程溢出后，进程里的其他线程还能照常运行。注意了，这个例子我只演示了堆溢出的情况。如果是栈溢出，结论也是一样的，大家可自行通过代码测试。</p>
+
+<p>总结：其实发生OOM的线程一般情况下会死亡，也就是会被终结掉，该线程持有的对象占用的heap都会被gc了，释放内存。因为发生OOM之前要进行gc，就算其他线程能够正常工作，也会因为频繁gc产生较大的影响。</p>
+
+<hr />
+
+<h3 id="end">END</h3>
+
+            <p class="post-meta border-bottom pb-3 mb-0">Updated on 30 Oct 2019</p><nav class="pagination mt-3"><a class="nav nav-prev" href="https://hideric.github.io/java/basis/java-%E5%A6%82%E4%BD%95%E6%9B%B4%E4%BC%98%E9%9B%85%E7%9A%84%E5%A4%84%E7%90%86%E7%A9%BA%E5%80%BC/" title="Java-如何更优雅的处理空值"><i class="ti-arrow-left mr-2"></i>Java-如何更优雅的处理空值</a>
+            <a class="nav nav-next" href="https://hideric.github.io/java/framework/mybatis/mybatis%E4%B8%ADlike-%E7%9A%84%E4%BD%BF%E7%94%A8%E6%96%B9%E5%BC%8F%E4%BB%A5%E5%8F%8A%E4%B8%80%E4%BA%9B%E6%B3%A8%E6%84%8F%E7%82%B9/" title="Mybatis中Like 的使用方式以及一些注意点">Mybatis中Like 的使用方式以及一些注意点<i class="ti-arrow-right ml-2"></i></a>
+            </nav></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- footer -->
+<footer class="section bg-gray pb-0">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-8 text-md-left text-center">
+        <p>The Hugo Documents are copyright © gethugothemes 2018.</p> 
+      </div>
+      <div class="col-md-4 text-md-right text-center">
+        <ul class="list-inline mb-3">
+          
+          <li class="list-inline-item"><a class="text-color d-inline-block p-2" href="#"><i class="ti-facebook"></i></a></li>
+          
+          <li class="list-inline-item"><a class="text-color d-inline-block p-2" href="#"><i class="ti-twitter-alt"></i></a></li>
+          
+          <li class="list-inline-item"><a class="text-color d-inline-block p-2" href="#"><i class="ti-vimeo-alt"></i></a></li>
+          
+          <li class="list-inline-item"><a class="text-color d-inline-block p-2" href="#"><i class="ti-instagram"></i></a></li>
+          
+        </ul>
+      </div>
+    </div>
+  </div>
+</footer>
+<!-- /footer -->
+
+<!-- Bootstrap JS -->
+<script src="https://hideric.github.io/plugins/bootstrap/bootstrap.min.js"></script>
+<!-- highlight -->
+<script src="https://hideric.github.io/plugins/highlight/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+<!-- Main Script -->
+
+<script src="https://hideric.github.io/js/script.min.js"></script>

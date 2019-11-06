@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Mysql on Hideric&#39;s Blog</title>
+    <link>https://hideric.github.io/mysql/</link>
+    <description>Recent content in Mysql on Hideric&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>The Hugo Documents are copyright © gethugothemes 2018.</copyright>
+    <lastBuildDate>Wed, 07 Aug 2019 11:02:05 +0600</lastBuildDate>
+    
+	<atom:link href="https://hideric.github.io/mysql/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Mysql面试题及千万级数据查询优化</title>
+      <link>https://hideric.github.io/mysql/mysql%E9%9D%A2%E8%AF%95%E9%A2%98%E5%8F%8A%E5%8D%83%E4%B8%87%E7%BA%A7%E6%95%B0%E6%8D%AE%E6%9F%A5%E8%AF%A2%E4%BC%98%E5%8C%96/</link>
+      <pubDate>Wed, 30 Oct 2019 15:41:01 +0800</pubDate>
+      
+      <guid>https://hideric.github.io/mysql/mysql%E9%9D%A2%E8%AF%95%E9%A2%98%E5%8F%8A%E5%8D%83%E4%B8%87%E7%BA%A7%E6%95%B0%E6%8D%AE%E6%9F%A5%E8%AF%A2%E4%BC%98%E5%8C%96/</guid>
+      <description>Mysql面试题及千万级数据查询优化 Mysql数据库中一个表里有一千多万条数据，怎么快速的查出第900万条后的100条数据？
+怎么查，谁能告诉我答案？有没有人想着，不就一条语句搞定嘛
+select * from table limit 9000000,100;  那我们试试，去执行下这个SQL看看吧
+看见了吗，查了100条数据用了7.063s。这能算的上是快速查询吗，估计没人能接受了这种速度吧！基于这个问题，我今天就要说说大数据时的快速查询了。
+首先，我演示下大数据分页查询，我的test表里有1000多万条数据，然后使用limit进行分页测试：
+select * from test limit 0,100;
+耗时：0.005s
+
+select * from test limit 1000,100;
+耗时：0.006s
+select * from test limit 10000,100;
+耗时：0.013s
+select * from test limit 100000,100;
+耗时：0.104s
+select * from test limit 500000,100;
+耗时：0.395s
+select * from test limit 1000000,100;
+耗时：0.823s
+select * from test limit 5000000,100;
+耗时：3.909s
+select * from test limit 10000000,100;</description>
+    </item>
+    
+    <item>
+      <title>MySQL的COUNT语句</title>
+      <link>https://hideric.github.io/mysql/mysql%E7%9A%84count%E8%AF%AD%E5%8F%A5/</link>
+      <pubDate>Wed, 30 Oct 2019 15:39:40 +0800</pubDate>
+      
+      <guid>https://hideric.github.io/mysql/mysql%E7%9A%84count%E8%AF%AD%E5%8F%A5/</guid>
+      <description>MySQL的COUNT语句 数据库查询相信很多人都不陌生，所有经常有人调侃程序员就是CRUD专员，这所谓的CRUD指的就是数据库的增删改查。
+在数据库的增删改查操作中，使用最频繁的就是查询操作。而在所有查询操作中，统计数量操作更是经常被用到。
+关于数据库中行数统计，无论是MySQL还是Oracle，都有一个函数可以使用，那就是COUNT
+但是，就是这个常用的COUNT函数，却暗藏着很多玄机，尤其是在面试的时候，一不小心就会被虐。不信的话请尝试回答下以下问题：
+ 1、COUNT有几种用法？
+2、COUNT(字段名)和COUNT(*)的查询结果有什么不同？
+3、COUNT(1)和COUNT(*)之间有什么不同？
+4、COUNT(1)和COUNT(*)之间的效率哪个更高？
+5、为什么《阿里巴巴Java开发手册》建议使用COUNT(*)
+6、MySQL的MyISAM引擎对COUNT(*)做了哪些优化？
+7、MySQL的InnoDB引擎对COUNT(*)做了哪些优化？
+8、上面提到的MySQL对COUNT(*)做的优化，有一个关键的前提是什么？
+9、SELECT COUNT(*) 的时候，加不加where条件有差别吗？
+10、COUNT(*)、COUNT(1)和COUNT(字段名)的执行过程是怎样的？
+ 以上10道题，如果您可以全部准确无误的回答的话，那说明你真的很了解COUNT函数了，如果有哪些知识点是不了解的，那么本文正好可以帮你答疑解惑。
+1、认识COUNT
+关于COUNT函数，在MySQL官网中有详细介绍：
+简单翻译一下：
+1、COUNT(expr) ，返回SELECT语句检索的行中expr的值不为NULL的数量。结果是一个BIGINT值。
+2、如果查询结果没有命中任何记录，则返回0
+3、但是，值得注意的是，COUNT(*) 的统计结果中，会包含值为NULL的行数。
+即以下表记录
+create table #bla(id int,id2 int) insert #bla values(null,null) insert #bla values(1,null) insert #bla values(null,1) insert #bla values(1,null) insert #bla values(null,1) insert #bla values(1,null) insert #bla values(null,null)  使用语句count(*),count(id),count(id2)查询结果如下：
+select count(*),count(id),count(id2) from #bla results 7 3 2  除了COUNT(id)和COUNT(*)以外，还可以使用COUNT(常量)（如COUNT(1)）来统计行数，那么这三条SQL语句有什么区别呢？到底哪种效率更高呢？为什么《阿里巴巴Java开发手册》中强制要求不让使用 COUNT(列名)或 COUNT(常量)来替代 COUNT(*)呢？</description>
+    </item>
+    
+    <item>
+      <title>MySQL 性能优化思路</title>
+      <link>https://hideric.github.io/mysql/mysql-%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E6%80%9D%E8%B7%AF/</link>
+      <pubDate>Wed, 30 Oct 2019 15:39:39 +0800</pubDate>
+      
+      <guid>https://hideric.github.io/mysql/mysql-%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E6%80%9D%E8%B7%AF/</guid>
+      <description>MySQL 性能优化思路 一、前言
+MySQL调优对于很多程序员而言，都是一个非常棘手的问题，多数情况都是因为对数据库出现问题的情况和处理思路不清晰。在进行MySQL的优化之前必须要了解的就是MySQL的查询过程，很多的查询优化工作实际上就是遵循一些原则让MySQL的优化器能够按照预想的合理方式运行而已。
+今天给大家讲解MySQL的优化实战，助你高薪之路顺畅！
+二、优化的哲学 1、优化可能带来的问题 1) 优化不总是对一个单纯的环境进行，还很可能是一个复杂的已投产的系统。
+2) 优化手段本来就有很大的风险，只不过你没能力意识到和预见到！
+3) 任何的技术可以解决一个问题，但必然存在带来一个问题的风险！
+4) 对于优化来说解决问题而带来的问题,控制在可接受的范围内才是有成果。
+5) 保持现状或出现更差的情况都是失败！
+2、优化的需求 1) 稳定性和业务可持续性,通常比性能更重要！
+2) 优化不可避免涉及到变更，变更就有风险！
+3) 优化使性能变好，维持和变差是等概率事件！
+4) 切记优化,应该是各部门协同，共同参与的工作，任何单一部门都不能对数据库进行优化！
+5) 所以优化工作,是由业务需要驱使的！！！
+3、优化由谁参与 在进行数据库优化时，应由数据库管理员、业务部门代表、应用程序架构师、应用程序设计人员、应用程序开发人员、硬件及系统管理员、存储管理员等，业务相关人员共同参与。
+三、优化思路 1、优化什么 在数据库优化上有两个主要方面：即安全与性能。
+1) 安全 &amp;mdash;&amp;gt; 数据可持续性
+2) 性能 &amp;mdash;&amp;gt; 数据的高性能访问
+2、优化的范围有哪些 存储、主机和操作系统方面:
+1) 主机架构稳定性
+2) I/O规划及配置
+3) Swap交换分区
+4) OS内核参数和网络问题
+应用程序方面:
+1) 应用程序稳定性
+2) SQL语句性能
+3) 串行访问资源
+4) 性能欠佳会话管理
+5) 这个应用适不适合用MySQL
+数据库优化方面:
+1) 内存
+2) 数据库结构(物理&amp;amp;逻辑)
+3) 实例配置</description>
+    </item>
+    
+    <item>
+      <title>官方工具｜MySQL Router 高可用原理与实战</title>
+      <link>https://hideric.github.io/mysql/%E5%AE%98%E6%96%B9%E5%B7%A5%E5%85%B7mysql-router-%E9%AB%98%E5%8F%AF%E7%94%A8%E5%8E%9F%E7%90%86%E4%B8%8E%E5%AE%9E%E6%88%98/</link>
+      <pubDate>Wed, 30 Oct 2019 15:39:39 +0800</pubDate>
+      
+      <guid>https://hideric.github.io/mysql/%E5%AE%98%E6%96%B9%E5%B7%A5%E5%85%B7mysql-router-%E9%AB%98%E5%8F%AF%E7%94%A8%E5%8E%9F%E7%90%86%E4%B8%8E%E5%AE%9E%E6%88%98/</guid>
+      <description>官方工具｜MySQL Router 高可用原理与实战 Mysql route介绍 什么是mysql route MySQL Router是处于应用client和dbserver之间的轻量级代理程序，它能检测，分析和转发查询到后端数据库实例，并把结果返回给client。是mysql-proxy的一个替代品。其架构图和功能如下。
+（1）Router实现读写分离，程序不是直接连接数据库IP，而是固定连接到mysql router。MySQL Router对前端应用是透明的。应用程序把MySQL Router当作是普通的mysql实例，把查询发给MySQL Router,而MySQL Router会把查询结果返回给前端的应用程序。
+（2）从数据库服务器故障，业务可以正常运行。由MySQL Router来进行自动下线不可用服务器。程序配置不需要任何修改。
+（3）主数据库故障，由MySQL Router来决定主从自动切换，业务可以正常访问。程序配置不需要做任何修改。
+读写分离原理 MySQL Router接受前端应用程序请求后，根据不同的端口来区分读写，把连接读写端口的所有查询发往主库，把连接只读端口的select查询以轮询方式发往多个从库，从而实现读写分离的目的。读写返回的结果会交给MySQL Router,由MySQL Router返回给客户端的应用程序。
+Mysql router用途 MySQL Router的主要用途是读写分离，主主故障自动切换，负载均衡，连接池等。
+Mysql router主主故障自动切换的坑 Mysql router主主故障切换功能经过测试没有问题，但是有一个比较大的坑需要注意，具体是什么坑和解决方法在文章末尾，因为你之前要是没用接触过mysql router估计以我的表达能力，说了你就晕了。
+mysql router实验架构介绍 实验环境架构图如下：
+   主机名 IP地址 操作系统 功能说明     c7-node1.fblinux.com 192.168.100.10 Centos 7.2 64位 Mysql route节点，读写分离，主主故障转移，从库故障自动下线   c7-node2.fblinux.com 192.168.100.11 Centos 7.2 64位 Mysql主节点，提供读写，服务   c7-node3.fblinux.com 192.168.100.12 Centos 7.2 64位 Mysql 从节点，提供读服务，如果主库down机，则此从库接管   c7-node4.</description>
+    </item>
+    
+    <item>
+      <title>MySQL 性能优化：8 种常见 SQL 错误用法！</title>
+      <link>https://hideric.github.io/mysql/mysql-%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%968-%E7%A7%8D%E5%B8%B8%E8%A7%81-sql-%E9%94%99%E8%AF%AF%E7%94%A8%E6%B3%95/</link>
+      <pubDate>Wed, 30 Oct 2019 15:38:52 +0800</pubDate>
+      
+      <guid>https://hideric.github.io/mysql/mysql-%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%968-%E7%A7%8D%E5%B8%B8%E8%A7%81-sql-%E9%94%99%E8%AF%AF%E7%94%A8%E6%B3%95/</guid>
+      <description>MySQL 性能优化：8 种常见 SQL 错误用法！  来源：
+https://yq.aliyun.com/articles/72501
+ 1、LIMIT 语句 分页查询是最常用的场景之一，但也通常也是最容易出问题的地方。比如对于下面简单的语句，一般 DBA 想到的办法是在 type, name, create_time 字段上加组合索引。这样条件排序都能有效的利用到索引，性能迅速提升。
+SELECT * FROM operation WHERE type = &#39;SQLStats&#39; AND name = &#39;SlowLog&#39; ORDER BY create_time LIMIT 1000, 10;  好吧，可能90%以上的 DBA 解决该问题就到此为止。但当 LIMIT 子句变成 “LIMIT 1000000,10” 时，程序员仍然会抱怨：我只取10条记录为什么还是慢？
+要知道数据库也并不知道第1000000条记录从什么地方开始，即使有索引也需要从头计算一次。出现这种性能问题，多数情形下是程序员偷懒了。
+在前端数据浏览翻页，或者大数据分批导出等场景下，是可以将上一页的最大值当成参数作为查询条件的。SQL 重新设计如下：
+SELECT * FROM operation WHERE type = &#39;SQLStats&#39; AND name = &#39;SlowLog&#39; AND create_time &amp;gt; &#39;2017-03-16 14:00:00&#39; ORDER BY create_time limit 10;  在新设计下查询时间基本固定，不会随着数据量的增长而发生变化。</description>
+    </item>
+    
+    <item>
+      <title>MySQL中IS NULL、IS NOT NULL、!=不能用索引？</title>
+      <link>https://hideric.github.io/mysql/index/null%E8%83%BD%E7%94%A8%E7%B4%A2%E5%BC%95/</link>
+      <pubDate>Wed, 07 Aug 2019 11:02:05 +0600</pubDate>
+      
+      <guid>https://hideric.github.io/mysql/index/null%E8%83%BD%E7%94%A8%E7%B4%A2%E5%BC%95/</guid>
+      <description>不知道从什么时候开始，网上流传着这么一个说法：
+ MySQL的WHERE子句中包含 IS NULL、IS NOT NULL、!= 这些条件时便不能使用索引查询，只能使用全表扫描。
+ 这种说法愈演愈烈，甚至被很多同学奉为真理。咱啥话也不说，举个例子。假如我们有个表s1，结构如下：
+CREATE TABLE s1 ( id INT NOT NULL AUTO_INCREMENT, key1 VARCHAR(100), key2 VARCHAR(100), key3 VARCHAR(100), key_part1 VARCHAR(100), key_part2 VARCHAR(100), key_part3 VARCHAR(100), common_field VARCHAR(100), PRIMARY KEY (id), KEY idx_key1 (key1), KEY idx_key2 (key2), KEY idx_key3 (key3), KEY idx_key_part(key_part1, key_part2, key_part3) ) Engine=InnoDB CHARSET=utf8;  这个表里有10000条记录：
+mysql&amp;gt; SELECT COUNT(*) FROM s1; +----------+ | COUNT(*) | +----------+ | 10000 | +----------+ 1 row in set (0.</description>
+    </item>
+    
+  </channel>
+</rss>

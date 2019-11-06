@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Leetcode on Hideric&#39;s Blog</title>
+    <link>https://hideric.github.io/leetcode/</link>
+    <description>Recent content in Leetcode on Hideric&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>The Hugo Documents are copyright © gethugothemes 2018.</copyright>
+    <lastBuildDate>Wed, 07 Aug 2019 11:02:05 +0600</lastBuildDate>
+    
+	<atom:link href="https://hideric.github.io/leetcode/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>LeetCode #5 最长回文子字符串</title>
+      <link>https://hideric.github.io/leetcode/leetcode-5/</link>
+      <pubDate>Wed, 07 Aug 2019 11:02:05 +0600</pubDate>
+      
+      <guid>https://hideric.github.io/leetcode/leetcode-5/</guid>
+      <description>最长回文子字符串(Longest Palindromic Substring) Medium
+给定一个字符串s，找到s中最长的回文子字符串。你可以假设s的最大长度为1000。
+ 示例 1:
+  Input: &amp;quot;babad&amp;quot; Output: &amp;quot;bab&amp;quot;  注意: &amp;ldquo;aba&amp;rdquo; 也是一个答案.
+ 示例 2:
+  Input: &amp;quot;cbbd&amp;quot; Output: &amp;quot;bb&amp;quot;   摘要:
+ 本文适用于中级读者。它引入了以下思想：回文，动态编程和字符串操作。确保你了解回文意味着什么。回文是一个在两个方向上读取相同的字符串。例如，S =“aba”是回文，S =“abc”不是
+ Solution
+方法 1: 最长公共子串</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,971 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Hideric&#39;s Blog</title>
+    <link>https://hideric.github.io/</link>
+    <description>Recent content on Hideric&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>The Hugo Documents are copyright © gethugothemes 2018.</copyright>
+    <lastBuildDate>Wed, 30 Oct 2019 15:54:22 +0800</lastBuildDate>
+    
+	<atom:link href="https://hideric.github.io/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>如何用 Redis 统计独立用户访问量？</title>
+      <link>https://hideric.github.io/redis/%E5%A6%82%E4%BD%95%E7%94%A8-redis-%E7%BB%9F%E8%AE%A1%E7%8B%AC%E7%AB%8B%E7%94%A8%E6%88%B7%E8%AE%BF%E9%97%AE%E9%87%8F/</link>
+      <pubDate>Wed, 30 Oct 2019 15:54:22 +0800</pubDate>
+      
+      <guid>https://hideric.github.io/redis/%E5%A6%82%E4%BD%95%E7%94%A8-redis-%E7%BB%9F%E8%AE%A1%E7%8B%AC%E7%AB%8B%E7%94%A8%E6%88%B7%E8%AE%BF%E9%97%AE%E9%87%8F/</guid>
+      <description> 如何用 Redis 统计独立用户访问量？  作者：沙茶敏碎碎念来源：https://url.cn/5tQPEQg  众所周至，拼多多的待遇也是高的可怕，在挖人方面也是不遗余力，对于一些工作3年的开发，稍微优秀一点的，都给到30K的Offer，当然，拼多多加班也是出名的，一周上6天班是常态，每天工作时间基本都是超过12个小时，也是相当辛苦的。废话不多说，今天我们来聊一聊拼多多的一道后台面试真题，是一道简单的架构类的题目：拼多多有数亿的用户，那么对于某个网页，怎么使用Redis来统计一个网站的用户访问数呢？使用Hash 哈希是Redis的一种基础数据结构，Redis底层维护的是一个开散列，会把不同的key映射到哈希表上，如果是遇到关键字冲突，那么就会拉出一个链表出来。
+当一个用户访问的时候，如果用户登陆过，那么我们就使用用户的id，如果用户没有登陆过，那么我们也能够前端页面随机生成一个key用来标识用户，当用户访问的时候，我们可以使用HSET命令，key可以选择URI与对应的日期进行拼凑，field可以使用用户的id或者随机标识，value可以简单设置为1。
+当我们要统计某一个网站某一天的访问量的时候，就可以直接使用HLEN来得到最终的结果了。
+优点：简单，容易实现，查询也是非常方便，数据准确性非常高。
+缺点：占用内存过大，。随着key的增多，性能也会下降。小网站还行，拼多多这种数亿PV的网站肯定受不了
+使用Bitset 我们知道，对于一个32位的int，如果我们只用来记录id，那么只能够记录一个用户，但如果我们转成2进制，每位用来表示一个用户，那么我们就能够一口气表示32个用户，空间节省了32倍！对于有大量数据的场景，如果我们使用bitset，那么，可以节省非常多的内存。对于没有登陆的用户，我们也可以使用哈希算法，把对应的用户标识哈希成一个数字id。bitset非常的节省内存，假设有1亿个用户，也只需要100000000/8/1024/1024约等于12兆内存。
+Redis已经为我们提供了SETBIT的方法，使用起来非常的方便，我们可以看看下面的例子，我们在item页面可以不停地使用SETBIT命令，设置用户已经访问了该页面，也可以使用GETBIT的方法查询某个用户是否访问。最后我们通过BITCOUNT可以统计该网页每天的访问数量。
+优点：占用内存更小，查询方便，可以指定查询某个用户，数据可能略有瑕疵，对于非登陆的用户，可能不同的key映射到同一个id，否则需要维护一个非登陆用户的映射，有额外的开销。
+缺点：如果用户非常的稀疏，那么占用的内存可能比方法一更大。
+使用概率算法 对于拼多多这种多个页面都可能非常多访问量的网站，如果所需要的数量不用那么准确，可以使用概率算法，事实上，我们对一个网站的UV的统计，1亿跟1亿零30万其实是差不多的。在Redis中，已经封装了HyperLogLog算法，他是一种基数评估算法。这种算法的特征，一般都是数据不存具体的值，而是存用来计算概率的一些相关数据。
+当用户访问网站的时候，我们可以使用PFADD命令，设置对应的命令，最后我们只要通过PFCOUNT就能顺利计算出最终的结果，因为这个只是一个概率算法，所以可能存在0.81%的误差。
+优点：占用内存极小，对于一个key，只需要12kb。对于拼多多这种超多用户的特别适用。
+缺点：查询指定用户的时候，可能会出错，毕竟存的不是具体的数据。总数也存在一定的误差。
+上面就是常见的3种适用Redis统计网站用户访问数的方法了。
+END </description>
+    </item>
+    
+    <item>
+      <title>HTTP断点续传</title>
+      <link>https://hideric.github.io/java/basis/http%E6%96%AD%E7%82%B9%E7%BB%AD%E4%BC%A0/</link>
+      <pubDate>Wed, 30 Oct 2019 15:41:01 +0800</pubDate>
+      
+      <guid>https://hideric.github.io/java/basis/http%E6%96%AD%E7%82%B9%E7%BB%AD%E4%BC%A0/</guid>
+      <description>HTTP断点续传 0x01: 简述
+断点续传：指的是在上传/下载时，将任务（一个文件或压缩包）人为的划分为几个部分，每一个部分采用一个线程进行上传/下载，如果碰到网络故障，可以从已经上传/下载的部分开始继续上传/下载未完成的部分，而没有必要从头开始上传/下载。可以节省时间，提高速度。
+0x02: 断点续传的用途
+有时用户上传/下载文件需要历时数小时，万一线路中断，不具备断点续传的 HTTP/FTP 服务器或下载软件就只能从头重传，比较好的 HTTP/FTP 服务器或下载软件具有断点续传能力，允许用户从上传/下载断线的地方继续传送，这样大大减少了用户的烦恼。
+​ 常见的支持断点续传的上传/下载软件：QQ 旋风、迅雷、快车、电驴、酷6、土豆、优酷、百度视频、新浪视频、腾讯视频、百度云等。
+​ 在 Linux/Unix 系统下，常用支持断点续传的 FTP 客户端软件是 lftp。
+0x03: Range &amp;amp; Content-Range
+HTTP1.1 协议（RFC2616）开始支持获取文件的部分内容，这为并行下载以及断点续传提供了技术支持。它通过在 Header 里两个参数实现的，客户端发请求时对应的是 Range ，服务器端响应时对应的是 Content-Range。
+0x04: Range
+用于请求头中，指定第一个字节的位置和最后一个字节的位置，一般格式：
+​ Range:(unit=first byte pos)-[last byte pos]
+Range 头部的格式有以下几种情况： - Range: bytes=0-499 表示第 0-499 字节范围的内容 - Range: bytes=500-999 表示第 500-999 字节范围的内容 - Range: bytes=-500 表示最后 500 字节的内容 - Range: bytes=500- 表示从第 500 字节开始到文件结束部分的内容 - Range: bytes=0-0,-1 表示第一个和最后一个字节 - Range: bytes=500-600,601-999 同时指定几个范围</description>
+    </item>
+    
+    <item>
+      <title>Java 垃圾收集器</title>
+      <link>https://hideric.github.io/java/basis/java-%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8/</link>
+      <pubDate>Wed, 30 Oct 2019 15:41:01 +0800</pubDate>
+      
+      <guid>https://hideric.github.io/java/basis/java-%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8/</guid>
+      <description>Java 垃圾收集器 概念准备
+下面了解几个概念以帮助后面的学习：线程暂停（Stop The World）、安全点（Safepoint）、安全区（Safe region）。
+在执行可达性分析的时候会出现在分析的过程中对象关系引用等发生了变化，为了保证分析的准确性，就必须在分析的过程中暂停所有Java线程，Sun将这一事件称作“Stop The World”。
+那么，什么时候暂停合适呢？并不是所有的时刻都可以暂停所有线程进行GC的，只有到达某些点才可以进行GC操作，这些点就称作安全点（Safepoint）。
+安全点的设置不能太少，那样GC等待的时间就会太长，但也不能太多否则会增加运行时的负担。
+所以，安全点的选定基本上是以程序“是否具有让程序长时间执行的特征”为标准进行选定的。比如，循环的末尾、方法临返回前/调用方法的call指令后、可能抛异常的位置等。
+HotSpot采用主动中断的方式，让执行线程在运行期轮询是否需要暂停的（GC设置的）标志，若需要则中断挂起。
+对于正在运行的线程，可以主动运行到安全点并暂停执行，但是对于那些正在Sleep或阻塞的线程，当它们重新执行时可能已经过了安全点，但此时GC可能还没完成垃圾回收，这种情况该怎么办呢？
+于是就有了安全区（Safe region）的概念，安全区是一块区域，在该区域中引用都不会被修改。比如，线程进入到安全区的时候先标识自己进入了安全区，等它被唤醒准备离开时，先检查GC是否完成，如果完成则可以离开，否则就在安全区等待。
+了解了上面的基本概念之后，下面正式进入垃圾收集器的讲解。
+垃圾收集器分类
+先通过下图了解一下Hotspot的8种垃圾收集器及其应用。
+两个收集器之间的连线，表示它们可以搭配使用。收集器所处的区域表示它是属于新生代收集器还是老年代收集器。其中ZGC为Java11引入的新的垃圾收集器。
+默认垃圾收集器
+不同Java版本采用的默认收集器如下。
+Serial收集器
+Serial收集器是最基本、发展历史最悠久的收集器，是一个单线程的收集器。在进行垃圾收集时，必须暂停其他所有的工作线程，直到它收集结束。就是所谓的“Stop The World。”
+ParNew收集器
+ParNew收集器其实就是Serial收集器的多线程版本。除了使用多线程进行垃圾收集外，其余行为包括Serial收集器可用的所有控制参数、收集算法（复制算法）、Stop The World、对象分配规则、回收策略等与Serial收集器完全相同，两者共用了相当多的代码。
+Parallel Scavenge收集器
+Parallel Scavenge收集器是一个新生代搜集器，主要采用复制算法，与ParNew类似。但关注点与其他搜集器不同，目标是达到一个可控的吞吐量。
+Serial Old收集器
+Serial Old是Serial收集器的老年代版本，同样是一个单线程收集器，使用标记－整理算法。运作图同Serial搜集器。
+Parallel Old收集器
+Parallel Old是Parallel Scavenge收集器的老年代版本，使用多线程和“标记－整理”算法。在JDK 1.6中才开始提供。
+CMS收集器
+CMS（Concurrent Mark and Sweep 并发-标记-清除），是一种以获取最短回收停顿时间为目标的收集器。基于并发、使用标记清除算法，只针对老年代进行垃圾回收。
+CMS收集器工作时，尽可能让GC线程和用户线程并发执行，以达到降低STW时间的目的。
+整个操作步骤分为四步：初始标记（CMS initial mark）、并发标记（CMS concurrent mark）、重新标记（CMS remark）、并发清除（CMS concurrent sweep）。
+在上图过程中，初始标记和重新标记都会触发“Stop The World”。
+初始标记仅仅只是标记一下GC Roots能直接关联到的对象，速度很快，在Java7中是单线程，在Java8以后可采用多线程。
+发标记阶段GC线程和应用线程并发执行，初始标记出来的存活对象，然后继续递归标记这些对象可达的对象。
+重新标记阶段则是为了修正并发标记期间，因用户程序继续运作而导致标记产生变动的那一部分对象的标记记录，这个阶段的停顿时间一般会比初始标记阶段稍长一些，但远比并发标记的时间短。
+优点：并发收集、低停顿。
+缺点：对CPU资源非常敏感、无法处理浮动垃圾、标记-清除算法导致的空间碎片。</description>
+    </item>
+    
+    <item>
+      <title>Java 字符串拼接姿势</title>
+      <link>https://hideric.github.io/java/basis/java-%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%8B%BC%E6%8E%A5%E5%A7%BF%E5%8A%BF/</link>
+      <pubDate>Wed, 30 Oct 2019 15:41:01 +0800</pubDate>
+      
+      <guid>https://hideric.github.io/java/basis/java-%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%8B%BC%E6%8E%A5%E5%A7%BF%E5%8A%BF/</guid>
+      <description>Java 字符串拼接姿势 01、“+”号操作符 要说姿势，“+”号操作符必须是字符串拼接最常用的一种了，没有之一。
+String chenmo = &amp;quot;沉默&amp;quot;; String wanger = &amp;quot;王二&amp;quot;; System.out.println(chenmo + wanger);  我们把这段代码使用 JAD 反编译一下。
+String chenmo = &amp;quot;\u6C89\u9ED8&amp;quot;; // 沉默 String wanger = &amp;quot;\u738B\u4E8C&amp;quot;; // 王二 System.out.println((new StringBuilder(String.valueOf(chenmo))).append(wanger).toString());  我去，原来编译的时候把“+”号操作符替换成了 StringBuilder 的 append 方法。也就是说，“+”号操作符在拼接字符串的时候只是一种形式主义，让开发者使用起来比较简便，代码看起来比较简洁，读起来比较顺畅。算是 Java 的一种语法糖吧。
+02、StringBuilder 除去“+”号操作符，StringBuilder 的 append 方法就是第二个常用的字符串拼接姿势了。
+先来看一下 StringBuilder 类的 append 方法的源码：
+public StringBuilder append(String str) { super.append(str); return this; }  这 3 行代码没啥可看的，可看的是父类 AbstractStringBuilder 的 append 方法：
+public AbstractStringBuilder append(String str) { if (str == null) return appendNull(); int len = str.</description>
+    </item>
+    
+    <item>
+      <title>Java-如何更优雅的处理空值</title>
+      <link>https://hideric.github.io/java/basis/java-%E5%A6%82%E4%BD%95%E6%9B%B4%E4%BC%98%E9%9B%85%E7%9A%84%E5%A4%84%E7%90%86%E7%A9%BA%E5%80%BC/</link>
+      <pubDate>Wed, 30 Oct 2019 15:41:01 +0800</pubDate>
+      
+      <guid>https://hideric.github.io/java/basis/java-%E5%A6%82%E4%BD%95%E6%9B%B4%E4%BC%98%E9%9B%85%E7%9A%84%E5%A4%84%E7%90%86%E7%A9%BA%E5%80%BC/</guid>
+      <description>Java:如何更优雅的处理空值  来源：lrwinxhttps://lrwinx.github.io/  导语 在笔者几年的开发经验中，经常看到项目中存在到处空值判断的情况，这些判断，会让人觉得摸不着头绪，它的出现很有可能和当前的业务逻辑并没有关系。但它会让你很头疼。
+有时候，更可怕的是系统因为这些空值的情况，会抛出空指针异常，导致业务系统发生问题。
+此篇文章，我总结了几种关于空值的处理手法，希望对读者有帮助。
+业务中的空值 场景 存在一个UserSearchService用来提供用户查询的功能:
+public interface UserSearchService{ List&amp;lt;User&amp;gt; listUser(); User get(Integer id); }  问题现场 对于面向对象语言来讲，抽象层级特别的重要。尤其是对接口的抽象，它在设计和开发中占很大的比重，我们在开发时希望尽量面向接口编程。
+对于以上描述的接口方法来看，大概可以推断出可能它包含了以下两个含义:
+ listUser(): 查询用户列表
+ get(Integer id): 查询单个用户 在所有的开发中，XP推崇的TDD模式可以很好的引导我们对接口的定义，所以我们将TDD作为开发代码的”推动者”。
+  对于以上的接口，当我们使用TDD进行测试用例先行时，发现了潜在的问题：
+ listUser() 如果没有数据，那它是返回空集合还是null呢？
+ get(Integer id) 如果没有这个对象，是抛异常还是返回null呢？
+深入listUser研究  我们先来讨论
+listUser()  这个接口，我经常看到如下实现:
+public List&amp;lt;User&amp;gt; listUser(){ List&amp;lt;User&amp;gt; userList = userListRepostity.selectByExample(new UserExample()); if(CollectionUtils.isEmpty(userList)){//spring util工具类 return null; } return userList; }  这段代码返回是null,从我多年的开发经验来讲，对于集合这样返回值，最好不要返回null，因为如果返回了null，会给调用者带来很多麻烦。你将会把这种调用风险交给调用者来控制。
+如果调用者是一个谨慎的人，他会进行是否为null的条件判断。如果他并非谨慎，或者他是一个面向接口编程的狂热分子(当然，面向接口编程是正确的方向)，他会按照自己的理解去调用接口，而不进行是否为null的条件判断，如果这样的话，是非常危险的，它很有可能出现空指针异常！
+根据墨菲定律来判断: “很有可能出现的问题，在将来一定会出现!”</description>
+    </item>
+    
+    <item>
+      <title>JVM 堆内存溢出后，其他线程是否可继续工作？</title>
+      <link>https://hideric.github.io/java/basis/jvm/jvm-%E5%A0%86%E5%86%85%E5%AD%98%E6%BA%A2%E5%87%BA%E5%90%8E%E5%85%B6%E4%BB%96%E7%BA%BF%E7%A8%8B%E6%98%AF%E5%90%A6%E5%8F%AF%E7%BB%A7%E7%BB%AD%E5%B7%A5%E4%BD%9C/</link>
+      <pubDate>Wed, 30 Oct 2019 15:41:01 +0800</pubDate>
+      
+      <guid>https://hideric.github.io/java/basis/jvm/jvm-%E5%A0%86%E5%86%85%E5%AD%98%E6%BA%A2%E5%87%BA%E5%90%8E%E5%85%B6%E4%BB%96%E7%BA%BF%E7%A8%8B%E6%98%AF%E5%90%A6%E5%8F%AF%E7%BB%A7%E7%BB%AD%E5%B7%A5%E4%BD%9C/</guid>
+      <description>JVM 堆内存溢出后，其他线程是否可继续工作？ 最近网上出现一个美团面试题：“一个线程OOM后，其他线程还能运行吗？”。我看网上出现了很多不靠谱的答案。这道题其实很有难度，涉及的知识点有jvm内存分配、作用域、gc等，不是简单的是与否的问题。
+由于题目中给出的OOM，java中OOM又分很多类型；比如：堆溢出（“java.lang.OutOfMemoryError: Java heap space”）、永久带溢出（“java.lang.OutOfMemoryError:Permgen space”）、不能创建线程（“java.lang.OutOfMemoryError:Unable to create new native thread”）等很多种情况。
+本文主要是分析堆溢出对应用带来的影响。
+先说一下答案，答案是还能运行。
+代码如下：
+public class JvmThread { public static void main(String[] args) { new Thread(() -&amp;gt; { List&amp;lt;byte[]&amp;gt; list = new ArrayList&amp;lt;byte[]&amp;gt;(); while (true) { System.out.println(new Date().toString() + Thread.currentThread() + &amp;quot;==&amp;quot;); byte[] b = new byte[1024 * 1024 * 1]; list.add(b); try { Thread.sleep(1000); } catch (Exception e) { e.printStackTrace(); } } }).start(); // 线程二 new Thread(() -&amp;gt; { while (true) { System.</description>
+    </item>
+    
+    <item>
+      <title>Mybatis中Like 的使用方式以及一些注意点</title>
+      <link>https://hideric.github.io/java/framework/mybatis/mybatis%E4%B8%ADlike-%E7%9A%84%E4%BD%BF%E7%94%A8%E6%96%B9%E5%BC%8F%E4%BB%A5%E5%8F%8A%E4%B8%80%E4%BA%9B%E6%B3%A8%E6%84%8F%E7%82%B9/</link>
+      <pubDate>Wed, 30 Oct 2019 15:41:01 +0800</pubDate>
+      
+      <guid>https://hideric.github.io/java/framework/mybatis/mybatis%E4%B8%ADlike-%E7%9A%84%E4%BD%BF%E7%94%A8%E6%96%B9%E5%BC%8F%E4%BB%A5%E5%8F%8A%E4%B8%80%E4%BA%9B%E6%B3%A8%E6%84%8F%E7%82%B9/</guid>
+      <description> Mybatis中Like 的使用方式以及一些注意点 模糊查询在项目中还是经常使用的，本文就简单整理Mybatis中使用Like进行模糊查询的几种写法以及一些常见的问题。
+初始数据 方式一 在Mybatis中的第一种写法：
+这种会有sql注入的问题，需要明白在 Mybatis中&amp;nbsp;$&amp;nbsp;和&amp;nbsp;#&amp;nbsp;使用的区别。这种写法也不能加jdbcType=VARCHAR,否则也会报错。
+做了个简单的测试：
+注意：排序的字段也容易出现这个问题，在使用的时候也一定要注意。
+ order by ${orderBy}
+ 第一种方式在实际开发过程中千万要注意，不要写成这样了。
+方式二 在Mybatis中的第二种写法：
+在代码中加上%。
+这种方式在一些项目中也会看到。如果没有使用如Mybatis等ORM框架，直接写sql查询就这样拼接了。
+方式三 在Mybatis中的第三种写法：
+测试：
+在实际开发中推荐使用这种方式。
+小注意 当使用方式三的时候，如果查询的关键字就是%&amp;nbsp;，那情况会是什么？初始化数据中name有9条数据中包含%。
+查询的sql如下：
+ select * from t_user where name like concat(&amp;lsquo;%&amp;rsquo;,&amp;lsquo;%&amp;rsquo;,&amp;lsquo;%&amp;rsquo;)
+ 查出来全部的数据，并不是只包含了%的数据，如果查询_也是一样的。
+那这种情况肯定是不满足查询需求的，则需要调整。
+①在代码中进行转义
+②使用ESCAPE
+这两种本质都是对查询的关键字进行了处理，这种处理在代码中可以使用拦截器或者AOP等技术统一处理。
+小总结 1、不要写方式1的这种模糊查询，容易发生sql注入！
+ 建议使用第三种方式进行模糊查询
+ 2、上面这三种模糊查询，都是使用%关键字%，这种方式是不会走索引的，大数据量时候有查询效率问题
+ 看情况，可以使用全文索引；或者使用ES进行说明：网上有一些优化like的查询的，但是亲测后没啥用
+ 3、注意关键词中有%、_这些特殊字符如何处理。
+ 1、业务上不允许输入这些字符，直接过滤（前台、后台过滤）2、使用上面的ESCAPE或者转义
+ END </description>
+    </item>
+    
+    <item>
+      <title>Mybatis居然有坑，千万别踩！</title>
+      <link>https://hideric.github.io/java/framework/mybatis/mybatis%E5%B1%85%E7%84%B6%E6%9C%89%E5%9D%91%E5%8D%83%E4%B8%87%E5%88%AB%E8%B8%A9/</link>
+      <pubDate>Wed, 30 Oct 2019 15:41:01 +0800</pubDate>
+      
+      <guid>https://hideric.github.io/java/framework/mybatis/mybatis%E5%B1%85%E7%84%B6%E6%9C%89%E5%9D%91%E5%8D%83%E4%B8%87%E5%88%AB%E8%B8%A9/</guid>
+      <description>Mybatis居然有坑，千万别踩！ 来源：http://h5ip.cn/aJgJ
+Mybatis是一个开源的轻量级半自动化ORM框架，使得面向对象应用程序与关系数据库的映射变得更加容易。MyBatis使用xml描述符或注解将对象与存储过程或SQL语句相结合。Mybatis最大优点是应用程序与Sql进行解耦，sql语句是写在Xml Mapper文件中。
+OGNL表达式在Mybatis当中应用非常广泛，其表达式的灵活性使得动态Sql功能的非常强大。OGNL是Object-Graph Navigation Language的缩写，代表对象图导航语言。OGNL是一种EL表达式语言，用于设置和获取Java对象的属性，并且可以对列表进行投影选择以及执行lambda表达式。Ognl类提供了许多简便方法用于执行表达式的。Struts2发布的每个版本都会出现的新的高危可执行漏洞也是因为它使用了灵活的OGNL表达式。
+公司后端采用Mybatis作为数据访问层,所使用版本为3.2.3。线上环境业务系统在运行过程中出现了一个令人困惑的异常, 该异常时而出现时而不出现，构造各种OGNL表达式为空等特殊情况均不会重现该异常。具体异常堆栈信息如下:
+### Error querying database. Cause: org.apache.ibatis.builder.BuilderException: Error evaluating expression &#39;list != null and list.size() &amp;gt; 0&#39;. Cause: org.apache.ibatis.ognl.MethodFailedException: Method &amp;quot;size&amp;quot; failed for object [1] [java.lang.IllegalAccessException: Class org.apache.ibatis.ognl.OgnlRuntime can not access a member of class java.util.Collections$SingletonList with modifiers &amp;quot;public&amp;quot;] ### Cause: org.apache.ibatis.builder.BuilderException: Error evaluating expression &#39;list != null and list.size() &amp;gt; 0&#39;. Cause: org.apache.ibatis.ognl.MethodFailedException: Method &amp;quot;size&amp;quot; failed for object [1] [java.lang.IllegalAccessException: Class org.</description>
+    </item>
+    
+    <item>
+      <title>Mysql面试题及千万级数据查询优化</title>
+      <link>https://hideric.github.io/mysql/mysql%E9%9D%A2%E8%AF%95%E9%A2%98%E5%8F%8A%E5%8D%83%E4%B8%87%E7%BA%A7%E6%95%B0%E6%8D%AE%E6%9F%A5%E8%AF%A2%E4%BC%98%E5%8C%96/</link>
+      <pubDate>Wed, 30 Oct 2019 15:41:01 +0800</pubDate>
+      
+      <guid>https://hideric.github.io/mysql/mysql%E9%9D%A2%E8%AF%95%E9%A2%98%E5%8F%8A%E5%8D%83%E4%B8%87%E7%BA%A7%E6%95%B0%E6%8D%AE%E6%9F%A5%E8%AF%A2%E4%BC%98%E5%8C%96/</guid>
+      <description>Mysql面试题及千万级数据查询优化 Mysql数据库中一个表里有一千多万条数据，怎么快速的查出第900万条后的100条数据？
+怎么查，谁能告诉我答案？有没有人想着，不就一条语句搞定嘛
+select * from table limit 9000000,100;  那我们试试，去执行下这个SQL看看吧
+看见了吗，查了100条数据用了7.063s。这能算的上是快速查询吗，估计没人能接受了这种速度吧！基于这个问题，我今天就要说说大数据时的快速查询了。
+首先，我演示下大数据分页查询，我的test表里有1000多万条数据，然后使用limit进行分页测试：
+select * from test limit 0,100;
+耗时：0.005s
+
+select * from test limit 1000,100;
+耗时：0.006s
+select * from test limit 10000,100;
+耗时：0.013s
+select * from test limit 100000,100;
+耗时：0.104s
+select * from test limit 500000,100;
+耗时：0.395s
+select * from test limit 1000000,100;
+耗时：0.823s
+select * from test limit 5000000,100;
+耗时：3.909s
+select * from test limit 10000000,100;</description>
+    </item>
+    
+    <item>
+      <title>Spring循环依赖的坑</title>
+      <link>https://hideric.github.io/java/framework/spring/spring%E5%BE%AA%E7%8E%AF%E4%BE%9D%E8%B5%96%E7%9A%84%E5%9D%91/</link>
+      <pubDate>Wed, 30 Oct 2019 15:41:01 +0800</pubDate>
+      
+      <guid>https://hideric.github.io/java/framework/spring/spring%E5%BE%AA%E7%8E%AF%E4%BE%9D%E8%B5%96%E7%9A%84%E5%9D%91/</guid>
+      <description>Spring循环依赖的坑  作者：Mythsman
+原文：https://blog.mythsman.com/post/5d838c7c2db8a452e9b7082c/
+ 前言 这两天工作遇到了一个挺有意思的Spring循环依赖的问题，但是这个和以往遇到的循环依赖问题都不太一样，隐藏的相当隐蔽，网络上也很少看到有其他人遇到类似的问题。这里权且称他非典型Spring循环依赖问题。但是我相信我肯定不是第一个踩这个坑的，也一定不是最后一个，可能只是因为踩过的人比较少、鲜有记录罢了。因此这里权且记录一下这个坑，方便后人查看。正如鲁迅（我）说过，“这个世上本没有坑，踩的人多了，也便成了坑”。
+典型场景 经常听很多人在Review别人代码的时候有如下的评论：“你在设计的时候这些类之间怎么能有循环依赖呢？你这样会报错的！”。
+其实这句话前半句当然没有错，出现循环依赖的确是设计上的问题，理论上应当将循环依赖进行分层，抽取公共部分，然后由各个功能类再去依赖公共部分。
+但是在复杂代码中，各个manager类互相调用太多，总会一不小心出现一些类之间的循环依赖的问题。可有时候我们又发现在用Spring进行依赖注入时，虽然Bean之间有循环依赖，但是代码本身却大概率能很正常的work，似乎也没有任何bug。
+很多敏感的同学心里肯定有些犯嘀咕，循环依赖这种触犯因果律的事情怎么能发生呢？没错，这一切其实都并不是那么理所当然。
+3
+-
+什么是依赖 其实，不分场景地、笼统地说A依赖B其实是不够准确、至少是不够细致的。我们可以简单定义一下什么是依赖。
+所谓A依赖B，可以理解为A中某些功能的实现是需要调用B中的其他功能配合实现的。这里也可以拆分为两层含义：
+ A强依赖B。创建A的实例这件事情本身需要B来参加。对照在现实生活就像妈妈生你一样。
+ A弱依赖B。创建A的实例这件事情不需要B来参加，但是A实现功能是需要调用B的方法。对照在现实生活就像男耕女织一样。
+  那么，所谓循环依赖，其实也有两层含义：
+ 强依赖之间的循环依赖。
+ 弱依赖之间的循环依赖。
+  讲到这一层，我想大家应该知道我想说什么了。
+什么是依赖调解 对于强依赖而言，A和B不能互相作为存在的前提，否则宇宙就爆炸了。因此这类依赖目前是无法调解的。
+对于弱依赖而言，A和B的存在并没有前提关系，A和B只是互相合作。因此正常情况下是不会出现违反因果律的问题的。
+那什么是循环依赖的调解呢？我的理解是：
+将 原本是弱依赖关系的两者误当做是强依赖关系的做法 重新改回弱依赖关系的过程。
+基于上面的分析，我们基本上也就知道Spring是怎么进行循环依赖调解的了（仅指弱依赖，强依赖的循环依赖只有上帝能自动调解）。
+5
+-
+为什么要依赖注入 网上经常看到很多手撸IOC容器的入门科普文，大部分人只是将IOC容器实现成一个“存储Bean的map”，将DI实现成“通过注解+反射将bean赋给类中的field”。实际上很多人都忽视了DI的依赖调解的功能。而帮助我们进行依赖调解本身就是我们使用IOC+DI的一个重要原因。
+在没有依赖注入的年代里，很多人都会将类之间的依赖通过构造函数传递（实际上是构成了强依赖）。当项目越来越庞大时，非常容易出现无法调解的循环依赖。这时候开发人员就被迫必须进行重新抽象，非常麻烦。而事实上，我们之所以将原本的弱依赖弄成了强依赖，完全是因为我们将类的构造、类的配置、类的初始化逻辑三个功能耦合在构造函数之中。
+而DI就是帮我们将构造函数的功能进行了解耦。
+那么Spring是怎么进行解耦的呢？
+Spring的依赖注入模型 这一部分网上有很多相关内容，我的理解大概是上面提到的三步：
+ 类的构造，调用构造函数、解析强依赖（一般是无参构造），并创建类实例。
+ 类的配置，根据Field/GetterSetter中的依赖注入相关注解、解析弱依赖，并填充所有需要注入的类。
+ 类的初始化逻辑，调用生命周期中的初始化方法（例如@PostConstruct注解或InitializingBean的afterPropertiesSet方法），执行实际的初始化业务逻辑。
+  这样，构造函数的功能就由原来的三个弱化为了一个，只负责类的构造。并将类的配置交由DI，将类的初始化逻辑交给生命周期。
+想到这一层，忽然解决了我堵在心头已久的问题。在刚开始学Spring的时候，我一直想不通：
+ 为什么Spring除了构造函数之外还要在Bean生命周期里有一个额外的初始化方法？
+ 这个初始化方法和构造函数到底有什么区别？
+ 为什么Spring建议将初始化的逻辑写在生命周期里的初始化方法里？
+   现在，把依赖调解结合起来看，解释就十分清楚了：
+  为了进行依赖调解，Spring在调用构造函数时是没有将依赖注入进来的。也就是说构造函数中是无法使用通过DI注入进来的bean（或许可以，但是Spring并不保证这一点）。</description>
+    </item>
+    
+    <item>
+      <title>Spring的各种注解</title>
+      <link>https://hideric.github.io/java/framework/spring/spring%E7%9A%84%E5%90%84%E7%A7%8D%E6%B3%A8%E8%A7%A3/</link>
+      <pubDate>Wed, 30 Oct 2019 15:41:01 +0800</pubDate>
+      
+      <guid>https://hideric.github.io/java/framework/spring/spring%E7%9A%84%E5%90%84%E7%A7%8D%E6%B3%A8%E8%A7%A3/</guid>
+      <description>Spring的各种注解  作者：digdeep &amp;nbsp;&amp;nbsp;来源：http://1t.click/ataS
+ Spring中的注解大概可以分为两大类：
+1.spring的bean容器相关的注解，或者说bean工厂相关的注解；
+2.springmvc相关的注解。
+spring的bean容器相关的注解，先后有：@Required， @Autowired, @PostConstruct, @PreDestory，还有Spring3.0开始支持的JSR-330标准javax.inject.*中的注解(@Inject, @Named, @Qualifier, @Provider, @Scope, @Singleton).
+springmvc相关的注解有：@Controller, @RequestMapping, @RequestParam， @ResponseBody等等。
+要理解Spring中的注解，先要理解Java中的注解。
+# Java中的注解
+Java中1.5中开始引入注解，我们最熟悉的应该是：@Override, 它的定义如下：
+/** * Indicates that a method declaration is intended to override a * method declaration in a supertype. If a method is annotated with * this annotation type compilers are required to generate an error * message unless at least one of the following conditions hold: * The method does override or implement a method declared in a * supertype.</description>
+    </item>
+    
+    <item>
+      <title>从实践角度重新理解BIO和NIO</title>
+      <link>https://hideric.github.io/java/basis/%E4%BB%8E%E5%AE%9E%E8%B7%B5%E8%A7%92%E5%BA%A6%E9%87%8D%E6%96%B0%E7%90%86%E8%A7%A3bio%E5%92%8Cnio/</link>
+      <pubDate>Wed, 30 Oct 2019 15:41:01 +0800</pubDate>
+      
+      <guid>https://hideric.github.io/java/basis/%E4%BB%8E%E5%AE%9E%E8%B7%B5%E8%A7%92%E5%BA%A6%E9%87%8D%E6%96%B0%E7%90%86%E8%A7%A3bio%E5%92%8Cnio/</guid>
+      <description>从实践角度重新理解BIO和NIO 前言 这段时间自己在看一些Java中BIO和NIO之类的东西，看了很多博客，发现各种关于NIO的概念说的天花乱坠头头是道，可以说是非常的完整，但是整个看下来之后，自己对NIO还是一知半解的状态，所以这篇文章不会提到很多的概念，而是站在一个实践的角度，写一些我自己关于NIO的见解，站在实践过后的高度下再回去看概念，应该对概念会有一个更好的理解。
+实现一个简易单线程服务器 要讲明白BIO和NIO，首先我们应该自己实现一个简易的服务器，不用太复杂，单线程即可。
+为什么使用单线程作为演示 因为在单线程环境下可以很好地对比出BIO和NIO的一个区别，当然我也会演示在实际环境中BIO的所谓一个请求对应一个线程的状况。
+服务端 public class Server { public static void main(String[] args) { byte[] buffer = new byte[1024]; try { ServerSocket serverSocket = new ServerSocket(8080); System.out.println(&amp;quot;服务器已启动并监听8080端口&amp;quot;); while (true) { System.out.println(); System.out.println(&amp;quot;服务器正在等待连接...&amp;quot;); Socket socket = serverSocket.accept(); System.out.println(&amp;quot;服务器已接收到连接请求...&amp;quot;); System.out.println(); System.out.println(&amp;quot;服务器正在等待数据...&amp;quot;); socket.getInputStream().read(buffer); System.out.println(&amp;quot;服务器已经接收到数据&amp;quot;); System.out.println(); String content = new String(buffer); System.out.println(&amp;quot;接收到的数据:&amp;quot; + content); } } catch (IOException e) { // TODO Auto-generated catch block e.printStackTrace(); } } }  客户端 public class Consumer { public static void main(String[] args) { try { Socket socket = new Socket(&amp;quot;127.</description>
+    </item>
+    
+    <item>
+      <title>关于 Git 提交规范</title>
+      <link>https://hideric.github.io/java/basis/%E5%85%B3%E4%BA%8E-git-%E6%8F%90%E4%BA%A4%E8%A7%84%E8%8C%83/</link>
+      <pubDate>Wed, 30 Oct 2019 15:41:01 +0800</pubDate>
+      
+      <guid>https://hideric.github.io/java/basis/%E5%85%B3%E4%BA%8E-git-%E6%8F%90%E4%BA%A4%E8%A7%84%E8%8C%83/</guid>
+      <description>关于 Git 提交规范  来源：人人贷大前端技术中心juejin.im/post/5d0b3f8c6fb9a07ec07fc5d0
+git是现在市面上最流行的版本控制工具，书写良好的commit message能大大提高代码维护的效率。但是在日常开发中由于缺少对commit message的约束，导致填写内容随意、质量参差不齐，可读性低亦难以维护。
+在项目中引入commit message规范已是迫在眉睫。
+  用什么规范？
+ Quick Start
+  1. 全局安装commitizen &amp;amp; cz-conventional-changelog   2. 项目内安装commitlint &amp;amp; husky 3. 添加相应配置 4. 使用  Commit message规范在rrd-fe落地使用情况
+  1. type   2. scope 3. body 4. break changes 5. affect issues  示例
+ 扩展阅读
+  用什么规范？ 现在市面上比较流行的方案是约定式提交规范（Conventional Commits），它受到了Angular提交准则的启发，并在很大程度上以其为依据。约定式提交规范是一种基于提交消息的轻量级约定。
+它提供了一组用于创建清晰的提交历史的简单规则；这使得编写基于规范的自动化工具变得更容易。这个约定与SemVer相吻合，在提交信息中描述新特性、bug 修复和破坏性变更。它的 message 格式如下:
+&amp;lt;类型&amp;gt;[可选的作用域]: &amp;lt;描述&amp;gt; [可选的正文] [可选的脚注]  Quick Start 1.</description>
+    </item>
+    
+    <item>
+      <title>后端实践：Nginx日志配置（超详细）</title>
+      <link>https://hideric.github.io/nginx/%E5%90%8E%E7%AB%AF%E5%AE%9E%E8%B7%B5nginx%E6%97%A5%E5%BF%97%E9%85%8D%E7%BD%AE%E8%B6%85%E8%AF%A6%E7%BB%86/</link>
+      <pubDate>Wed, 30 Oct 2019 15:41:01 +0800</pubDate>
+      
+      <guid>https://hideric.github.io/nginx/%E5%90%8E%E7%AB%AF%E5%AE%9E%E8%B7%B5nginx%E6%97%A5%E5%BF%97%E9%85%8D%E7%BD%AE%E8%B6%85%E8%AF%A6%E7%BB%86/</guid>
+      <description>后端实践：Nginx日志配置（超详细）  作者：antwang juejin.im/post/5aa09bb3f265da238f121b6c
+ 前言 Nginx日志对于统计、系统服务排错很有用。
+Nginx日志主要分为两种：access_log(访问日志)和error_log(错误日志)。通过访问日志我们可以得到用户的IP地址、浏览器的信息，请求的处理时间等信息。错误日志记录了访问出错的信息，可以帮助我们定位错误的原因。
+本文将详细描述一下如何配置Nginx日志。
+设置access_log 访问日志主要记录客户端的请求。客户端向Nginx服务器发起的每一次请求都记录在这里。客户端IP，浏览器信息，referer，请求处理时间，请求URL等都可以在访问日志中得到。当然具体要记录哪些信息，你可以通过log_format指令定义。
+语法 access_log path [format [buffer=size] [gzip[=level]] [flush=time] [if=condition]]; # 设置访问日志 access_log off; # 关闭访问日志    path 指定日志的存放位置。 format 指定日志的格式。默认使用预定义的combined。 buffer 用来指定日志写入时的缓存大小。默认是64k。 gzip 日志写入前先进行压缩。压缩率可以指定，从1到9数值越大压缩比越高，同时压缩的速度也越慢。默认是1。 flush 设置缓存的有效时间。如果超过flush指定的时间，缓存中的内容将被清空。 if 条件判断。如果指定的条件计算为0或空字符串，那么该请求不会写入日志。   另外，还有一个特殊的值off。如果指定了该值，当前作用域下的所有的请求日志都被关闭。
+作用域 可以应用access_log指令的作用域分别有http，server，location，limit_except。也就是说，在这几个作用域外使用该指令，Nginx会报错。
+以上是access_log指令的基本语法和参数的含义。下面我们看一几个例子加深一下理解。
+基本用法 access_log /var/logs/nginx-access.log  该例子指定日志的写入路径为/var/logs/nginx-access.log，日志格式使用默认的combined。
+access_log /var/logs/nginx-access.log buffer=32k gzip flush=1m  该例子指定日志的写入路径为/var/logs/nginx-access.log，日志格式使用默认的combined，指定日志的缓存大小为32k，日志写入前启用gzip进行压缩，压缩比使用默认值1，缓存数据有效时间为1分钟。
+使用log_format自定义日志格式 Nginx预定义了名为combined日志格式，如果没有明确指定日志格式默认使用该格式：
+log_format combined &#39;$remote_addr - $remote_user [$time_local] &#39; &#39;&amp;quot;$request&amp;quot; $status $body_bytes_sent &#39; &#39;&amp;quot;$http_referer&amp;quot; &amp;quot;$http_user_agent&amp;quot;&#39;;  如果不想使用Nginx预定义的格式，可以通过log_format指令来自定义。</description>
+    </item>
+    
+    <item>
+      <title>注意，Code Cache打满可导致应用性能降低</title>
+      <link>https://hideric.github.io/java/basis/jvm/%E6%B3%A8%E6%84%8Fcode-cache%E6%89%93%E6%BB%A1%E5%8F%AF%E5%AF%BC%E8%87%B4%E5%BA%94%E7%94%A8%E6%80%A7%E8%83%BD%E9%99%8D%E4%BD%8E/</link>
+      <pubDate>Wed, 30 Oct 2019 15:41:01 +0800</pubDate>
+      
+      <guid>https://hideric.github.io/java/basis/jvm/%E6%B3%A8%E6%84%8Fcode-cache%E6%89%93%E6%BB%A1%E5%8F%AF%E5%AF%BC%E8%87%B4%E5%BA%94%E7%94%A8%E6%80%A7%E8%83%BD%E9%99%8D%E4%BD%8E/</guid>
+      <description>注意，Code Cache打满可导致应用性能降低  作者：猿码道juejin.im/post/5aebf997f265da0ba76f99db  0 问题描述 一个应用在运行一段时间后，随着访问量不断增加，突然处理能力下降。但是从流量，jstack，gc上看基本正常。感觉好像突然从 “健康状态” 进入了 “虚弱状态”。
+1 排查问题 1.在JVM日志里，可以发现如下log：
+Java HotSpot(TM) 64-Bit Server VM warning: CodeCache is full. Compiler has been disabled. Java HotSpot(TM) 64-Bit Server VM warning: Try increasing the code cache size using -XX:ReservedCodeCacheSize=. ... “CompilerThread0” java.lang.OutOfMemoryError: requested 2854248 bytes for Chunk::new. Out of swap space?  说明CodeCache已经满了。而且导致这个时候JIT就会停止，JIT一旦停止，就不会再起来了，可以想象一下，如果很多代码没有办法去JIT的话，性能就会比较差。
+2.使用如下命令检查一下Code Cache的值：
+jinfo -flag ReservedCodeCacheSize  2 解决问题 1.一个可行的方法，就是扩大Code Cache空间：
+使用 -XX:ReservedCodeCacheSize= 指定一个更大的空间，来支持更多的JIT编译；
+2.此外，另一个可行的方法，启用Code Cache的回收机制：</description>
+    </item>
+    
+    <item>
+      <title>MySQL的COUNT语句</title>
+      <link>https://hideric.github.io/mysql/mysql%E7%9A%84count%E8%AF%AD%E5%8F%A5/</link>
+      <pubDate>Wed, 30 Oct 2019 15:39:40 +0800</pubDate>
+      
+      <guid>https://hideric.github.io/mysql/mysql%E7%9A%84count%E8%AF%AD%E5%8F%A5/</guid>
+      <description>MySQL的COUNT语句 数据库查询相信很多人都不陌生，所有经常有人调侃程序员就是CRUD专员，这所谓的CRUD指的就是数据库的增删改查。
+在数据库的增删改查操作中，使用最频繁的就是查询操作。而在所有查询操作中，统计数量操作更是经常被用到。
+关于数据库中行数统计，无论是MySQL还是Oracle，都有一个函数可以使用，那就是COUNT
+但是，就是这个常用的COUNT函数，却暗藏着很多玄机，尤其是在面试的时候，一不小心就会被虐。不信的话请尝试回答下以下问题：
+ 1、COUNT有几种用法？
+2、COUNT(字段名)和COUNT(*)的查询结果有什么不同？
+3、COUNT(1)和COUNT(*)之间有什么不同？
+4、COUNT(1)和COUNT(*)之间的效率哪个更高？
+5、为什么《阿里巴巴Java开发手册》建议使用COUNT(*)
+6、MySQL的MyISAM引擎对COUNT(*)做了哪些优化？
+7、MySQL的InnoDB引擎对COUNT(*)做了哪些优化？
+8、上面提到的MySQL对COUNT(*)做的优化，有一个关键的前提是什么？
+9、SELECT COUNT(*) 的时候，加不加where条件有差别吗？
+10、COUNT(*)、COUNT(1)和COUNT(字段名)的执行过程是怎样的？
+ 以上10道题，如果您可以全部准确无误的回答的话，那说明你真的很了解COUNT函数了，如果有哪些知识点是不了解的，那么本文正好可以帮你答疑解惑。
+1、认识COUNT
+关于COUNT函数，在MySQL官网中有详细介绍：
+简单翻译一下：
+1、COUNT(expr) ，返回SELECT语句检索的行中expr的值不为NULL的数量。结果是一个BIGINT值。
+2、如果查询结果没有命中任何记录，则返回0
+3、但是，值得注意的是，COUNT(*) 的统计结果中，会包含值为NULL的行数。
+即以下表记录
+create table #bla(id int,id2 int) insert #bla values(null,null) insert #bla values(1,null) insert #bla values(null,1) insert #bla values(1,null) insert #bla values(null,1) insert #bla values(1,null) insert #bla values(null,null)  使用语句count(*),count(id),count(id2)查询结果如下：
+select count(*),count(id),count(id2) from #bla results 7 3 2  除了COUNT(id)和COUNT(*)以外，还可以使用COUNT(常量)（如COUNT(1)）来统计行数，那么这三条SQL语句有什么区别呢？到底哪种效率更高呢？为什么《阿里巴巴Java开发手册》中强制要求不让使用 COUNT(列名)或 COUNT(常量)来替代 COUNT(*)呢？</description>
+    </item>
+    
+    <item>
+      <title>MySQL 性能优化思路</title>
+      <link>https://hideric.github.io/mysql/mysql-%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E6%80%9D%E8%B7%AF/</link>
+      <pubDate>Wed, 30 Oct 2019 15:39:39 +0800</pubDate>
+      
+      <guid>https://hideric.github.io/mysql/mysql-%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E6%80%9D%E8%B7%AF/</guid>
+      <description>MySQL 性能优化思路 一、前言
+MySQL调优对于很多程序员而言，都是一个非常棘手的问题，多数情况都是因为对数据库出现问题的情况和处理思路不清晰。在进行MySQL的优化之前必须要了解的就是MySQL的查询过程，很多的查询优化工作实际上就是遵循一些原则让MySQL的优化器能够按照预想的合理方式运行而已。
+今天给大家讲解MySQL的优化实战，助你高薪之路顺畅！
+二、优化的哲学 1、优化可能带来的问题 1) 优化不总是对一个单纯的环境进行，还很可能是一个复杂的已投产的系统。
+2) 优化手段本来就有很大的风险，只不过你没能力意识到和预见到！
+3) 任何的技术可以解决一个问题，但必然存在带来一个问题的风险！
+4) 对于优化来说解决问题而带来的问题,控制在可接受的范围内才是有成果。
+5) 保持现状或出现更差的情况都是失败！
+2、优化的需求 1) 稳定性和业务可持续性,通常比性能更重要！
+2) 优化不可避免涉及到变更，变更就有风险！
+3) 优化使性能变好，维持和变差是等概率事件！
+4) 切记优化,应该是各部门协同，共同参与的工作，任何单一部门都不能对数据库进行优化！
+5) 所以优化工作,是由业务需要驱使的！！！
+3、优化由谁参与 在进行数据库优化时，应由数据库管理员、业务部门代表、应用程序架构师、应用程序设计人员、应用程序开发人员、硬件及系统管理员、存储管理员等，业务相关人员共同参与。
+三、优化思路 1、优化什么 在数据库优化上有两个主要方面：即安全与性能。
+1) 安全 &amp;mdash;&amp;gt; 数据可持续性
+2) 性能 &amp;mdash;&amp;gt; 数据的高性能访问
+2、优化的范围有哪些 存储、主机和操作系统方面:
+1) 主机架构稳定性
+2) I/O规划及配置
+3) Swap交换分区
+4) OS内核参数和网络问题
+应用程序方面:
+1) 应用程序稳定性
+2) SQL语句性能
+3) 串行访问资源
+4) 性能欠佳会话管理
+5) 这个应用适不适合用MySQL
+数据库优化方面:
+1) 内存
+2) 数据库结构(物理&amp;amp;逻辑)
+3) 实例配置</description>
+    </item>
+    
+    <item>
+      <title>Spring 容器启动源码解析</title>
+      <link>https://hideric.github.io/java/framework/spring/spring-%E5%AE%B9%E5%99%A8%E5%90%AF%E5%8A%A8%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/</link>
+      <pubDate>Wed, 30 Oct 2019 15:39:39 +0800</pubDate>
+      
+      <guid>https://hideric.github.io/java/framework/spring/spring-%E5%AE%B9%E5%99%A8%E5%90%AF%E5%8A%A8%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/</guid>
+      <description>Spring 容器启动源码解析 &amp;nbsp; &amp;nbsp;01&amp;nbsp;前言&amp;nbsp; &amp;nbsp;
+最近搭建的工程都是基于SpringBoot，简化配置的感觉真爽。但有个以前的项目还是用SpringMvc写的，看到满满的配置xml文件，却有一种想去深入了解的冲动。折腾了好几天，决心去写这篇关于Spring启动的博客，自己是个刚入职的小白，技术水平有限，也是硬着头皮看源码去Debug，很多不懂的地方还请谅解！
+&amp;nbsp; &amp;nbsp;02 概念&amp;nbsp; &amp;nbsp;
+先给出几个让我头皮发麻的概念：web容器，Spring容器，SpringMvc容器
+容器就是管理对象的地方，例如web容器就是管理servlet的地方，Spring容器就是管理Service,dao等Bean的地方，SpringMvc就是管理Controller等bean的地方(下文会做解释)。一个SpringMvc项目的启动离不开上述三个容器。所以这就是这篇文章的讲点，各个容器的启动过程解析。
+&amp;nbsp; &amp;nbsp;03&amp;nbsp;Web容器初始化过程&amp;nbsp; &amp;nbsp;
+官方文档是对于Web容器初始化时是这样描述的（英文不懂，已翻译成中文）
+1.　部署描述文件（web.xml）中的&amp;lt;listener&amp;gt;标记的监听器会被创建和初始化
+2.　对于实现了ServletContextListener的监听器，会执行它的初始化方法 contextInitialized()
+3.　部署描述文件中的&amp;lt;filter&amp;gt;标记的过滤器会被创建和初始化，调用其init()方法
+4.　部署描述文件中的&amp;lt;servlet&amp;gt;标记的servlet会根据&amp;lt;load-on-startup&amp;gt;中的序号创建和初始化，调用init()方法
+　大致流程了解之后，结合自己的SpringMvc项目一步步深入，先贴一下基本的web.xml文件****
+&amp;lt;?xml version=&amp;quot;1.0&amp;quot; encoding=&amp;quot;UTF-8&amp;quot;?&amp;gt; &amp;lt;web-app xmlns:xsi=&amp;quot;http://www.w3.org/2001/XMLSchema-instance&amp;quot; xmlns:web=&amp;quot;http://java.sun.com/xml/ns/javaee&amp;quot; xmlns=&amp;quot;http://java.sun.com/xml/ns/javaee&amp;quot; xsi:schemaLocation=&amp;quot;http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd&amp;quot; id=&amp;quot;WebApp_ID&amp;quot; version=&amp;quot;2.5&amp;quot;&amp;gt; &amp;lt;display-name&amp;gt;dmpserver&amp;lt;/display-name&amp;gt; &amp;lt;welcome-file-list&amp;gt; &amp;lt;welcome-file&amp;gt;login.jsp&amp;lt;/welcome-file&amp;gt; &amp;lt;/welcome-file-list&amp;gt; &amp;lt;context-param&amp;gt; &amp;lt;param-name&amp;gt;contextConfigLocation&amp;lt;/param-name&amp;gt; &amp;lt;param-value&amp;gt;classpath:spring.xml&amp;lt;/param-value&amp;gt; &amp;lt;/context-param&amp;gt; &amp;lt;context-param&amp;gt; &amp;lt;param-name&amp;gt;log4jConfigLocation&amp;lt;/param-name&amp;gt; &amp;lt;param-value&amp;gt;classpath:log4jConfig.xml&amp;lt;/param-value&amp;gt; &amp;lt;/context-param&amp;gt; &amp;lt;filter&amp;gt; &amp;lt;filter-name&amp;gt;encodingFilter&amp;lt;/filter-name&amp;gt; &amp;lt;filter-class&amp;gt;org.springframework.web.filter.CharacterEncodingFilter&amp;lt;/filter-class&amp;gt; &amp;lt;init-param&amp;gt; &amp;lt;param-name&amp;gt;encoding&amp;lt;/param-name&amp;gt; &amp;lt;param-value&amp;gt;utf-8&amp;lt;/param-value&amp;gt; &amp;lt;/init-param&amp;gt; &amp;lt;/filter&amp;gt; &amp;lt;filter-mapping&amp;gt; &amp;lt;filter-name&amp;gt;encodingFilter&amp;lt;/filter-name&amp;gt; &amp;lt;url-pattern&amp;gt;/*&amp;lt;/url-pattern&amp;gt; &amp;lt;/filter-mapping&amp;gt; &amp;lt;listener&amp;gt; &amp;lt;listener-class&amp;gt;org.springframework.web.context.ContextLoaderListener&amp;lt;/listener-class&amp;gt; &amp;lt;/listener&amp;gt; &amp;lt;listener&amp;gt; &amp;lt;listener-class&amp;gt;org.springframework.web.util.Log4jConfigListener&amp;lt;/listener-class&amp;gt; &amp;lt;/listener&amp;gt; &amp;lt;servlet&amp;gt; &amp;lt;description&amp;gt;spring mvc servlet&amp;lt;/description&amp;gt; &amp;lt;servlet-name&amp;gt;rest&amp;lt;/servlet-name&amp;gt; &amp;lt;servlet-class&amp;gt;org.</description>
+    </item>
+    
+    <item>
+      <title>Spring 的 BeanUtils 填坑记</title>
+      <link>https://hideric.github.io/java/framework/spring/spring-%E7%9A%84-beanutils-%E5%A1%AB%E5%9D%91%E8%AE%B0/</link>
+      <pubDate>Wed, 30 Oct 2019 15:39:39 +0800</pubDate>
+      
+      <guid>https://hideric.github.io/java/framework/spring/spring-%E7%9A%84-beanutils-%E5%A1%AB%E5%9D%91%E8%AE%B0/</guid>
+      <description>Spring 的 BeanUtils 填坑记  作者：绝色天龙原文：www.jianshu.com/p/357b55852efc
+ 背景
+最近项目中在和第三方进行联调一个接口，我们这边发送http请求给对方，然后接收对方的回应，代码都是老代码。
+根据注释，对方的SDK中写好的Request类有一个无法序列化的bug，所以这边重新写了一个Request类，基本属性都是相同的，但是重点是有一个属性是静态内部类，还有两个是list属性
+类似于下面这样：
+private List orders; private AddRequest.Ticket ticket; private List payments;  AddRequest就是我们自己重写的请求类，他们SDK中的请求类是MixAddRequest，我们组装好请求参数后利用Spring的BeanUtils的copyProperties方法将AddRequest中的属性拷贝到MixAddRequest，然后发送请求。
+到此为止，照理说一切完美！
+结果请求失败，纳尼？对方说缺少一个必要的字段，参数校验不通过！
+一查字段名称，是Ticket这个类里面的某个字段，赶紧看代码，心里充满对老代码的自信，想着一定是哪里搞错了，或者是他们那边偷偷动了代码，把字段从可选改为了必选，嘿嘿
+果然在代码里找到了设置的地方，这下应该是他们的问题确信无疑了，再开一把调试，准备宣判他们的死刑。
+结果发现发给他们的请求就是没有这个字段。。。中间只有一个Spring的copy属性的方法，当时觉得很诡异
+由于中间只有这么一行代码，玄机肯定在这里面，初步怀疑是两个静态内部类不同导致，所以自己写Demo，准备搞一把这个BeanUtils的copyProperties方法
+写了两个类和一个Main，@Data和@ToString是lombok插件的注解，这里用来自动生成getter和setter方法以及toString方法
+@ToString @Data public class CopyTest1 { public String outerName; public CopyTest1.InnerClass innerClass; public List clazz; ​ @ToString ​ @Data ​ public static class InnerClass { ​ public String InnerName; ​ } }  @ToString @Data public class CopyTest2 { public String outerName; public CopyTest2.</description>
+    </item>
+    
+    <item>
+      <title>WeakHashMap，生了病的 HashMap ？</title>
+      <link>https://hideric.github.io/java/basis/weakhashmap%E7%94%9F%E4%BA%86%E7%97%85%E7%9A%84-hashmap-/</link>
+      <pubDate>Wed, 30 Oct 2019 15:39:39 +0800</pubDate>
+      
+      <guid>https://hideric.github.io/java/basis/weakhashmap%E7%94%9F%E4%BA%86%E7%97%85%E7%9A%84-hashmap-/</guid>
+      <description>WeakHashMap，生了病的 HashMap ？ 在 Map 家族中，WeakHashMap 是一个很特殊的成员，从名字上看与 HashMap 相关，但是与 HashMap 有着很大的差别，翻译成中文后表示弱 HashMap，俗称缓存 HashMap。
+01、摘要 在集合系列的第一章，咱们了解到，Map 的实现类有 HashMap、LinkedHashMap、TreeMap、IdentityHashMap、WeakHashMap、Hashtable、Properties 等等。
+本文主要从数据结构和算法层面，探讨 WeakHashMap 的实现。
+02、简介  刚刚咱们也介绍了，在 Map 家族中，WeakHashMap 是一个很特殊的成员，它的特殊之处在于 WeakHashMap 里的元素可能会被 GC 自动删除，即使程序员没有显示调用 remove() 或者 clear() 方法。
+ 换言之，当向 WeakHashMap 中添加元素的时候，再次遍历获取元素，可能发现它已经不见了，我们来看看下面这个例子。
+public static void main(String[] args) { Map weakHashMap = new WeakHashMap(); //向weakHashMap中添加4个元素 for (int i = 0; i &amp;amp;lt; 3; i++) { weakHashMap.put(&amp;quot;key-&amp;quot;+i, &amp;quot;value-&amp;quot;+ i); } //输出添加的元素 System.out.println(&amp;quot;数组长度：&amp;quot;+weakHashMap.size() + &amp;quot;，输出结果：&amp;quot; + weakHashMap); //主动触发一次GC System.</description>
+    </item>
+    
+    <item>
+      <title>使用dubbo过程中遇到过哪些坑？</title>
+      <link>https://hideric.github.io/java/framework/dubbo/%E4%BD%BF%E7%94%A8dubbo%E8%BF%87%E7%A8%8B%E4%B8%AD%E9%81%87%E5%88%B0%E8%BF%87%E5%93%AA%E4%BA%9B%E5%9D%91/</link>
+      <pubDate>Wed, 30 Oct 2019 15:39:39 +0800</pubDate>
+      
+      <guid>https://hideric.github.io/java/framework/dubbo/%E4%BD%BF%E7%94%A8dubbo%E8%BF%87%E7%A8%8B%E4%B8%AD%E9%81%87%E5%88%B0%E8%BF%87%E5%93%AA%E4%BA%9B%E5%9D%91/</guid>
+      <description>使用dubbo过程中遇到过哪些坑？ Dubbo[ |ˈdʌbəʊ| ,发音为打波] 稳如狗，哪有坑？
+如果你用过Dubbo，但是没碰到过什么坑，那只能说明你还没有深交Dubbo，看看笔者那些年使用Dubbo踩过的坑！
+父子类有相同属性时值丢失 假设Provider提供的服务中某个服务的参数是WordDTO，并且WordDTO继承自BaseDTO，两个类的定义如下：
+@Data public class BaseDTO implements Serializable { private Long id; } @Data public class WordDTO extends BaseDTO { private Long id; private String uuid; private Long timestamp; private String word; }  问题描述：在Consumer侧给WordDTO赋的值，其id属性的值无法在Provider侧获取到。假设Consumer传的值是：{&amp;ldquo;id&amp;rdquo;:68,&amp;ldquo;timestamp&amp;rdquo;:1570928394380,&amp;ldquo;uuid&amp;rdquo;:&amp;ldquo;f774f99f-987c-4506-8ab8-366cd619bb15&amp;rdquo;,&amp;ldquo;word&amp;rdquo;:&amp;ldquo;hello world&amp;rdquo;}，在Provider拿到的却是：{&amp;ldquo;timestamp&amp;rdquo;:1570928394380,&amp;ldquo;uuid&amp;rdquo;:&amp;ldquo;f774f99f-987c-4506-8ab8-366cd619bb15&amp;rdquo;,&amp;ldquo;word&amp;rdquo;:&amp;ldquo;hello world&amp;rdquo;}。
+原因分析：dubbo默认采用的是hessian序列化&amp;amp;反序列化方式，JavaDeserializer在获取fileds时，采用了Map去重。但是在读取值时，根据serializer的顺序，对于同名字段，子类的该字段值会被赋值两次，总是被父类的值覆盖，导致子类的字段值丢失。
+解决方案： 1. 更改序列化方式（不建议）；1. 删掉子类中与父类同名属性（建议）；
+自定义异常被包装成RuntimeException 首先需要说明的是，出现这个问题有一定的条件。如果Provider中的api和自定义Exception定义都是在一个api.jar中，那么是不会有任何问题的。但是如果自定义Exception是在一个单独的比如common.jar包中就会出现这个问题（此时api和model在另一个api.jar中）。
+下面是一段调用一个会抛出自定义异常的服务的代码：
+try { String hello = demoService.saySomething(wordDTO); System.out.println(hello); }catch (WrongArgumentException e){ System.err.println(&amp;quot;wrong argument 1: &amp;quot; + e.getMessage()); }catch (RuntimeException e){ System.</description>
+    </item>
+    
+    <item>
+      <title>使用Nginx进行四层负载均衡</title>
+      <link>https://hideric.github.io/nginx/%E4%BD%BF%E7%94%A8nginx%E8%BF%9B%E8%A1%8C%E5%9B%9B%E5%B1%82%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1/</link>
+      <pubDate>Wed, 30 Oct 2019 15:39:39 +0800</pubDate>
+      
+      <guid>https://hideric.github.io/nginx/%E4%BD%BF%E7%94%A8nginx%E8%BF%9B%E8%A1%8C%E5%9B%9B%E5%B1%82%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1/</guid>
+      <description>使用Nginx进行四层负载均衡 HTTP负载均衡，也就是我们通常所说的&amp;rdquo;七层负载均衡&amp;rdquo;，工作在第七层&amp;rdquo;应用层&amp;rdquo;。而TCP负载均衡，就是我们通常所说的&amp;rdquo;四层负载均衡&amp;rdquo;，工作在&amp;rdquo;网络层&amp;rdquo;和&amp;rdquo;传输层&amp;rdquo;。例如，LVS(Linux&amp;nbsp;Virtual Server，Linux虚拟服务)和F5(一种硬件负载均衡设备)是属于&amp;rdquo;四层负载均衡&amp;rdquo;的。
+nginx-1.9.0 已发布，该版本增加了stream 模块用于一般的TCP 代理和负载均衡，ngx_stream_core_module 这个模块在1.90版本后将被启用。但是并不会默认安装， 需要在编译时通过指定 --with-stream 参数来激活这个模块。 1）配置Nginx编译文件参数 ./configure --with-http_stub_status_module --with-stream ------------------------------------------------------------------ 2）编译、安装，make &amp;amp;&amp;amp; make install ------------------------------------------------------------------ 3）配置nginx.conf文件 stream { upstream kevin { server 192.168.10.10:8080; #这里配置成要访问的地址 server 192.168.10.20:8081; server 192.168.10.30:8081; #需要代理的端口，在这里我代理一一个kevin模块的接口8081 } server { listen 8081; #需要监听的端口 proxy_timeout 20s; proxy_pass kevin; } } 创建最高级别的stream（与http同一级别），定义一个upstream组 名称为kevin，由多个服务组成达到负载均衡 定义一个服务用来监听TCP连接（如：8081端口）， 并且把他们代理到一个upstream组的kevin中，配置负载均衡的方法和参数为每个server；配置些如：连接数、权重等等。 首先创建一个server组，用来作为TCP负载均衡组。定义一个upstream块在stream上下文中，在这个块里面添加由server命令定义的server，指定他的IP地址和 主机名（能够被解析成多地址的主机名)和端口号。下面的例子是建立一个被称之为kevin组，两个监听1395端口的server ，一个监听8080端口的server。 upstream kevin { server 192.168.10.10:8080; #这里配置成要访问的地址 server 192.168.10.20:8081; server 192.168.10.30:8081; #需要代理的端口，在这里我代理一一个kevin模块的接口8081 } 需要特别注意的是： 你不能为每个server定义协议，因为这个stream命令建立TCP作为整个 server的协议了。 配置反向代理使Nginx能够把TCP请求从一个客户端转发到负载均衡组中(如：kevin组)。在每个server配置块中 通过每个虚拟server的server的配置信息和在 每个server中定义的监听端口（客户端需求的代理端口号，如我推流的的是kevin协议，则端口号为：8081）的配置信息和proxy_passs 命令把TCP通信发送到 upstream的哪个server中去。下面我们将TCP通信发送到kevin 组中去。 server { listen 8081; #需要监听的端口 proxy_timeout 20s; proxy_pass kevin; } 当然我们也可以采用单一的代理方式： server { listen 8081; #需要监听的端口 proxy_timeout 20s; proxy_pass 192.</description>
+    </item>
+    
+    <item>
+      <title>官方工具｜MySQL Router 高可用原理与实战</title>
+      <link>https://hideric.github.io/mysql/%E5%AE%98%E6%96%B9%E5%B7%A5%E5%85%B7mysql-router-%E9%AB%98%E5%8F%AF%E7%94%A8%E5%8E%9F%E7%90%86%E4%B8%8E%E5%AE%9E%E6%88%98/</link>
+      <pubDate>Wed, 30 Oct 2019 15:39:39 +0800</pubDate>
+      
+      <guid>https://hideric.github.io/mysql/%E5%AE%98%E6%96%B9%E5%B7%A5%E5%85%B7mysql-router-%E9%AB%98%E5%8F%AF%E7%94%A8%E5%8E%9F%E7%90%86%E4%B8%8E%E5%AE%9E%E6%88%98/</guid>
+      <description>官方工具｜MySQL Router 高可用原理与实战 Mysql route介绍 什么是mysql route MySQL Router是处于应用client和dbserver之间的轻量级代理程序，它能检测，分析和转发查询到后端数据库实例，并把结果返回给client。是mysql-proxy的一个替代品。其架构图和功能如下。
+（1）Router实现读写分离，程序不是直接连接数据库IP，而是固定连接到mysql router。MySQL Router对前端应用是透明的。应用程序把MySQL Router当作是普通的mysql实例，把查询发给MySQL Router,而MySQL Router会把查询结果返回给前端的应用程序。
+（2）从数据库服务器故障，业务可以正常运行。由MySQL Router来进行自动下线不可用服务器。程序配置不需要任何修改。
+（3）主数据库故障，由MySQL Router来决定主从自动切换，业务可以正常访问。程序配置不需要做任何修改。
+读写分离原理 MySQL Router接受前端应用程序请求后，根据不同的端口来区分读写，把连接读写端口的所有查询发往主库，把连接只读端口的select查询以轮询方式发往多个从库，从而实现读写分离的目的。读写返回的结果会交给MySQL Router,由MySQL Router返回给客户端的应用程序。
+Mysql router用途 MySQL Router的主要用途是读写分离，主主故障自动切换，负载均衡，连接池等。
+Mysql router主主故障自动切换的坑 Mysql router主主故障切换功能经过测试没有问题，但是有一个比较大的坑需要注意，具体是什么坑和解决方法在文章末尾，因为你之前要是没用接触过mysql router估计以我的表达能力，说了你就晕了。
+mysql router实验架构介绍 实验环境架构图如下：
+   主机名 IP地址 操作系统 功能说明     c7-node1.fblinux.com 192.168.100.10 Centos 7.2 64位 Mysql route节点，读写分离，主主故障转移，从库故障自动下线   c7-node2.fblinux.com 192.168.100.11 Centos 7.2 64位 Mysql主节点，提供读写，服务   c7-node3.fblinux.com 192.168.100.12 Centos 7.2 64位 Mysql 从节点，提供读服务，如果主库down机，则此从库接管   c7-node4.</description>
+    </item>
+    
+    <item>
+      <title>MySQL 性能优化：8 种常见 SQL 错误用法！</title>
+      <link>https://hideric.github.io/mysql/mysql-%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%968-%E7%A7%8D%E5%B8%B8%E8%A7%81-sql-%E9%94%99%E8%AF%AF%E7%94%A8%E6%B3%95/</link>
+      <pubDate>Wed, 30 Oct 2019 15:38:52 +0800</pubDate>
+      
+      <guid>https://hideric.github.io/mysql/mysql-%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%968-%E7%A7%8D%E5%B8%B8%E8%A7%81-sql-%E9%94%99%E8%AF%AF%E7%94%A8%E6%B3%95/</guid>
+      <description>MySQL 性能优化：8 种常见 SQL 错误用法！  来源：
+https://yq.aliyun.com/articles/72501
+ 1、LIMIT 语句 分页查询是最常用的场景之一，但也通常也是最容易出问题的地方。比如对于下面简单的语句，一般 DBA 想到的办法是在 type, name, create_time 字段上加组合索引。这样条件排序都能有效的利用到索引，性能迅速提升。
+SELECT * FROM operation WHERE type = &#39;SQLStats&#39; AND name = &#39;SlowLog&#39; ORDER BY create_time LIMIT 1000, 10;  好吧，可能90%以上的 DBA 解决该问题就到此为止。但当 LIMIT 子句变成 “LIMIT 1000000,10” 时，程序员仍然会抱怨：我只取10条记录为什么还是慢？
+要知道数据库也并不知道第1000000条记录从什么地方开始，即使有索引也需要从头计算一次。出现这种性能问题，多数情形下是程序员偷懒了。
+在前端数据浏览翻页，或者大数据分批导出等场景下，是可以将上一页的最大值当成参数作为查询条件的。SQL 重新设计如下：
+SELECT * FROM operation WHERE type = &#39;SQLStats&#39; AND name = &#39;SlowLog&#39; AND create_time &amp;gt; &#39;2017-03-16 14:00:00&#39; ORDER BY create_time limit 10;  在新设计下查询时间基本固定，不会随着数据量的增长而发生变化。</description>
+    </item>
+    
+    <item>
+      <title>Redis 分布式锁的正确实现方式（Java版）</title>
+      <link>https://hideric.github.io/redis/redis-%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81%E7%9A%84%E6%AD%A3%E7%A1%AE%E5%AE%9E%E7%8E%B0%E6%96%B9%E5%BC%8Fjava%E7%89%88/</link>
+      <pubDate>Wed, 30 Oct 2019 15:38:52 +0800</pubDate>
+      
+      <guid>https://hideric.github.io/redis/redis-%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81%E7%9A%84%E6%AD%A3%E7%A1%AE%E5%AE%9E%E7%8E%B0%E6%96%B9%E5%BC%8Fjava%E7%89%88/</guid>
+      <description>Redis 分布式锁的正确实现方式（Java版） 本文来源：
+https://www.cnblogs.com/linjiqin/p/8003838.html
+前言 分布式锁一般有三种实现方式：
+ 数据库乐观锁；
+ 基于Redis的分布式锁；
+ 基于ZooKeeper的分布式锁 本篇博客将介绍第二种方式，基于Redis实现分布式锁。
+  虽然网上已经有各种介绍Redis分布式锁实现的博客，然而他们的实现却有着各种各样的问题，为了避免误人子弟，本篇博客将详细介绍如何正确地实现Redis分布式锁。
+可靠性 首先，为了确保分布式锁可用，我们至少要确保锁的实现同时满足以下四个条件：
+ 互斥性。在任意时刻，只有一个客户端能持有锁。
+ 不会发生死锁。即使有一个客户端在持有锁的期间崩溃而没有主动解锁，也能保证后续其他客户端能加锁。
+ 具有容错性。只要大部分的Redis节点正常运行，客户端就可以加锁和解锁。
+ 解铃还须系铃人。加锁和解锁必须是同一个客户端，客户端自己不能把别人加的锁给解了。
+代码实现  组件依赖 首先我们要通过Maven引入Jedis开源组件，在pom.xml文件加入下面的代码：
+&amp;lt;dependency&amp;gt; &amp;lt;groupId&amp;gt;redis.clientsgroupId&amp;gt; &amp;lt;artifactId&amp;gt;jedisartifactId&amp;gt; &amp;lt;version&amp;gt;2.9.0version&amp;gt; &amp;lt;/dependency&amp;gt;  加锁代码 正确姿势 Talk is cheap, show me the code。先展示代码，再带大家慢慢解释为什么这样实现：
+public class RedisTool { private static final String LOCK_SUCCESS = &amp;quot;OK&amp;quot;; private static final String SET_IF_NOT_EXIST = &amp;quot;NX&amp;quot;; private static final String SET_WITH_EXPIRE_TIME = &amp;quot;PX&amp;quot;; /** * 尝试获取分布式锁 * @param jedis Redis客户端 * @param lockKey 锁 * @param requestId 请求标识 * @param expireTime 超期时间 * @return 是否获取成功 */ public static boolean tryGetDistributedLock(Jedis jedis, String lockKey, String requestId, int expireTime) { String result = jedis.</description>
+    </item>
+    
+    <item>
+      <title>Redis 实现“附近的人”功能</title>
+      <link>https://hideric.github.io/redis/redis-%E5%AE%9E%E7%8E%B0%E9%99%84%E8%BF%91%E7%9A%84%E4%BA%BA%E5%8A%9F%E8%83%BD/</link>
+      <pubDate>Wed, 30 Oct 2019 15:38:52 +0800</pubDate>
+      
+      <guid>https://hideric.github.io/redis/redis-%E5%AE%9E%E7%8E%B0%E9%99%84%E8%BF%91%E7%9A%84%E4%BA%BA%E5%8A%9F%E8%83%BD/</guid>
+      <description>Redis 实现“附近的人”功能  来源：
+https://juejin.im/post/5da40462f265da5baf410a11
+ 前言 ： 针对“附近的人”这一位置服务领域的应用场景，常见的可使用PG、MySQL和MongoDB等多种DB的空间索引进行实现。 而Redis另辟蹊径，结合其有序队列zset以及geohash编码，实现了空间搜索功能，且拥有极高的运行效率。
+
+本文将从源码角度对其算法原理进行解析，并推算查询时间复杂度。
+要提供完整的“附近的人”服务，最基本的是要实现“增”、“删”、“查”的功能。以下将分别进行介绍，其中会重点对查询功能进行解析。
+操作命令 自Redis 3.2开始，Redis基于geohash和有序集合提供了地理位置相关功能。Redis Geo模块包含了以下6个命令：
+ GEOADD: 将给定的位置对象（纬度、经度、名字）添加到指定的key;
+ GEOPOS: 从key里面返回所有给定位置对象的位置（经度和纬度）;
+ GEODIST: 返回两个给定位置之间的距离;- GEOHASH: 返回一个或多个位置对象的Geohash表示;
+ GEORADIUS: 以给定的经纬度为中心，返回目标集合中与中心的距离不超过给定最大距离的所有位置对象;
+ GEORADIUSBYMEMBER: 以给定的位置对象为中心，返回与其距离不超过给定最大距离的所有位置对象。
+  其中，组合使用GEOADD和GEORADIUS可实现“附近的人”中“增”和“查”的基本功能。
+要实现微信中“附近的人”功能，可直接使用GEORADIUSBYMEMBER命令。其中“给定的位置对象”即为用户本人，搜索的对象为其他用户。
+不过本质上，GEORADIUSBYMEMBER = GEOPOS + GEORADIUS，即先查找用户位置再通过该位置搜索附近满足位置相互距离条件的其他用户对象。
+ Redis geo操作中只包含了“增”和“查”的操作，并没有专门的“删除”命令。主要是因为Redis内部使用有序集合(zset)保存位置对象，可用zrem进行删除。在Redis源码geo.c的文件注释中，只说明了该文件为GEOADD、GEORADIUS和GEORADIUSBYMEMBER的实现文件（其实在也实现了另三个命令）。从侧面看出其他三个命令为辅助命令。
+  GEOADD  使用方式 
+GEOADD key longitude latitude member [longitude latitude member ...]  将给定的位置对象（纬度、经度、名字）添加到指定的key。
+其中，key为集合名称，member为该经纬度所对应的对象。在实际运用中，当所需存储的对象数量过多时，可通过设置多key(如一个省一个key)的方式对对象集合变相做sharding，避免单集合数量过多。
+成功插入后的返回值：
+(integer) N  其中N为成功插入的个数。</description>
+    </item>
+    
+    <item>
+      <title>一个Java对象到底占用多大内存？</title>
+      <link>https://hideric.github.io/java/basis/%E4%B8%80%E4%B8%AAjava%E5%AF%B9%E8%B1%A1%E5%88%B0%E5%BA%95%E5%8D%A0%E7%94%A8%E5%A4%9A%E5%A4%A7%E5%86%85%E5%AD%98/</link>
+      <pubDate>Wed, 30 Oct 2019 15:38:52 +0800</pubDate>
+      
+      <guid>https://hideric.github.io/java/basis/%E4%B8%80%E4%B8%AAjava%E5%AF%B9%E8%B1%A1%E5%88%B0%E5%BA%95%E5%8D%A0%E7%94%A8%E5%A4%9A%E5%A4%A7%E5%86%85%E5%AD%98/</guid>
+      <description>一个Java对象到底占用多大内存？ 一个Java对象到底占用多大内存？
+为了复现这个问题，准备了4个最简单类：
+class AAAAA {} class BBBBB { int a = 1; } class CCCCC { long a = 1L; } class DDDDD { String s = &amp;quot;hello&amp;quot;; }  当然了，再来个主函数：
+final List&amp;lt;AAAAA&amp;gt; aaa = new ArrayList&amp;lt;&amp;gt;(100000); final List&amp;lt;BBBBB&amp;gt; bbb = new ArrayList&amp;lt;&amp;gt;(100000); final List&amp;lt;CCCCC&amp;gt; ccc = new ArrayList&amp;lt;&amp;gt;(100000); final List&amp;lt;DDDDD&amp;gt; ddd = new ArrayList&amp;lt;&amp;gt;(100000); for (int i = 0; i &amp;lt; 100000; i++) { aaa.add(new AAAAA()); bbb.add(new BBBBB()); ccc.</description>
+    </item>
+    
+    <item>
+      <title>为什么RedisCluster有16384个槽?</title>
+      <link>https://hideric.github.io/redis/%E4%B8%BA%E4%BB%80%E4%B9%88rediscluster%E6%9C%8916384%E4%B8%AA%E6%A7%BD/</link>
+      <pubDate>Wed, 30 Oct 2019 15:38:52 +0800</pubDate>
+      
+      <guid>https://hideric.github.io/redis/%E4%B8%BA%E4%BB%80%E4%B9%88rediscluster%E6%9C%8916384%E4%B8%AA%E6%A7%BD/</guid>
+      <description>为什么RedisCluster有16384个槽? 引言 为什么有16384个槽么ps:CRC16算法产生的hash值有16bit，该算法可以产生2^16-=65536个值。换句话说，值是分布在0~65535之间。那作者在做mod运算的时候，为什么不mod65536，而选择mod16384？
+其实我当初第一次思考这个问题的时候，我心里是这么想的，作者应该是觉得16384就够了，然后我就开始查这方面资料。
+很幸运的是，这个问题，作者是给出了回答的！地址如下:https://github.com/antirez/redis/issues/2576
+作者原版回答如下:The reason is:
+ Normal heartbeat packets carry the full configuration of a node, that can be replaced in an idempotent way with the old in order to update an old config. This means they contain the slots configuration for a node, in raw form, that uses 2k of space with16k slots, but would use a prohibitive 8k of space using 65k slots.
+ At the same time it is unlikely that Redis Cluster would scale to more than 1000 mater nodes because of other design tradeoffs.</description>
+    </item>
+    
+    <item>
+      <title>你真的了解logback吗？</title>
+      <link>https://hideric.github.io/java/basis/%E4%BD%A0%E7%9C%9F%E7%9A%84%E4%BA%86%E8%A7%A3logback%E5%90%97/</link>
+      <pubDate>Wed, 30 Oct 2019 15:38:52 +0800</pubDate>
+      
+      <guid>https://hideric.github.io/java/basis/%E4%BD%A0%E7%9C%9F%E7%9A%84%E4%BA%86%E8%A7%A3logback%E5%90%97/</guid>
+      <description>你真的了解logback吗？ logback是java的日志开源组件，是log4j创始人写的，性能比log4j要好，目前主要分为3个模块
+ logback-core:核心代码模块
+ logback-classic:log4j的一个改良版本，同时实现了slf4j的接口，这样你如果之后要切换其他日志组件也是一件很容易的事
+ logback-access:访问模块与Servlet容器集成提供通过Http来访问日志的功能
+  本篇博客会讲解logback的使用、配置详解、以及logback简单的一个原理。
+一、logback的使用 引入maven依赖
+&amp;lt;!--这个依赖直接包含了 logback-core 以及 slf4j-api的依赖--&amp;gt; &amp;lt;dependency&amp;gt; &amp;lt;groupId&amp;gt;ch.qos.logback&amp;lt;/groupId&amp;gt; &amp;lt;artifactId&amp;gt;logback-classic&amp;lt;/artifactId&amp;gt; &amp;lt;version&amp;gt;1.2.3&amp;lt;/version&amp;gt; &amp;lt;/dependency&amp;gt;  然后就可以直接在代码中使用slf4j的接口获取Logger输出日志了。（配置在下面的章节介绍）
+//这是slf4j的接口，由于我们引入了logback-classic依赖，所以底层实现是logback private static final Logger LOGGER = LoggerFactory.getLogger(Test.class); public static void main(String[] args) throws InterruptedException { LOGGER.info(&amp;quot;hello world&amp;quot;); }  二、logback的配置 配置获取顺序 logback在启动的时候，会按照下面的顺序加载配置文件
+ 如果java程序启动时指定了logback.configurationFile属性，就用该属性指定的配置文件。如java -Dlogback.configurationFile=/path/to/mylogback.xml Test ，这样执行Test类的时候就会加载/path/to/mylogback.xml配置
+ 在classpath中查找 logback.groovy 文件
+ 在classpath中查找 logback-test.xml 文件
+ 在classpath中查找 logback.xml 文件
+ 如果是 jdk6+,那么会调用ServiceLoader 查找 com.qos.logback.classic.spi.Configurator接口的第一个实现类</description>
+    </item>
+    
+    <item>
+      <title>学会这几个Redis技巧，让你的程序快如闪电</title>
+      <link>https://hideric.github.io/redis/%E5%AD%A6%E4%BC%9A%E8%BF%99%E5%87%A0%E4%B8%AAredis%E6%8A%80%E5%B7%A7%E8%AE%A9%E4%BD%A0%E7%9A%84%E7%A8%8B%E5%BA%8F%E5%BF%AB%E5%A6%82%E9%97%AA%E7%94%B5/</link>
+      <pubDate>Wed, 30 Oct 2019 15:38:52 +0800</pubDate>
+      
+      <guid>https://hideric.github.io/redis/%E5%AD%A6%E4%BC%9A%E8%BF%99%E5%87%A0%E4%B8%AAredis%E6%8A%80%E5%B7%A7%E8%AE%A9%E4%BD%A0%E7%9A%84%E7%A8%8B%E5%BA%8F%E5%BF%AB%E5%A6%82%E9%97%AA%E7%94%B5/</guid>
+      <description>学会这几个Redis技巧，让你的程序快如闪电  本文来源：https://dwz.cn/RseclNiY
+ 一、Redis封装架构讲解 实际上NewLife.Redis是一个完整的Redis协议功能的实现，但是Redis的核心功能并没有在这里面，而是在NewLife.Core里面。
+这里可以打开看一下，NewLife.Core里面有一个NewLife.Caching的命名空间，里面有一个Redis类，里面实现了Redis的基本功能；另一个类是RedisClient是Redis的客户端。
+Redis的核心功能就是有这两个类实现，RedisClient代表着Redis客户端对服务器的一个连接。Redis真正使用的时候有一个Redis连接池，里面存放着很多个RedisClient对象。
+所以我们Redis的封装有两层，一层是NewLife.Core里面的Redis以及RedisClient；另一层就是NewLife.Redis。这里面的FullRedis是对Redis的实现了Redis的所有的高级功能。
+这里你也可以认为NewLife.Redis是Redis的一个扩展。
+二、Test实例讲解Redis的基本使用 1、实例 打开Program.cs看下代码：
+这里XTrace.UseConsole();是向控制台输出日志，方便调试使用查看结果。
+接下来看第一个例子Test1，具体的我都在代码中进行了注释，大家可以看下：
+Set的时候，如果是字符串或者字符数据的话，Redis会直接保存起来（字符串内部机制也是保存二进制），如果是其他类型，会默认进行json序列化然后再保存起来。
+Get的时候，如果是字符串或者字符数据会直接获取，如果是其他类型会进行json反序列化。
+Set第三个参数过期时间单位是秒。
+vs调试小技巧，按F5或者直接工具栏“启动”会编译整个解决方案会很慢（VS默认），可以选中项目然后右键菜单选择调试-&amp;gt;启动新实例，会只编译将会用到的项目，这样对调试来说会快很多。
+大家运行调试后可以看到控制台输出的内容：向右的箭头=》是ic.Log=XTrace.Log输出的日志。
+字典的使用：对象的话，需要把json全部取出来，然后转换成对象，而字典的话，就可以直接取某个字段。
+队列是List结构实现的，上游数据太多，下游处理不过来的时候，就可以使用这个队列。上游的数据发到队列，然后下游慢慢的消费。另一个应用，跨语言的协同工作，比方说其他语言实现的程序往队列里面塞数据，然后另一种语言来进行消费处理。这种方式类似MQ的概念，虽然有点low，但是也很好用。
+集合，用的比较多的是用在一个需要精确判断的去重功能。像我们每天有三千万订单，这三千万订单可以有重复。这时候我想统计下一共有订单，这时候直接数据库group by是不大可能的，因为数据库中分了十几张表，这里分享个实战经验：
+比方说揽收，商家发货了，网点要把件收回来，但是收回来之前网点不知道自己有多少货，这时候我们做了一个功能，也就是订单会发送到我们公司来。我们会建一个time_site的key的集合，而且集合本身有去重的功能，而且我们可以很方便的通过set.Count功能来统计数量，当件被揽收以后，我们后台把这个件从集合中Remove掉。然后这个Set中存在的就是网点还没有揽收的件，这时候通过Count就会知道这个网点今天还有多少件没有揽收。实际使用中这个数量比较大，因为有几万个网点。
+Redis中布隆过滤器，去重的，面试的时候问的比较多。
+小经验分享：
+数据库中不合法的时间处理：判断时间中的年份是否大于2000年，如果小于2000就认为不合法；习惯大于小于号不习惯用等于号，这样可以处理很多意外的数据；
+Set的时候最好指定过期时间，防止有些需要删除的数据我们忘记删了；
+Redis异步尽量不用，因为Redis延迟本身很小，大概在100us-200us，再一个就是Redis本身是单线程的，异步任务切换的耗时比网络耗时还要大；
+List用法：物联网中数据上传，量比较大时，我们可以把这些数据先放在Redis的List中，比如说一秒钟1万条，然后再批量取出来然后批量插入数据库中。这时候要设置好key，可以前缀+时间，对已处理的List可以进行remove移除。
+2、压力测试 接下来看第四个例子，我们直接做压力测试，代码如下：
+运行的结果如下图所示：
+测试就是进行get,set remove,累加等的操作。大家可以看到在我本机上轻轻松松的到了六十万，多线程的时候甚至到了一百多万。
+为什么会达到这么高的Ops呢？下面给大家说一下：
+Bench会分根据线程数分多组进行添删改压力测试；
+rand参数，是否随机产生key/value；
+batch批大小，分批执行读写操作，借助GetAll/SetAll进行优化。
+3、Redis中NB的函数来提升性能 上面的操作如果大家都掌握了就基本算Redis入门了，接下来进行进阶。如果能全然吃透，差不多就会比别人更胜一筹了。
+GetAll()与SetAll()
+GetAll：比方说我要取十个key，这个时候可以用getall。这时候Redis就执行了一次命令。比方说我要取10个key那么用get的话要取10次，如果用getall的话要用1次。1次getall时间大概是get的一点几倍，但是10次get的话就是10倍的时间，这个账你应该会算吧？强烈推荐大家用getall。
+setall跟getall相似，批量设置K-V。
+setall与getall性能很恐怖，官方公布的Ops也就10万左右，为什么我们的测试轻轻松松到五十万甚至上百万？因为我们就用了setall,getall。如果get,set两次以上，建议用getall,setall。
+Redis管道Pipeline
+比如执行10次命令会打包成一个包集体发过去执行，这里实现的方式是StartPipeline()开始，StopPipeline()结束中间的代码就会以管道的形式执行。
+这里推荐使用更强的武器，AutoPipeline自动管道属性。管道操作到一定数量时，自动提交，默认0。使用了AutoPipeline，就不需要StartPipeline，StopPipeline指定管道的开始结束了。
+Add与Replace
+Add：Redis中没有这个Key就添加，有了就不要添加，返回false；
+Replace：有则替换，还会返回原来的值，没有则不进行操作。
+Add跟Replace就是实现Redis分布式锁的关键。
+三、Redis使用技巧，经验分享 在项目的Readme中，这里摘录下：
+1、特性 在ZTO大数据实时计算广泛应用，200多个Redis实例稳定工作一年多，每天处理近1亿包裹数据，日均调用量80亿次；
+低延迟，Get/Set操作平均耗时200~600us（含往返网络通信）；
+大吞吐，自带连接池，最大支持1000并发；
+高性能，支持二进制序列化（默认用的json，json很低效，转成二进制性能会提升很多）。
+2、Redis经验分享 在Linux上多实例部署，实例个数等于处理器个数，各实例最大内存直接为本机物理内存，避免单个实例内存撑爆（比方说8核心处理器，那么就部署8个实例）。
+把海量数据（10亿+）根据key哈希（Crc16/Crc32）存放在多个实例上，读写性能成倍增长。
+采用二进制序列化，而非常见的Json序列化。
+合理设计每一对Key的Value大小，包括但不限于使用批量获取，原则是让每次网络包控制在1.4k字节附近，减少通信次数（实际经验几十k，几百k也是没问题的）。
+Redis客户端的Get/Set操作平均耗时200~600us（含往返网络通信），以此为参考评估网络环境和Redis客户端组件（达不到就看一下网络，序列化方式等等）。
+使用管道Pipeline合并一批命令。
+Redis的主要性能瓶颈是序列化、网络带宽和内存大小，滥用时处理器也会达到瓶颈。
+其它可查优化技巧。</description>
+    </item>
+    
+    <item>
+      <title>比Redis还快5倍的中间件，为啥这么快？</title>
+      <link>https://hideric.github.io/redis/%E6%AF%94redis%E8%BF%98%E5%BF%AB5%E5%80%8D%E7%9A%84%E4%B8%AD%E9%97%B4%E4%BB%B6%E4%B8%BA%E5%95%A5%E8%BF%99%E4%B9%88%E5%BF%AB/</link>
+      <pubDate>Wed, 30 Oct 2019 15:38:52 +0800</pubDate>
+      
+      <guid>https://hideric.github.io/redis/%E6%AF%94redis%E8%BF%98%E5%BF%AB5%E5%80%8D%E7%9A%84%E4%B8%AD%E9%97%B4%E4%BB%B6%E4%B8%BA%E5%95%A5%E8%BF%99%E4%B9%88%E5%BF%AB/</guid>
+      <description>比Redis还快5倍的中间件，为啥这么快？  作者：羽洵
+来源：http://suo.im/4Cx7u
+ 今天给大家介绍的是KeyDB，KeyDB项目是从redis fork出来的分支。众所周知redis是一个单线程的kv内存存储系统，而KeyDB在100%兼容redis API的情况下将redis改造成多线程。
+上次也跟大家说了，redis多线程正式版将在今年底发布，大家拭目以待
+线程模型 KeyDB将redis原来的主线程拆分成了主线程和worker线程。每个worker线程都是io线程，负责监听端口，accept请求，读取数据和解析协议。如图所示：
+KeyDB使用了SO_REUSEPORT特性，多个线程可以绑定监听同个端口。
+每个worker线程做了cpu绑核，读取数据也使用了SO_INCOMING_CPU特性，指定cpu接收数据。
+解析协议之后每个线程都会去操作内存中的数据，由一把全局锁来控制多线程访问内存数据。
+主线程其实也是一个worker线程，包括了worker线程的工作内容，同时也包括只有主线程才可以完成的工作内容。在worker线程数组中下标为0的就是主线程。
+主线程的主要工作在实现serverCron，包括：
+ 处理统计 客户端链接管理 db数据的resize和reshard 处理aof replication主备同步 cluster模式下的任务  链接管理 在redis中所有链接管理都是在一个线程中完成的。在KeyDB的设计中，每个worker线程负责一组链接，所有的链接插入到本线程的链接列表中维护。链接的产生、工作、销毁必须在同个线程中。每个链接新增一个字段
+int iel; /* the event loop index we&amp;rsquo;re registered with */
+用来表示链接属于哪个线程接管。
+KeyDB维护了三个关键的数据结构做链接管理：
+ clients_pending_write：线程专属的链表，维护同步给客户链接发送数据的队列 clients_pending_asyncwrite：线程专属的链表，维护异步给客户链接发送数据的队列 clients_to_close：全局链表，维护需要异步关闭的客户链接  分成同步和异步两个队列，是因为redis有些联动api，比如pub/sub，pub之后需要给sub的客户端发送消息，pub执行的线程和sub的客户端所在线程不是同一个线程，为了处理这种情况，KeyDB将需要给非本线程的客户端发送数据维护在异步队列中。
+同步发送的逻辑比较简单，都是在本线程中完成，以下图来说明如何同步给客户端发送数据：
+如上文所提到的，一个链接的创建、接收数据、发送数据、释放链接都必须在同个线程执行。异步发送涉及到两个线程之间的交互。KeyDB通过管道在两个线程中传递消息：
+int fdCmdWrite; //写管道 int fdCmdRead; //读管道  本地线程需要异步发送数据时，先检查client是否属于本地线程，非本地线程获取到client专属的线程ID，之后给专属的线程管到发送AE_ASYNC_OP::CreateFileEvent的操作，要求添加写socket事件。专属线程在处理管道消息时将对应的请求添加到写事件中，如图所示：
+redis有些关闭客户端的请求并非完全是在链接所在的线程执行关闭，所以在这里维护了一个全局的异步关闭链表。
+锁机制 KeyDB实现了一套类似spinlock的锁机制，称之为fastlock。
+fastlock的主要数据结构有：
+struct ticket { uint16_t m_active; //解锁+1 uint16_t m_avail; //加锁+1 }; struct fastlock { volatile struct ticket m_ticket; volatile int m_pidOwner; //当前解锁的线程id volatile int m_depth; //当前线程重复加锁的次数 };  使用原子操作atomic_load_2，atomic_fetch_add，__atomic_compare_exchange来通过比较m_active=m_avail判断是否可以获取锁。</description>
+    </item>
+    
+    <item>
+      <title>这可能是Github上最友好的分布式即时通讯项目.....</title>
+      <link>https://hideric.github.io/java/basis/%E8%BF%99%E5%8F%AF%E8%83%BD%E6%98%AFgithub%E4%B8%8A%E6%9C%80%E5%8F%8B%E5%A5%BD%E7%9A%84%E5%88%86%E5%B8%83%E5%BC%8F%E5%8D%B3%E6%97%B6%E9%80%9A%E8%AE%AF%E9%A1%B9%E7%9B%AE..../</link>
+      <pubDate>Wed, 30 Oct 2019 15:38:52 +0800</pubDate>
+      
+      <guid>https://hideric.github.io/java/basis/%E8%BF%99%E5%8F%AF%E8%83%BD%E6%98%AFgithub%E4%B8%8A%E6%9C%80%E5%8F%8B%E5%A5%BD%E7%9A%84%E5%88%86%E5%B8%83%E5%BC%8F%E5%8D%B3%E6%97%B6%E9%80%9A%E8%AE%AF%E9%A1%B9%E7%9B%AE..../</guid>
+      <description> 这可能是Github上最友好的分布式即时通讯项目&amp;hellip;. CIM(CROSS-IM)&amp;nbsp;一款面向开发者的 IM(即时通讯)系统；同时提供了一些组件帮助开发者构建一款属于自己可水平扩展的 IM 。借助CIM你可以实现一下需求，如IM即时通讯、适用于APP的消息推送中间件、IOT海量连接场景中的消息透传中间件等。此项目使用java开发，作者也是非常贴心，给出了详细的功能介绍，技术架构，和项目部署。
+目前实现的主要功能有以下几点：群聊、私聊、聊天记录查询、服务端自动剔除离线客户端、客户端自动重连、延时消息、分组群聊、离线消息等。基本功能还是比较全的，可以覆盖主要的使用场景。在安全方面，协议支持消息加密，还为客户端提供了相关的策略。
+以私聊功能为例向大家简单展示一下其功能。  私聊首先需要知道对方的 userID 才能进行。 输入命令&amp;nbsp;:olu 可列出所有在线用户。  接着使用 userId;;消息内容&amp;nbsp;的格式即可发送私聊消息。
+同时另一个账号收不到消息。还有AI 模式哦 使用命令&amp;nbsp;:ai 开启 AI 模式，之后所有的消息都会由 AI 响应。:qai&amp;nbsp;退出 AI 模式。
+再来看看项目的技术架构。CIM 中的各个组件均采用 SpringBoot 构建，采用 Netty 构建底层通信，Redis 存放各个客户端的路由信息、账号信息、在线状态等，Zookeeper 用于 IM-server 服务的注册与发现。cim-serverIM 服务端；用于接收 client 连接、消息透传、消息推送等功能。
+支持集群部署。
+cim-forward-route
+消息路由服务器；用于处理消息路由、消息转发、用户登录、用户下线以及一些运营工具（获取在线用户数等）。
+cim-client
+IM 客户端；给用户使用的消息终端，一个命令即可启动并向其他人发起通讯（群聊、私聊）。
+再来看看这几个模块之间是如何交互的
+客户端向 route 发起登录；登录成功从&amp;nbsp;Zookeeper&amp;nbsp;中选择可用&amp;nbsp;IM-server&amp;nbsp;返回给客户端，并保存登录、路由信息到&amp;nbsp;Redis；客户端向&amp;nbsp;IM-server&amp;nbsp;发起长连接，成功后保持心跳；客户端下线时通过&amp;nbsp;route&amp;nbsp;清除状态信息。
+到此，就剩下项目部署相关的东东了。作者也是写的很详细了，感兴趣的读者可以自行翻阅。END </description>
+    </item>
+    
+    <item>
+      <title>Java 8 - Stream 集合操作快速上手</title>
+      <link>https://hideric.github.io/java/basis/java-8-stream-%E9%9B%86%E5%90%88%E6%93%8D%E4%BD%9C%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B/</link>
+      <pubDate>Wed, 30 Oct 2019 15:38:44 +0800</pubDate>
+      
+      <guid>https://hideric.github.io/java/basis/java-8-stream-%E9%9B%86%E5%90%88%E6%93%8D%E4%BD%9C%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B/</guid>
+      <description>Java 8 - Stream 集合操作快速上手  转自：简书，作者：我是你的小眼睛儿www.jianshu.com/p/9fe8632d0bc2
+ 目录
+ Stream简介 为什么要使用Stream 实例数据源 Filter Map FlatMap Reduce Collect Optional 并发 调试  Stream简介
+ Java 8引入了全新的Stream API。这里的Stream和I/O流不同，它更像具有Iterable的集合类，但行为和集合类又有所不同。
+ stream是对集合对象功能的增强，它专注于对集合对象进行各种非常便利、高效的聚合操作，或者大批量数据操作。
+ 只要给出需要对其包含的元素执行什么操作，比如 “过滤掉长度大于 10 的字符串”、“获取每个字符串的首字母”等，Stream 会隐式地在内部进行遍历，做出相应的数据转换。
+  为什么要使用Stream
+ 函数式编程带来的好处尤为明显。这种代码更多地表达了业务逻辑的意图，而不是它的实现机制。易读的代码也易于维护、更可靠、更不容易出错。
+ 高端
+  实例数据源
+public class Data { private static List&amp;lt;PersonModel&amp;gt; list = null; static { PersonModel wu = new PersonModel(&amp;quot;wu qi&amp;quot;, 18, &amp;quot;男&amp;quot;); PersonModel zhang = new PersonModel(&amp;quot;zhang san&amp;quot;, 19, &amp;quot;男&amp;quot;); PersonModel wang = new PersonModel(&amp;quot;wang si&amp;quot;, 20, &amp;quot;女&amp;quot;); PersonModel zhao = new PersonModel(&amp;quot;zhao wu&amp;quot;, 20, &amp;quot;男&amp;quot;); PersonModel chen = new PersonModel(&amp;quot;chen liu&amp;quot;, 21, &amp;quot;男&amp;quot;); list = Arrays.</description>
+    </item>
+    
+    <item>
+      <title>Redis高级客户端Lettuce详解</title>
+      <link>https://hideric.github.io/redis/redis%E9%AB%98%E7%BA%A7%E5%AE%A2%E6%88%B7%E7%AB%AFlettuce%E8%AF%A6%E8%A7%A3/</link>
+      <pubDate>Wed, 30 Oct 2019 15:38:44 +0800</pubDate>
+      
+      <guid>https://hideric.github.io/redis/redis%E9%AB%98%E7%BA%A7%E5%AE%A2%E6%88%B7%E7%AB%AFlettuce%E8%AF%A6%E8%A7%A3/</guid>
+      <description>Redis高级客户端Lettuce详解 前提 Lettuce是一个Redis的Java驱动包，初识她的时候是使用RedisTemplate的时候遇到点问题Debug到底层的一些源码，发现spring-data-redis的驱动包在某个版本之后替换为Lettuce。Lettuce翻译为生菜，没错，就是吃的那种生菜，所以它的Logo长这样：
+既然能被Spring生态所认可，Lettuce想必有过人之处，于是笔者花时间阅读她的官方文档，整理测试示例，写下这篇文章。编写本文时所使用的版本为Lettuce 5.1.8.RELEASE，SpringBoot 2.1.8.RELEASE，JDK [8,11]。
+Lettuce简介 Lettuce是一个高性能基于Java编写的Redis驱动框架，底层集成了Project Reactor提供天然的反应式编程，通信框架集成了Netty使用了非阻塞IO，5.x版本之后融合了JDK1.8的异步编程特性，在保证高性能的同时提供了十分丰富易用的API，5.1版本的新特性如下：
+ 支持Redis的新增命令ZPOPMIN, ZPOPMAX, BZPOPMIN, BZPOPMAX。
+ 支持通过Brave模块跟踪Redis命令执行。
+ 支持Redis Streams。
+ 支持异步的主从连接。
+ 支持异步连接池。
+ 新增命令最多执行一次模式（禁止自动重连）。
+ 全局命令超时设置（对异步和反应式命令也有效）。
+ &amp;hellip;&amp;hellip;等等
+  注意一点：Redis的版本至少需要2.6，当然越高越好，API的兼容性比较强大。
+只需要引入单个依赖就可以开始愉快地使用Lettuce：
+ Maven
+&amp;lt;dependency&amp;gt; &amp;lt;groupId&amp;gt;io.lettuce&amp;lt;/groupId&amp;gt; &amp;lt;artifactId&amp;gt;lettuce-core&amp;lt;/artifactId&amp;gt; &amp;lt;version&amp;gt;5.1.8.RELEASE&amp;lt;/version&amp;gt; &amp;lt;/dependency&amp;gt;  Gradle
+dependencies { compile &#39;io.lettuce:lettuce-core:5.1.8.RELEASE&#39; }   连接Redis 单机、哨兵、集群模式下连接Redis需要一个统一的标准去表示连接的细节信息，在Lettuce中这个统一的标准是RedisURI。可以通过三种方式构造一个RedisURI实例：
+ 定制的字符串URI语法：
+RedisURI uri = RedisURI.create(&amp;quot;redis://localhost/&amp;quot;);  使用建造器（RedisURI.Builder）：
+RedisURI uri = RedisURI.builder().withHost(&amp;quot;localhost&amp;quot;).withPort(6379).build();  直接通过构造函数实例化：
+RedisURI uri = new RedisURI(&amp;quot;localhost&amp;quot;, 6379, 60, TimeUnit.</description>
+    </item>
+    
+    <item>
+      <title>StringBuilder 为什么线程不安全？</title>
+      <link>https://hideric.github.io/java/basis/concurrency/stringbuilder-%E4%B8%BA%E4%BB%80%E4%B9%88%E7%BA%BF%E7%A8%8B%E4%B8%8D%E5%AE%89%E5%85%A8/</link>
+      <pubDate>Wed, 30 Oct 2019 15:38:44 +0800</pubDate>
+      
+      <guid>https://hideric.github.io/java/basis/concurrency/stringbuilder-%E4%B8%BA%E4%BB%80%E4%B9%88%E7%BA%BF%E7%A8%8B%E4%B8%8D%E5%AE%89%E5%85%A8/</guid>
+      <description>StringBuilder 为什么线程不安全？  转自：掘金，作者：千山qianshanjuejin.im/post/5d6228046fb9a06add4e37fe
+ 分析
+ 在分析设个问题之前我们要知道StringBuilder和StringBuffer的内部实现跟String类一样，都是通过一个char数组存储字符串的，不同的是String类里面的char数组是final修饰的，是不可变的，而StringBuilder和StringBuffer的char数组是可变的。
+ 首先通过一段代码去看一下多线程操作StringBuilder对象会出现什么问题
+public class StringBuilderDemo { public static void main(String[] args) throws InterruptedException { StringBuilder stringBuilder = new StringBuilder(); for (int i = 0; i &amp;lt; 10; i++){ new Thread(new Runnable() { @Override public void run() { for (int j = 0; j &amp;lt; 1000; j++){ stringBuilder.append(&amp;quot;a&amp;quot;); } } }).start(); } Thread.sleep(100); System.out.println(stringBuilder.length()); } }  我们能看到这段代码创建了10个线程，每个线程循环1000次往StringBuilder对象里面append字符。正常情况下代码应该输出10000，但是实际运行会输出什么呢？
+我们看到输出了“9326”，小于预期的10000，并且还抛出了一个ArrayIndexOutOfBoundsException异常（异常不是必现）。
+1、为什么输出值跟预期值不一样
+我们先看一下StringBuilder的两个成员变量（这两个成员变量实际上是定义在AbstractStringBuilder里面的，StringBuilder和StringBuffer都继承了AbstractStringBuilder）
+//存储字符串的具体内容 char[] value; //已经使用的字符数组的数量 int count;  再看StringBuilder的append()方法：</description>
+    </item>
+    
+    <item>
+      <title>JVM优化之逃逸分析与分配消除</title>
+      <link>https://hideric.github.io/java/basis/jvm/jvm%E4%BC%98%E5%8C%96%E4%B9%8B%E9%80%83%E9%80%B8%E5%88%86%E6%9E%90%E4%B8%8E%E5%88%86%E9%85%8D%E6%B6%88%E9%99%A4/</link>
+      <pubDate>Wed, 30 Oct 2019 15:29:26 +0800</pubDate>
+      
+      <guid>https://hideric.github.io/java/basis/jvm/jvm%E4%BC%98%E5%8C%96%E4%B9%8B%E9%80%83%E9%80%B8%E5%88%86%E6%9E%90%E4%B8%8E%E5%88%86%E9%85%8D%E6%B6%88%E9%99%A4/</guid>
+      <description>要了解逃逸分析背后的基本原理，我们先来看下这段有问题的C代码——当然这个是没法用Java来写的：
+这段C代码在栈上创建了一个int类型的变量，然后把它的指针作为函数的返回值返回了。这样做是有问题的，因为当 get_the_int() 函数返回的时候，int所在的栈帧就已经被销毁了，后面你再去访问这个地址的话，就不知道里面存储的到底是什么了。
+Java平台设计的一个主要目标就是要消除这种类型的bug。从设计上，JVM就不具备这种低级的“根据位置索引来读内存”的能力。这类操作对应的Java字节码是putfield和getfield。
+来看下这段Java代码：
+这段代码创建了一亿对随机大小的矩形，并去计算有多少对是大小一样的。每次迭代都会创建一对新的矩形。你可能会认为main方法里会创建2亿个Rect对象：一亿个r1，一亿个r2。
+不过，如果某个对象只是在方法内部创建并使用的话——也就是说，它不会传递到另一个方法中或者作为返回值返回——那么运行时程序就还能做得更聪明一些。你可以说这个对象是没有逃逸出去的，因此运行时（其实就是JIT编译器）做的这个分析又叫做逃逸分析。
+如果一个对象没有逃逸出去，那也就是说JVM可以针对这个对象做一些类似“栈自动分配”的事情。在这个例子当中，这个对象不会从堆上分配空间，因此它也不需要垃圾回收器来回收。一旦使用这个“栈分配（stack-allocated）”对象的方法返回了，这个对象所占用的内存也就自动被释放掉了。
+事实上，HotSpot VM的C2编译器做的事情要比栈分配要复杂得多。我们现在就来看一下。
+在HotSpot VM的源码中，可以看到逃逸分析系统是如何对对象的使用进行分类的：
+第一类说明这个对象可以用标量来代替。这种分配消除技术叫标量替换（scalar replacement）。这意味着这个对象会被拆解成它的构成字段，这就相当于分配对象的操作变成了在方法内部创建多个局部变量。完成这个之后，另一项HotSpot VM的JIT技术会参与进来，它会将这些字段（事实上已经是局部变量了）存储到CPU的寄存器中（如果有必要就存储在栈上）。
+Java平台的主要挑战是执行模型非常复杂。在上述例子中，如果只看源代码，你会认为r1对象是不会逃逸出main方法外的，但r2会作为参数传给r1的sameArea方法，因此它逃逸出了main方法外。
+根据上面的分类，乍一看的话r1应该归类为NoEscape，而r2应该归为ArgEscape；不过这个结论是错误的，原因有几点。
+第一，回想一下，Java中的方法调用最终会通过编译器替换为字节码invoke。它会把调用目标（也就是接收对象，注：即要调用的对象）和入参填充到栈中，然后查找到这个方法，再分发给它（也就是执行这个方法）。
+这意味着接收对象也被传入了调用的方法中（它就是调用的方法里的this对象）。因此接收对象也逃逸出了当前域；在这个例子中，这意味着如果逃逸分析分析完这段Java代码，r1和r2都会归类为ArgEscape。
+如果就只是这样的话，那么分配消除的使用场景就很有限了。所幸的是，HotSpot VM能做得更好。我们来仔细看一下它的字节码，看看能发现什么。
+sameArea()方法很小（只有17个字节的字节码），在本例中也会被频繁调用，因此它是方法内联（method inlined）的一个理想对象。
+通过JITWatch或者PrintCompilation可以看到，area()方法的调用的确被内联进了调用方sameArea()方法里，而sameArea()又被内联到了main()方法的循环体中。JITWatch为内联方法提供了一个很方便的图形化展示（如图所示）。
+请记住Java HotSpot VM的JIT编译器的优化顺序也是很重要的。方法内联是最早的优化，也被称为网关优化（gateway optimization），因为它首先把相关联的代码都聚合在了一起，为其它优化打开了大门。
+现在sameArea()方法和area()方法都被内联进来了，方法域的问题不复存在，所有的变量都只在main方法的作用域内了。也就是说逃逸分析不会再把r1和r2视作ArgEscape类型：方法内联之后，它们现在都被归类为NoEscape。
+这个结果看起来可能有悖常理，不过你需要记住的是JIT编译器并不是通过原始代码来进行优化的。如果不知道这点，就搞不清楚哪些情况能够进行逃逸分析。
+前面的例子中，这些对象的分配都不会在堆上进行了，会把它们的字段拆解成独立的值。寄存器分配器通常会把拆解出来的字段直接放到寄存器中，不过如果没有足够可用的寄存器，那剩下的字段会被存储到栈上。这种情况被称为栈溢出（stack spill，注：和stack overflow不同）。
+在逃逸分析开启和关闭的模式下分别运行这个程序，再观察下GC的活动，你就能看到密集循环中堆分配消除的巨大威力。
+在现代JVM中逃逸分析是默认开启的，得通过JVM参数-XX:-DoEscapeAnalysis来关掉它。
+下面是开启了逃逸分析之后的GC日志（一些细节删除了）：
+从日志中可以看到根本没有发生GC事件——只是在进程退出时往日志里记录了下堆的摘要信息。如果再看下关闭逃逸分析后的运行日志，情况就截然不同了
+这里可以很清楚地看到，由于Eden区空间满了，导致了内存分配失败、需要进行垃圾回收，因此触发了GC事件。
+结论 逃逸分析是Java HotSpot VM引入的一项非常有用的升级。这项功能仍在开发阶段时，实际测试中它带来的性能提升就有3%到6%。
+对于那些对平台特性的实现过程和原理感兴趣的开发人员来说，逃逸分析有个很有意思的特点：这项特性依赖于其它优化（自动内联），不然用处不大。
+JVM底层的实现和源代码可以在HotSpot VM的源码opto/escape.hpp中找到。它是1999年11月由Jong-Deok Choi，Manish Gupta，Mauricio Serrano，Vugranam C. Sreedhar和Sam Midkif在ACM SIGPLAN的OOPSLA（面向对象编程，系统，语言和应用程序）会议中提出的“Escape Analysis for Java”算法的一个变种实现。
+除了分配消除，Java HotSpot VM中还有几项优化技术也是基于类似的作用域分析的技术来实现的。这些优化主要用于Java为每个对象提供的内部锁上。</description>
+    </item>
+    
+    <item>
+      <title>秒懂 QPS、TPS、PV、UV、GMV、IP、RPS！</title>
+      <link>https://hideric.github.io/others/term/qps%E6%9C%AF%E8%AF%AD/</link>
+      <pubDate>Thu, 08 Aug 2019 10:40:05 +0800</pubDate>
+      
+      <guid>https://hideric.github.io/others/term/qps%E6%9C%AF%E8%AF%AD/</guid>
+      <description>QPS
+Queries Per Second，每秒查询数。每秒能够响应的查询次数。
+QPS是对一个特定的查询服务器在规定时间内所处理流量多少的衡量标准，在因特网上，作为域名系统服务器的机器的性能经常用每秒查询率来衡量。每秒的响应请求数，也即是最大吞吐能力。
+TPS
+Transactions Per Second 的缩写，每秒处理的事务数目。一个事务是指一个客户机向服务器发送请求然后服务器做出反应的过程。客户机在发送请求时开始计时，收到服务器响应后结束计时，以此来计算使用的时间和完成的事务个数，最终利用这些信息作出的评估分。
+TPS 的过程包括：客户端请求服务端、服务端内部处理、服务端返回客户端。
+例如，访问一个 Index 页面会请求服务器 3 次，包括一次 html，一次 css，一次 js，那么访问这一个页面就会产生一个“T”，产生三个“Q”。
+PV（page view）即页面浏览量，通常是衡量一个网络新闻频道或网站甚至一条网络新闻的主要指标。
+PV 即 page view，页面浏览量。用户每一次对网站中的每个页面访问均被记录 1 次。用户对同一页面的多次刷新，访问量累计。
+根据这个特性，刷网站的 PV 就很好刷了。
+与 PV 相关的还有 RV，即重复访问者数量（repeat visitors）。
+UV 访问数（Unique Visitor）指独立访客访问数，统计1天内访问某站点的用户数(以 cookie 为依据)，一台电脑终端为一个访客。
+IP（Internet Protocol）独立 IP 数，是指 1 天内多少个独立的 IP 浏览了页面，即统计不同的 IP 浏览用户数量。同一 IP 不管访问了几个页面，独立 IP 数均为 1；不同的 IP 浏览页面，计数会加 1。IP 是基于用户广域网 IP 地址来区分不同的访问者的，所以，多个用户（多个局域网 IP）在同一个路由器（同一个广域网 IP）内上网，可能被记录为一个独立 IP 访问者。如果用户不断更换 IP，则有可能被多次统计。
+GMV，是 Gross Merchandise Volume 的简称。只要是订单，不管消费者是否付款、卖家是否发货、是否退货，都可放进 GMV 。</description>
+    </item>
+    
+    <item>
+      <title>F-Droid Apps Recommendation</title>
+      <link>https://hideric.github.io/android/tool/f-droidapps/</link>
+      <pubDate>Wed, 07 Aug 2019 11:02:05 +0600</pubDate>
+      
+      <guid>https://hideric.github.io/android/tool/f-droidapps/</guid>
+      <description> F-Droid，一个可替代的应用商店，里面只包含自由及开源应用。如果这里没有你要的应用，你可以使用 Aurora Store，一个从应用商店里下载应用且不需要使用谷歌帐号或被追踪的客户端  应用清单
+ AdAway &amp;gt; 系统广告拦截器，使用 hosts 文件拦截所有的广告 AfWall &amp;gt; 一个防火墙，可以阻止不想要的连接 Amaze &amp;gt; 替代系统的文件管理器，允许文件的 root 访问权限，并且拥有 zip/unzip 功能 Ameixa &amp;gt; 大多数应用的图标包 andOTP &amp;gt; 替代谷歌验证器/Authy，一个可以用来登录启用了双因子验证2FA的网站账户的 TOTP 应用，可以使用 PIN 码备份和锁定 AnySoftKeyboard/AOSP Keyboard &amp;gt; 开源键盘，它有许多主题和语言包，我也是该项目的一员 Audio Recorder &amp;gt; 如其名字，允许你从麦克风录制不同格式的音频文件 Battery Charge Limit &amp;gt; 当到 80% 时自动停止充电，降低电池磨损battery wear并增加寿命 DAVx5 &amp;gt; 这是我最常用的应用之一，对我来说它基本上替代了谷歌联系人、谷歌日历和谷歌 Tasks，它连接着我的 Nextcloud 环境可以让我完全控制自己的数据 Document Viewer &amp;gt; 一个可以打开数百种文件格式的查看器应用，快速、轻量 Deezloader Remix &amp;gt; 让我可以在 Deezer 上下载高质量 MP3 的应用 Easy xkcd &amp;gt; xkcd 漫画阅读器，我喜欢这些 xkcd 漫画 Etar &amp;gt; 日历应用，替代谷歌日历，与 DAVx5 一同工作 FastHub-Libre &amp;gt; 一个 GitHub 客户端，完全 FOSS（自由及开源软件），非常实用如果你像我一样喜欢使用 Github 的话 Fennec F-Droid &amp;gt; 替代谷歌 Chrome 和其他类似的应用，一个为 F-Droid 打造的火狐浏览器，不含专有二进制代码并允许安装扩展提升浏览体验 Gadgetbridge &amp;gt; 替代小米运动，可以用来配对小米硬件的应用，追踪你的健康、步数、睡眠等。 K-9 Mail &amp;gt; 邮件客户端，替代 GMail 应用，可定制并可以添加多个账户 Lawnchair &amp;gt; 启动器，可以替代 Nova Launcher 或 Pixel Launcher，允许自定义和各种改变，也支持图标包 Mattermost &amp;gt; 可以连接 Mattermost 服务器的应用。Mattermost 是一个 Slack 替代品 NewPipe &amp;gt; 最好的 YouTube 客户端（我认为），可以替代 YoubTube，它完全是 FOSS，免除 YouTube 广告，占用更少空间，允许背景播放，允许下载视频/音频等。试一试吧 Nextcloud SMS &amp;gt; 允许备份/同步 SMS 到我的 Nextcloud 环境 Nextcloud Notes &amp;gt; 允许我创建，修改，删除，分享笔记并同步/备份到 Nextcloud 环境 OpenTasks &amp;gt; 允许我创建、修改、删除任务并同步到我的 Nextcloud 环境 OsmAnd~ &amp;gt; 一个地图应用，使用 OpenStreetMap，允许下载离线地图和导航 QKSMS &amp;gt; 我最喜欢的短信应用，可以替代原来的 Messaging 应用，拥有漂亮的界面，拥有备份、个性化、延迟发送等特性 Resplash/Mysplash &amp;gt; 允许你无限地从 Unsplash 下载无数的漂亮壁纸，全都可以免费使用和修改。 ScreenCam &amp;gt; 一个录屏工具，允许各样的自定义和录制模式，没有广告并且免费 SecScanQR &amp;gt; 二维码识别应用，快速轻量 Send Reduced Free &amp;gt; 这个应用可以在发送之前通过移除 PII（个人识别信息personally identifiable information）和减小尺寸，让你立即分享大图 Slide &amp;gt; 开源 Reddit 客户端 Telegram FOSS &amp;gt; 没有追踪和 Google Services 的纯净版 Telegram 安卓客户端 TrebleShot &amp;gt; 这个天才般的应用可以让你通过 WIFI 分享文件给其它设备，真的超快，甚至无需连接网络 Tusky &amp;gt; Tusky 是 Mastodon 平台的客户端（替代 Twitter） Unit Converter Ultimate &amp;gt; 这款应用可以一键在 200 种单位之间来回转换，非常快并且完全离线 Vinyl Music Player &amp;gt; 我首选的音乐播放器，可以替代谷歌音乐播放器或其他你已经安装的音乐播放器，它有漂亮的界面和许多特性 VPN Hotspot &amp;gt; 这款应用可以让我打开热点的时候分享 VPN，因此我可以在笔记本上什么都不用做就可以安全地浏览网页 Google Camera（与 Camera API 2 结合起来，需要 F-Droid 的基本的 microG 才能工作） Instagram MyVodafoneAL （运营商应用） ProtonMail （email 应用） Titanium Backup（备份应用数据，wifi 密码，通话记录等） WhatsApp （专有的端到端聊天应用，几乎我认识的所有人都有它）  </description>
+    </item>
+    
+    <item>
+      <title>LeetCode #5 最长回文子字符串</title>
+      <link>https://hideric.github.io/leetcode/leetcode-5/</link>
+      <pubDate>Wed, 07 Aug 2019 11:02:05 +0600</pubDate>
+      
+      <guid>https://hideric.github.io/leetcode/leetcode-5/</guid>
+      <description>最长回文子字符串(Longest Palindromic Substring) Medium
+给定一个字符串s，找到s中最长的回文子字符串。你可以假设s的最大长度为1000。
+ 示例 1:
+  Input: &amp;quot;babad&amp;quot; Output: &amp;quot;bab&amp;quot;  注意: &amp;ldquo;aba&amp;rdquo; 也是一个答案.
+ 示例 2:
+  Input: &amp;quot;cbbd&amp;quot; Output: &amp;quot;bb&amp;quot;   摘要:
+ 本文适用于中级读者。它引入了以下思想：回文，动态编程和字符串操作。确保你了解回文意味着什么。回文是一个在两个方向上读取相同的字符串。例如，S =“aba”是回文，S =“abc”不是
+ Solution
+方法 1: 最长公共子串</description>
+    </item>
+    
+    <item>
+      <title>MySQL中IS NULL、IS NOT NULL、!=不能用索引？</title>
+      <link>https://hideric.github.io/mysql/index/null%E8%83%BD%E7%94%A8%E7%B4%A2%E5%BC%95/</link>
+      <pubDate>Wed, 07 Aug 2019 11:02:05 +0600</pubDate>
+      
+      <guid>https://hideric.github.io/mysql/index/null%E8%83%BD%E7%94%A8%E7%B4%A2%E5%BC%95/</guid>
+      <description>不知道从什么时候开始，网上流传着这么一个说法：
+ MySQL的WHERE子句中包含 IS NULL、IS NOT NULL、!= 这些条件时便不能使用索引查询，只能使用全表扫描。
+ 这种说法愈演愈烈，甚至被很多同学奉为真理。咱啥话也不说，举个例子。假如我们有个表s1，结构如下：
+CREATE TABLE s1 ( id INT NOT NULL AUTO_INCREMENT, key1 VARCHAR(100), key2 VARCHAR(100), key3 VARCHAR(100), key_part1 VARCHAR(100), key_part2 VARCHAR(100), key_part3 VARCHAR(100), common_field VARCHAR(100), PRIMARY KEY (id), KEY idx_key1 (key1), KEY idx_key2 (key2), KEY idx_key3 (key3), KEY idx_key_part(key_part1, key_part2, key_part3) ) Engine=InnoDB CHARSET=utf8;  这个表里有10000条记录：
+mysql&amp;gt; SELECT COUNT(*) FROM s1; +----------+ | COUNT(*) | +----------+ | 10000 | +----------+ 1 row in set (0.</description>
+    </item>
+    
+    <item>
+      <title>Shiro框架 - 用户权限管理</title>
+      <link>https://hideric.github.io/java/framework/security/shiro%E6%A1%86%E6%9E%B6-%E7%94%A8%E6%88%B7%E6%9D%83%E9%99%90%E7%AE%A1%E7%90%86/</link>
+      <pubDate>Wed, 07 Aug 2019 11:02:05 +0600</pubDate>
+      
+      <guid>https://hideric.github.io/java/framework/security/shiro%E6%A1%86%E6%9E%B6-%E7%94%A8%E6%88%B7%E6%9D%83%E9%99%90%E7%AE%A1%E7%90%86/</guid>
+      <description>用户权限管理一般是对用户页面、按钮的访问权限管理。Shiro框架是一个强大且易用的Java安全框架，执行身份验证、授权、密码和会话管理，对于Shiro的介绍这里就不多说。本篇博客主要是了解Shiro的基础使用方法，在权限管理系统中集成Shiro实现登录、url和页面按钮的访问控制。
+一、引入依赖
+使用SpringBoot集成Shiro时，在pom.xml中可以引入shiro-spring-boot-web-starter。由于使用的是thymeleaf框架，thymeleaf与Shiro结合需要 引入thymeleaf-extras-shiro。
+&amp;lt;!-- https://mvnrepository.com/artifact/org.apache.shiro/shiro-spring-boot-web-starter --&amp;gt; &amp;lt;dependency&amp;gt; &amp;lt;groupId&amp;gt;org.apache.shiro&amp;lt;/groupId&amp;gt; &amp;lt;artifactId&amp;gt;shiro-spring-boot-web-starter&amp;lt;/artifactId&amp;gt; &amp;lt;version&amp;gt;1.4.0&amp;lt;/version&amp;gt; &amp;lt;/dependency&amp;gt; &amp;lt;!-- https://mvnrepository.com/artifact/com.github.theborakompanioni/thymeleaf-extras-shiro --&amp;gt; &amp;lt;dependency&amp;gt; &amp;lt;groupId&amp;gt;com.github.theborakompanioni&amp;lt;/groupId&amp;gt; &amp;lt;artifactId&amp;gt;thymeleaf-extras-shiro&amp;lt;/artifactId&amp;gt; &amp;lt;version&amp;gt;2.0.0&amp;lt;/version&amp;gt; &amp;lt;/dependency&amp;gt;  二、增加Shiro配置
+有哪些url是需要拦截的，哪些是不需要拦截的，登录页面、登录成功页面的url、自定义的Realm等这些信息需要设置到Shiro中，所以创建Configuration文件ShiroConfig。
+package com.example.config; import org.apache.shiro.mgt.SecurityManager; import org.apache.shiro.spring.web.ShiroFilterFactoryBean; import org.apache.shiro.web.mgt.DefaultWebSecurityManager; import org.springframework.beans.factory.annotation.Qualifier; import org.springframework.context.annotation.Bean; import org.springframework.context.annotation.Configuration; import at.pollux.thymeleaf.shiro.dialect.ShiroDialect; import java.util.LinkedHashMap; import java.util.Map; @Configuration public class ShiroConfig { @Bean(&amp;quot;shiroFilterFactoryBean&amp;quot;) public ShiroFilterFactoryBean shiroFilterFactoryBean(SecurityManager securityManager) { System.out.println(&amp;quot;ShiroConfiguration.shirFilter()&amp;quot;); ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean(); shiroFilterFactoryBean.setSecurityManager(securityManager); //拦截器. Map&amp;lt;String,String&amp;gt; filterChainDefinitionMap = new LinkedHashMap&amp;lt;String,String&amp;gt;(); // 配置不会被拦截的链接 顺序判断 filterChainDefinitionMap.</description>
+    </item>
+    
+    <item>
+      <title>ThreadLocal面试题</title>
+      <link>https://hideric.github.io/java/basis/concurrency/threadlocal%E9%9D%A2%E8%AF%95%E9%A2%98/</link>
+      <pubDate>Wed, 07 Aug 2019 11:02:05 +0600</pubDate>
+      
+      <guid>https://hideric.github.io/java/basis/concurrency/threadlocal%E9%9D%A2%E8%AF%95%E9%A2%98/</guid>
+      <description>说明
+面试官：讲讲你对ThreadLocal的一些理解。
+那么我们该怎么回答呢？？？？你也可以思考下，下面看看零度的思考；
+ ThreadLocal用在什么地方？ ThreadLocal一些细节！ ThreadLocal的最佳实践！ 思考  ThreadLocal用在什么地方？
+讨论ThreadLocal用在什么地方前，我们先明确下，如果仅仅就一个线程，那么都不用谈ThreadLocal的，ThreadLocal是用在多线程的场景的！！！
+ThreadLocal归纳下来就2类用途：
+ 保存线程上下文信息，在任意需要的地方可以获取！！！ 线程安全的，避免某些情况需要考虑线程安全必须同步带来的性能损失！！！  保存线程上下文信息，在任意需要的地方可以获取！！！
+由于ThreadLocal的特性，同一线程在某地方进行设置，在随后的任意地方都可以获取到。从而可以用来保存线程上下文信息。
+常用的比如每个请求怎么把一串后续关联起来，就可以用ThreadLocal进行set，在后续的任意需要记录日志的方法里面进行get获取到请求id，从而把整个请求串起来。
+还有比如Spring的事务管理，用ThreadLocal存储Connection，从而各个DAO可以获取同一Connection，可以进行事务回滚，提交等操作。
+ 备注：ThreadLocal的这种用处，很多时候是用在一些优秀的框架里面的，一般我们很少接触，反而下面的场景我们接触的更多一些！
+ 线程安全的，避免某些情况需要考虑线程安全必须同步带来的性能损失！！！
+ThreadLocal为解决多线程程序的并发问题提供了一种新的思路。但是ThreadLocal也有局限性，我们来看看阿里规范：
+每个线程往ThreadLocal中读写数据是线程隔离，互相之间不会影响的，所以ThreadLocal无法解决共享对象的更新问题！
+ 由于不需要共享信息，自然就不存在竞争问题了，从而保证了某些情况下线程的安全，以及避免了某些情况需要考虑线程安全必须同步带来的性能损失！！！
+ 这类场景阿里规范里面也提到了：
+ThreadLocal一些细节！
+ThreaLocal使用示例代码：
+public class ThreadLocalTest { private static ThreadLocal&amp;lt;Integer&amp;gt; threadLocal = new ThreadLocal&amp;lt;&amp;gt;(); public static void main(String[] args) { new Thread(() -&amp;gt; { try { for (int i = 0; i &amp;lt; 100; i++) { threadLocal.set(i); System.out.println(Thread.currentThread().getName() + &amp;quot;====&amp;quot; + threadLocal.</description>
+    </item>
+    
+  </channel>
+</rss>

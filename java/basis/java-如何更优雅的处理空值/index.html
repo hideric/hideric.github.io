@@ -1,0 +1,866 @@
+<head>
+  <meta charset="utf-8">
+  <title>Java-如何更优雅的处理空值</title>
+
+  <meta name="generator" content="Hugo 0.58.3" />
+
+  <!-- mobile responsive meta -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <!-- ** Plugins Needed for the Project ** -->
+  <!-- Bootstrap -->
+  <link rel="stylesheet" href="https://hideric.github.io/plugins/bootstrap/bootstrap.min.css">
+  <!-- themefy-icon -->
+  <link rel="stylesheet" href="https://hideric.github.io/plugins/themify-icons/themify-icons.css">
+  <!-- highlight -->
+  <link rel="stylesheet" href="https://hideric.github.io/plugins/highlight/hybrid.css">
+  <!-- fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700" rel="stylesheet">
+
+  <style>
+  :root{
+    --primary-color:#2f1f48;
+    --secondary-color:#f9f9f9;
+    --text-color:#636363;
+    --text-color-dark:#242738;
+    --white-color:#ffffff;
+  }  
+  </style>
+
+  <!-- Main Stylesheet -->
+  
+  <link rel="stylesheet" href="https://hideric.github.io/css/style.min.css" integrity="" media="screen">
+
+  <!-- jquiry -->
+  <script src="https://hideric.github.io/plugins/jquery/jquery-1.12.4.js"></script>
+
+  <!-- jquary ui -->
+  <script src="https://hideric.github.io/plugins/jquery/jquery-ui.js"></script>
+
+  <!--Favicon-->
+  <link rel="icon" href="https://hideric.github.io/images/favicon.png" type="image/x-icon">
+
+</head>
+
+
+<!-- navigation -->
+<header class="shadow-bottom sticky-top bg-white">
+  <div class="container">
+    <nav class="navbar navbar-expand-lg navbar-light">
+  <a class="navbar-brand" href="https://hideric.github.io/">Hideric</a>
+  <button class="navbar-toggler border-0" type="button" data-toggle="collapse" data-target="#navigation"
+    aria-controls="navigation" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse text-center" id="navigation">
+    <ul class="navbar-nav ml-auto">
+      <li class="nav-item">
+        <a class="nav-link text-dark" href="https://hideric.github.io/">Home</a>
+      </li>
+      
+      
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle text-dark" href="#" role="button" data-toggle="dropdown" aria-haspopup="true"
+          aria-expanded="false">
+          Back-End
+        </a>
+        <div class="dropdown-menu" >
+          
+          <a class="dropdown-item" href="https://hideric.github.io/java">Java</a>
+          
+          <a class="dropdown-item" href="https://hideric.github.io/python">Python</a>
+          
+          <a class="dropdown-item" href="https://hideric.github.io/go">Go</a>
+          
+          <a class="dropdown-item" href="https://hideric.github.io/cpp">C&#43;&#43;</a>
+          
+        </div>
+      </li>
+      
+      
+      
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle text-dark" href="#" role="button" data-toggle="dropdown" aria-haspopup="true"
+          aria-expanded="false">
+          DB
+        </a>
+        <div class="dropdown-menu" >
+          
+          <a class="dropdown-item" href="https://hideric.github.io/mysql">Mysql</a>
+          
+          <a class="dropdown-item" href="https://hideric.github.io/oracle">Oracle</a>
+          
+        </div>
+      </li>
+      
+      
+      
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle text-dark" href="#" role="button" data-toggle="dropdown" aria-haspopup="true"
+          aria-expanded="false">
+          Front-End
+        </a>
+        <div class="dropdown-menu" >
+          
+          <a class="dropdown-item" href="https://hideric.github.io/js">JavaScript</a>
+          
+          <a class="dropdown-item" href="https://hideric.github.io/vue">Vue</a>
+          
+          <a class="dropdown-item" href="https://hideric.github.io/react">React</a>
+          
+          <a class="dropdown-item" href="https://hideric.github.io/rn">React Native</a>
+          
+        </div>
+      </li>
+      
+      
+      
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle text-dark" href="#" role="button" data-toggle="dropdown" aria-haspopup="true"
+          aria-expanded="false">
+          Mid-Ware
+        </a>
+        <div class="dropdown-menu" >
+          
+          <a class="dropdown-item" href="https://hideric.github.io/redis">Redis</a>
+          
+          <a class="dropdown-item" href="https://hideric.github.io/nginx">Nginx</a>
+          
+        </div>
+      </li>
+      
+      
+      
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle text-dark" href="#" role="button" data-toggle="dropdown" aria-haspopup="true"
+          aria-expanded="false">
+          Mobile
+        </a>
+        <div class="dropdown-menu" >
+          
+          <a class="dropdown-item" href="https://hideric.github.io/android">Android</a>
+          
+          <a class="dropdown-item" href="https://hideric.github.io/ios">IOS</a>
+          
+        </div>
+      </li>
+      
+      
+      
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle text-dark" href="#" role="button" data-toggle="dropdown" aria-haspopup="true"
+          aria-expanded="false">
+          OPS
+        </a>
+        <div class="dropdown-menu" >
+          
+          <a class="dropdown-item" href="https://hideric.github.io/k8s">kubernetes</a>
+          
+          <a class="dropdown-item" href="https://hideric.github.io/docker">Docker</a>
+          
+          <a class="dropdown-item" href="https://hideric.github.io/leetcode">Leetcode</a>
+          
+          <a class="dropdown-item" href="https://hideric.github.io/linux">Linux</a>
+          
+        </div>
+      </li>
+      
+      
+      
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle text-dark" href="#" role="button" data-toggle="dropdown" aria-haspopup="true"
+          aria-expanded="false">
+          pages
+        </a>
+        <div class="dropdown-menu" >
+          
+          <a class="dropdown-item" href="https://hideric.github.io/faq">FAQ</a>
+          
+          <a class="dropdown-item" href="https://hideric.github.io/contact">CONTACT</a>
+          
+          <a class="dropdown-item" href="https://hideric.github.io/elements">ELEMENTS</a>
+          
+          <a class="dropdown-item" href="https://hideric.github.io/others">OTHERS</a>
+          
+        </div>
+      </li>
+      
+      
+    </ul>
+    
+    <ul class="list-inline text-center mb-0">
+      
+    </ul>
+  </div>
+</nav>
+  </div>
+</header>
+<!-- /navigation -->
+
+
+<section class="single pt-5 bg-gray">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-3">
+        <div class="p-4 bg-white sticky-top top-100">
+            
+            <nav class="sidebar-menu">
+              <ul class="list-styled">
+            <li class=""><a href="https://hideric.github.io/android/">Android</a>
+              <ul class="">
+            <li class=""><a href="https://hideric.github.io/android/tool/f-droidapps/">F-Droid Apps Recommendation</a>
+            </li></ul>
+              
+            </li>
+            <li class=""><a href="https://hideric.github.io/cpp/">C&#43;&#43;</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/docker/">Docker</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/go/">Go</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/ios/">IOS</a>
+            </li>
+            <li class="parent d-block "><a href="https://hideric.github.io/java/">Java</a>
+              <ul class="sub-menu">
+            <li class=""><a href="https://hideric.github.io/java/basis/http%E6%96%AD%E7%82%B9%E7%BB%AD%E4%BC%A0/">HTTP断点续传</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/basis/java-%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8/">Java 垃圾收集器</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/basis/java-%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%8B%BC%E6%8E%A5%E5%A7%BF%E5%8A%BF/">Java 字符串拼接姿势</a>
+            </li>
+            <li class=" active "><a href="https://hideric.github.io/java/basis/java-%E5%A6%82%E4%BD%95%E6%9B%B4%E4%BC%98%E9%9B%85%E7%9A%84%E5%A4%84%E7%90%86%E7%A9%BA%E5%80%BC/">Java-如何更优雅的处理空值</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/basis/jvm/jvm-%E5%A0%86%E5%86%85%E5%AD%98%E6%BA%A2%E5%87%BA%E5%90%8E%E5%85%B6%E4%BB%96%E7%BA%BF%E7%A8%8B%E6%98%AF%E5%90%A6%E5%8F%AF%E7%BB%A7%E7%BB%AD%E5%B7%A5%E4%BD%9C/">JVM 堆内存溢出后，其他线程是否可继续工作？</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/framework/mybatis/mybatis%E4%B8%ADlike-%E7%9A%84%E4%BD%BF%E7%94%A8%E6%96%B9%E5%BC%8F%E4%BB%A5%E5%8F%8A%E4%B8%80%E4%BA%9B%E6%B3%A8%E6%84%8F%E7%82%B9/">Mybatis中Like 的使用方式以及一些注意点</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/framework/mybatis/mybatis%E5%B1%85%E7%84%B6%E6%9C%89%E5%9D%91%E5%8D%83%E4%B8%87%E5%88%AB%E8%B8%A9/">Mybatis居然有坑，千万别踩！</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/framework/spring/spring%E5%BE%AA%E7%8E%AF%E4%BE%9D%E8%B5%96%E7%9A%84%E5%9D%91/">Spring循环依赖的坑</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/framework/spring/spring%E7%9A%84%E5%90%84%E7%A7%8D%E6%B3%A8%E8%A7%A3/">Spring的各种注解</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/basis/%E4%BB%8E%E5%AE%9E%E8%B7%B5%E8%A7%92%E5%BA%A6%E9%87%8D%E6%96%B0%E7%90%86%E8%A7%A3bio%E5%92%8Cnio/">从实践角度重新理解BIO和NIO</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/basis/%E5%85%B3%E4%BA%8E-git-%E6%8F%90%E4%BA%A4%E8%A7%84%E8%8C%83/">关于 Git 提交规范</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/basis/jvm/%E6%B3%A8%E6%84%8Fcode-cache%E6%89%93%E6%BB%A1%E5%8F%AF%E5%AF%BC%E8%87%B4%E5%BA%94%E7%94%A8%E6%80%A7%E8%83%BD%E9%99%8D%E4%BD%8E/">注意，Code Cache打满可导致应用性能降低</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/framework/spring/spring-%E5%AE%B9%E5%99%A8%E5%90%AF%E5%8A%A8%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/">Spring 容器启动源码解析</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/framework/spring/spring-%E7%9A%84-beanutils-%E5%A1%AB%E5%9D%91%E8%AE%B0/">Spring 的 BeanUtils 填坑记</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/basis/weakhashmap%E7%94%9F%E4%BA%86%E7%97%85%E7%9A%84-hashmap-/">WeakHashMap，生了病的 HashMap ？</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/framework/dubbo/%E4%BD%BF%E7%94%A8dubbo%E8%BF%87%E7%A8%8B%E4%B8%AD%E9%81%87%E5%88%B0%E8%BF%87%E5%93%AA%E4%BA%9B%E5%9D%91/">使用dubbo过程中遇到过哪些坑？</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/basis/%E4%B8%80%E4%B8%AAjava%E5%AF%B9%E8%B1%A1%E5%88%B0%E5%BA%95%E5%8D%A0%E7%94%A8%E5%A4%9A%E5%A4%A7%E5%86%85%E5%AD%98/">一个Java对象到底占用多大内存？</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/basis/%E4%BD%A0%E7%9C%9F%E7%9A%84%E4%BA%86%E8%A7%A3logback%E5%90%97/">你真的了解logback吗？</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/basis/%E8%BF%99%E5%8F%AF%E8%83%BD%E6%98%AFgithub%E4%B8%8A%E6%9C%80%E5%8F%8B%E5%A5%BD%E7%9A%84%E5%88%86%E5%B8%83%E5%BC%8F%E5%8D%B3%E6%97%B6%E9%80%9A%E8%AE%AF%E9%A1%B9%E7%9B%AE..../">这可能是Github上最友好的分布式即时通讯项目.....</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/basis/java-8-stream-%E9%9B%86%E5%90%88%E6%93%8D%E4%BD%9C%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B/">Java 8 - Stream 集合操作快速上手</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/basis/concurrency/stringbuilder-%E4%B8%BA%E4%BB%80%E4%B9%88%E7%BA%BF%E7%A8%8B%E4%B8%8D%E5%AE%89%E5%85%A8/">StringBuilder 为什么线程不安全？</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/basis/jvm/jvm%E4%BC%98%E5%8C%96%E4%B9%8B%E9%80%83%E9%80%B8%E5%88%86%E6%9E%90%E4%B8%8E%E5%88%86%E9%85%8D%E6%B6%88%E9%99%A4/">JVM优化之逃逸分析与分配消除</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/framework/security/shiro%E6%A1%86%E6%9E%B6-%E7%94%A8%E6%88%B7%E6%9D%83%E9%99%90%E7%AE%A1%E7%90%86/">Shiro框架 - 用户权限管理</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/java/basis/concurrency/threadlocal%E9%9D%A2%E8%AF%95%E9%A2%98/">ThreadLocal面试题</a>
+            </li></ul>
+              
+            </li>
+            <li class=""><a href="https://hideric.github.io/js/">JavaScript</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/k8s/">Kubernets</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/leetcode/">Leetcode</a>
+              <ul class="">
+            <li class=""><a href="https://hideric.github.io/leetcode/leetcode-5/">LeetCode #5 最长回文子字符串</a>
+            </li></ul>
+              
+            </li>
+            <li class=""><a href="https://hideric.github.io/linux/">Linux</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/mysql/">Mysql</a>
+              <ul class="">
+            <li class=""><a href="https://hideric.github.io/mysql/mysql%E9%9D%A2%E8%AF%95%E9%A2%98%E5%8F%8A%E5%8D%83%E4%B8%87%E7%BA%A7%E6%95%B0%E6%8D%AE%E6%9F%A5%E8%AF%A2%E4%BC%98%E5%8C%96/">Mysql面试题及千万级数据查询优化</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/mysql/mysql%E7%9A%84count%E8%AF%AD%E5%8F%A5/">MySQL的COUNT语句</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/mysql/mysql-%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E6%80%9D%E8%B7%AF/">MySQL 性能优化思路</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/mysql/%E5%AE%98%E6%96%B9%E5%B7%A5%E5%85%B7mysql-router-%E9%AB%98%E5%8F%AF%E7%94%A8%E5%8E%9F%E7%90%86%E4%B8%8E%E5%AE%9E%E6%88%98/">官方工具｜MySQL Router 高可用原理与实战</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/mysql/mysql-%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%968-%E7%A7%8D%E5%B8%B8%E8%A7%81-sql-%E9%94%99%E8%AF%AF%E7%94%A8%E6%B3%95/">MySQL 性能优化：8 种常见 SQL 错误用法！</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/mysql/index/null%E8%83%BD%E7%94%A8%E7%B4%A2%E5%BC%95/">MySQL中IS NULL、IS NOT NULL、!=不能用索引？</a>
+            </li></ul>
+              
+            </li>
+            <li class=""><a href="https://hideric.github.io/nginx/">Nginx</a>
+              <ul class="">
+            <li class=""><a href="https://hideric.github.io/nginx/%E5%90%8E%E7%AB%AF%E5%AE%9E%E8%B7%B5nginx%E6%97%A5%E5%BF%97%E9%85%8D%E7%BD%AE%E8%B6%85%E8%AF%A6%E7%BB%86/">后端实践：Nginx日志配置（超详细）</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/nginx/%E4%BD%BF%E7%94%A8nginx%E8%BF%9B%E8%A1%8C%E5%9B%9B%E5%B1%82%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1/">使用Nginx进行四层负载均衡</a>
+            </li></ul>
+              
+            </li>
+            <li class=""><a href="https://hideric.github.io/oracle/">Oracle</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/others/">OTHERS</a>
+              <ul class="">
+            <li class=""><a href="https://hideric.github.io/others/term/qps%E6%9C%AF%E8%AF%AD/">秒懂 QPS、TPS、PV、UV、GMV、IP、RPS！</a>
+            </li></ul>
+              
+            </li>
+            <li class=""><a href="https://hideric.github.io/python/">Python</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/react/">React</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/rn/">React Native</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/redis/">Redis</a>
+              <ul class="">
+            <li class=""><a href="https://hideric.github.io/redis/%E5%A6%82%E4%BD%95%E7%94%A8-redis-%E7%BB%9F%E8%AE%A1%E7%8B%AC%E7%AB%8B%E7%94%A8%E6%88%B7%E8%AE%BF%E9%97%AE%E9%87%8F/">如何用 Redis 统计独立用户访问量？</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/redis/redis-%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81%E7%9A%84%E6%AD%A3%E7%A1%AE%E5%AE%9E%E7%8E%B0%E6%96%B9%E5%BC%8Fjava%E7%89%88/">Redis 分布式锁的正确实现方式（Java版）</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/redis/redis-%E5%AE%9E%E7%8E%B0%E9%99%84%E8%BF%91%E7%9A%84%E4%BA%BA%E5%8A%9F%E8%83%BD/">Redis 实现“附近的人”功能</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/redis/%E4%B8%BA%E4%BB%80%E4%B9%88rediscluster%E6%9C%8916384%E4%B8%AA%E6%A7%BD/">为什么RedisCluster有16384个槽?</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/redis/%E5%AD%A6%E4%BC%9A%E8%BF%99%E5%87%A0%E4%B8%AAredis%E6%8A%80%E5%B7%A7%E8%AE%A9%E4%BD%A0%E7%9A%84%E7%A8%8B%E5%BA%8F%E5%BF%AB%E5%A6%82%E9%97%AA%E7%94%B5/">学会这几个Redis技巧，让你的程序快如闪电</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/redis/%E6%AF%94redis%E8%BF%98%E5%BF%AB5%E5%80%8D%E7%9A%84%E4%B8%AD%E9%97%B4%E4%BB%B6%E4%B8%BA%E5%95%A5%E8%BF%99%E4%B9%88%E5%BF%AB/">比Redis还快5倍的中间件，为啥这么快？</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/redis/redis%E9%AB%98%E7%BA%A7%E5%AE%A2%E6%88%B7%E7%AB%AFlettuce%E8%AF%A6%E8%A7%A3/">Redis高级客户端Lettuce详解</a>
+            </li></ul>
+              
+            </li>
+            <li class=""><a href="https://hideric.github.io/vue/">Vue</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/contact/">Contact</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/elements/">Elements</a>
+            </li>
+            <li class=""><a href="https://hideric.github.io/faq/">Frequently Asked Questions</a>
+            </li></ul>
+            </nav>
+
+            
+        </div>
+      </div>
+      <div class="col-lg-9">
+        <div class="p-5 bg-white">
+            <h2>Java-如何更优雅的处理空值</h2>
+            
+
+<h2 id="java-如何更优雅的处理空值">Java:如何更优雅的处理空值</h2>
+
+<blockquote>
+<section class="" style="max-width: 100%;box-sizing: border-box !important;overflow-wrap: break-word !important;"><section style="max-width: 100%;box-sizing: border-box !important;overflow-wrap: break-word !important;">来源：lrwinxhttps://lrwinx.github.io/</section></section>
+</blockquote>
+
+<h2 id="导语">导语</h2>
+
+<p>在笔者几年的开发经验中，经常看到项目中存在到处空值判断的情况，这些判断，会让人觉得摸不着头绪，它的出现很有可能和当前的业务逻辑并没有关系。但它会让你很头疼。</p>
+
+<p>有时候，更可怕的是系统因为这些空值的情况，会抛出空指针异常，导致业务系统发生问题。</p>
+
+<p>此篇文章，我总结了几种关于空值的处理手法，希望对读者有帮助。</p>
+
+<h2 id="业务中的空值">业务中的空值</h2>
+
+<h3 id="场景">场景</h3>
+
+<p>存在一个UserSearchService用来提供用户查询的功能:</p>
+
+<pre><code class="language-java">public interface UserSearchService{
+  List&lt;User&gt; listUser();
+
+  User get(Integer id);
+}
+</code></pre>
+
+<h4 id="问题现场">问题现场</h4>
+
+<p>对于面向对象语言来讲，抽象层级特别的重要。尤其是对接口的抽象，它在设计和开发中占很大的比重，我们在开发时希望尽量面向接口编程。</p>
+
+<p>对于以上描述的接口方法来看，大概可以推断出可能它包含了以下两个含义:</p>
+
+<ul>
+<li><p>listUser(): 查询用户列表</p></li>
+
+<li><p>get(Integer id): 查询单个用户
+在所有的开发中，XP推崇的TDD模式可以很好的引导我们对接口的定义，所以我们将TDD作为开发代码的”推动者”。</p></li>
+</ul>
+
+<p>对于以上的接口，当我们使用TDD进行测试用例先行时，发现了潜在的问题：</p>
+
+<ul>
+<li><p>listUser() 如果没有数据，那它是返回空集合还是null呢？</p></li>
+
+<li><p>get(Integer id) 如果没有这个对象，是抛异常还是返回null呢？</p>
+
+<h4 id="深入listuser研究">深入listUser研究</h4></li>
+</ul>
+
+<p>我们先来讨论</p>
+
+<pre><code class="language-java">listUser()
+</code></pre>
+
+<p>这个接口，我经常看到如下实现:</p>
+
+<pre><code class="language-java">public List&lt;User&gt; listUser(){
+    List&lt;User&gt; userList = userListRepostity.selectByExample(new UserExample());
+    if(CollectionUtils.isEmpty(userList)){//spring util工具类
+      return null;
+    }
+    return userList;
+}
+</code></pre>
+
+<p>这段代码返回是null,从我多年的开发经验来讲，对于集合这样返回值，最好不要返回null，因为如果返回了null，会给调用者带来很多麻烦。你将会把这种调用风险交给调用者来控制。</p>
+
+<p>如果调用者是一个谨慎的人，他会进行是否为null的条件判断。如果他并非谨慎，或者他是一个面向接口编程的狂热分子(当然，面向接口编程是正确的方向)，他会按照自己的理解去调用接口，而不进行是否为null的条件判断，如果这样的话，是非常危险的，它很有可能出现空指针异常！</p>
+
+<p>根据墨菲定律来判断: <strong>“很有可能出现的问题，在将来一定会出现!”</strong></p>
+
+<p>基于此，我们将它进行优化:</p>
+
+<pre><code class="language-java">public List&lt;User&gt; listUser(){
+    List&lt;User&gt; userList = userListRepostity.selectByExample(new UserExample());
+    if(CollectionUtils.isEmpty(userList)){
+      return Lists.newArrayList();//guava类库提供的方式
+    }
+    return userList;
+}
+</code></pre>
+
+<p>对于接口<code>(List listUser())</code>，它一定会返回List，即使没有数据，它仍然会返回List（集合中没有任何元素）;</p>
+
+<p>通过以上的修改，我们成功的避免了有可能发生的空指针异常，这样的写法更安全！</p>
+
+<h4 id="深入研究get方法">深入研究get方法</h4>
+
+<p>对于接口</p>
+
+<pre><code class="language-java">User get(Integer id)
+</code></pre>
+
+<p>你能看到的现象是，我给出id，它一定会给我返回User.但事实真的很有可能不是这样的。</p>
+
+<p>我看到过的实现:</p>
+
+<pre><code class="language-java">public User get(Integer id){
+  return userRepository.selectByPrimaryKey(id);//从数据库中通过id直接获取实体对象
+}
+</code></pre>
+
+<p>相信很多人也都会这样写。</p>
+
+<p>通过代码的时候得知它的返回值很有可能是null! 但我们通过的接口是分辨不出来的!</p>
+
+<p>这个是个非常危险的事情。尤其对于调用者来说！</p>
+
+<p>我给出的建议是，需要在接口明明时补充文档,比如对于异常的说明,使用注解@exception:</p>
+
+<pre><code class="language-java">public interface UserSearchService{
+
+  /**
+   * 根据用户id获取用户信息
+   * @param id 用户id
+   * @return 用户实体
+   * @exception UserNotFoundException
+   */
+  User get(Integer id);
+
+}
+</code></pre>
+
+<p>我们把接口定义加上了说明之后，调用者会看到，如果调用此接口，很有可能抛出“UserNotFoundException(找不到用户)”这样的异常。</p>
+
+<p>这种方式可以在调用者调用接口的时候看到接口的定义，但是，这种方式是”弱提示”的！</p>
+
+<p>如果调用者忽略了注释，有可能就对业务系统产生了风险，这个风险有可能导致一个亿！</p>
+
+<p><strong>除了以上这种”弱提示”的方式，还有一种方式是，返回值是有可能为空的。那要怎么办呢？</strong></p>
+
+<p>我认为我们需要增加一个接口，用来描述这种场景.</p>
+
+<p>引入jdk8的Optional,或者使用guava的Optional.看如下定义:</p>
+
+<pre><code class="language-java">public interface UserSearchService{
+
+  /**
+   * 根据用户id获取用户信息
+   * @param id 用户id
+   * @return 用户实体,此实体有可能是缺省值
+   */
+  Optional&lt;User&gt; getOptional(Integer id);
+}
+</code></pre>
+
+<p>Optional有两个含义: 存在 or 缺省。</p>
+
+<p>那么通过阅读接口getOptional()，我们可以很快的了解返回值的意图，这个其实是我们想看到的，它去除了二义性。</p>
+
+<p>它的实现可以写成:</p>
+
+<pre><code class="language-java">public Optional&lt;User&gt; getOptional(Integer id){
+  return Optional.ofNullable(userRepository.selectByPrimaryKey(id));
+}
+</code></pre>
+
+<h4 id="深入入参">深入入参</h4>
+
+<p>通过上述的所有接口的描述，你能确定入参id一定是必传的吗？我觉得答案应该是：不能确定。除非接口的文档注释上加以说明。</p>
+
+<p><strong>那如何约束入参呢?</strong></p>
+
+<p>我给大家推荐两种方式：</p>
+
+<ul>
+<li><p>强制约束</p></li>
+
+<li><p>文档性约束（弱提示）</p></li>
+</ul>
+
+<p><strong>1.强制约束，我们可以通过jsr 303进行严格的约束声明:</strong></p>
+
+<pre><code class="language-java">public interface UserSearchService{
+  /**
+   * 根据用户id获取用户信息
+   * @param id 用户id
+   * @return 用户实体
+   * @exception UserNotFoundException
+   */
+  User get(@NotNull Integer id);
+
+  /**
+   * 根据用户id获取用户信息
+   * @param id 用户id
+   * @return 用户实体,此实体有可能是缺省值
+   */
+  Optional&lt;User&gt; getOptional(@NotNull Integer id);
+}
+</code></pre>
+
+<p>当然，这样写，要配合AOP的操作进行验证，但让spring已经提供了很好的集成方案，在此我就不在赘述了。</p>
+
+<p><strong>2.文档性约束</strong></p>
+
+<p>在很多时候，我们会遇到遗留代码，对于遗留代码，整体性改造的可能性很小。</p>
+
+<p>我们更希望通过阅读接口的实现，来进行接口的说明。</p>
+
+<p>jsr 305规范，给了我们一个描述接口入参的一个方式(需要引入库 com.google.code.findbugs:jsr305):</p>
+
+<p>可以使用注解: @Nullable @Nonnull @CheckForNull 进行接口说明。比如:</p>
+
+<pre><code class="language-java">public interface UserSearchService{
+  /**
+   * 根据用户id获取用户信息
+   * @param id 用户id
+   * @return 用户实体
+   * @exception UserNotFoundException
+   */
+  @CheckForNull
+  User get(@NonNull Integer id);
+
+  /**
+   * 根据用户id获取用户信息
+   * @param id 用户id
+   * @return 用户实体,此实体有可能是缺省值
+   */
+  Optional&lt;User&gt; getOptional(@NonNull Integer id);
+}
+</code></pre>
+
+<h4 id="小结">小结</h4>
+
+<p>通过 空集合返回值,Optional,jsr 303，jsr 305这几种方式，可以让我们的代码可读性更强，出错率更低！</p>
+
+<ul>
+<li><p>空集合返回值 ：如果有集合这样返回值时，除非真的有说服自己的理由，否则，一定要返回空集合，而不是null</p></li>
+
+<li><p>Optional: 如果你的代码是jdk8，就引入它！如果不是，则使用Guava的Optional,或者升级jdk版本！它很大程度的能增加了接口的可读性！</p></li>
+
+<li><p>jsr 303: 如果新的项目正在开发，不防加上这个试试！一定有一种特别爽的感觉!</p></li>
+
+<li><p>jsr 305: 如果老的项目在你的手上，你可以尝试的加上这种文档型注解，有助于你后期的重构，或者新功能增加了，对于老接口的理解!</p>
+
+<h2 id="空对象模式">空对象模式</h2></li>
+</ul>
+
+<h4 id="场景-1">场景</h4>
+
+<p>我们来看一个DTO转化的场景，对象:</p>
+
+<pre><code class="language-java">@Data
+static class PersonDTO{
+  private String dtoName;
+  private String dtoAge;
+}
+
+@Data
+static class Person{
+  private String name;
+  private String age;
+}
+</code></pre>
+
+<p>需求是将Person对象转化成PersonDTO，然后进行返回。</p>
+
+<p>当然对于实际操作来讲，返回如果Person为空，将返回null,但是PersonDTO是不能返回null的（尤其Rest接口返回的这种DTO）。</p>
+
+<p>在这里，我们只关注转化操作，看如下代码:</p>
+
+<pre><code class="language-java">@Test
+public void shouldConvertDTO(){
+
+  PersonDTO personDTO = new PersonDTO();
+
+  Person person = new Person();
+  if(!Objects.isNull(person)){
+    personDTO.setDtoAge(person.getAge());
+    personDTO.setDtoName(person.getName());
+  }else{
+    personDTO.setDtoAge(&quot;&quot;);
+    personDTO.setDtoName(&quot;&quot;);
+  }
+}
+</code></pre>
+
+<h4 id="优化修改">优化修改</h4>
+
+<p>这样的数据转化，我们认识可读性非常差，每个字段的判断，如果是空就设置为空字符串(“”)</p>
+
+<p>换一种思维方式进行思考，我们是拿到Person这个类的数据，然后进行赋值操作(setXXX),其实是不关系Person的具体实现是谁的。</p>
+
+<p>那我们可以创建一个Person子类:</p>
+
+<pre><code class="language-java">static class NullPerson extends Person{
+  @Override
+  public String getAge() {
+    return &quot;&quot;;
+  }
+
+  @Override
+  public String getName() {
+    return &quot;&quot;;
+  }
+}
+</code></pre>
+
+<p>它作为Person的一种特例而存在，如果当Person为空的时候，则返回一些get*的默认行为.</p>
+
+<p>所以代码可以修改为:</p>
+
+<pre><code class="language-java">@Test
+public void shouldConvertDTO(){
+
+  PersonDTO personDTO = new PersonDTO();
+
+  Person person = getPerson();
+  personDTO.setDtoAge(person.getAge());
+  personDTO.setDtoName(person.getName());
+}
+
+private Person getPerson(){
+  return new NullPerson();//如果Person是null ,则返回空对象
+}
+</code></pre>
+
+<p>其中getPerson()方法，可以用来根据业务逻辑获取Person有可能的对象（对当前例子来讲，如果Person不存在，返回Person的的特例NUllPerson），如果修改成这样，代码的可读性就会变的很强了。</p>
+
+<h4 id="使用optional可以进行优化">使用Optional可以进行优化</h4>
+
+<p>空对象模式，它的弊端在于需要创建一个特例对象，但是如果特例的情况比较多，我们是不是需要创建多个特例对象呢，虽然我们也使用了面向对象的多态特性，但是，业务的复杂性如果真的让我们创建多个特例对象，我们还是要再三考虑一下这种模式，它可能会带来代码的复杂性。</p>
+
+<p>对于上述代码，还可以使用Optional进行优化。</p>
+
+<pre><code class="language-java">@Test
+public void shouldConvertDTO(){
+
+  PersonDTO personDTO = new PersonDTO();
+
+  Optional.ofNullable(getPerson()).ifPresent(person -&gt; {
+    personDTO.setDtoAge(person.getAge());
+    personDTO.setDtoName(person.getName());
+  });
+}
+
+private Person getPerson(){
+  return null;
+}
+</code></pre>
+
+<p>Optional对空值的使用，我觉得更为贴切，它只适用于”是否存在”的场景。</p>
+
+<p>如果只对控制的存在判断，我建议使用Optional.</p>
+
+<h4 id="optioanl的正确使用">Optioanl的正确使用</h4>
+
+<p>Optional如此强大，它表达了计算机最原始的特性(0 or 1),那它如何正确的被使用呢!</p>
+
+<h4 id="optional不要作为参数">Optional不要作为参数</h4>
+
+<p>如果你写了一个public方法，这个方法规定了一些输入参数，这些参数中有一些是可以传入null的，那这时候是否可以使用Optional呢？</p>
+
+<p><strong>我给的建议是: 一定不要这样使用!</strong></p>
+
+<p>举个例子:</p>
+
+<pre><code class="language-java">public interface UserService{
+  List&lt;User&gt; listUser(Optional&lt;String&gt; username);
+}
+</code></pre>
+
+<p>这个例子的方法 listUser,可能在告诉我们需要根据username查询所有数据集合，如果username是空，也要返回所有的用户集合.</p>
+
+<p>当我们看到这个方法的时候，会觉得有一些歧义:</p>
+
+<blockquote>
+<p>“如果username是absent,是返回空集合吗？还是返回全部的用户数据集合？”</p>
+</blockquote>
+
+<p>Optioanl是一种分支的判断，那我们究竟是关注 Optional还是Optional.get()呢？</p>
+
+<p><strong>我给大家的建议是，如果不想要这样的歧义，就不要使用它！</strong></p>
+
+<p>如果你真的想表达两个含义，就給它拆分出两个接口:</p>
+
+<pre><code class="language-java">public interface UserService{
+  List&lt;User&gt; listUser(String username);
+  List&lt;User&gt; listUser();
+}
+</code></pre>
+
+<p>我觉得这样的语义更强，并且更能满足 软件设计原则中的 “单一职责”。</p>
+
+<p>如果你觉得你的入参真的有必要可能传null,那请使用jsr 303或者jsr 305进行说明和验证!</p>
+
+<p><strong>请记住! Optional不能作为入参的参数!</strong></p>
+
+<h2 id="optional作为返回值">Optional作为返回值</h2>
+
+<h4 id="当个实体的返回">当个实体的返回</h4>
+
+<p>那Optioanl可以做为返回值吗？</p>
+
+<p>其实它是非常满足是否存在这个语义的。</p>
+
+<p>你如说，你要根据id获取用户信息，这个用户有可能存在或者不存在。</p>
+
+<p>你可以这样使用:</p>
+
+<pre><code class="language-java">public interface UserService{
+  Optional&lt;User&gt; get(Integer id);
+}
+</code></pre>
+
+<p>当调用这个方法的时候，调用者很清楚get方法返回的数据，有可能不存在，这样可以做一些更合理的判断，更好的防止空指针的错误！</p>
+
+<p>当然，如果业务方真的需要根据id必须查询出User的话，就不要这样使用了，请说明，你要抛出的异常.</p>
+
+<p>只有当考虑它返回null是合理的情况下，才进行Optional的返回</p>
+
+<h4 id="集合实体的返回">集合实体的返回</h4>
+
+<p>不是所有的返回值都可以这样用的！如果你返回的是集合：</p>
+
+<pre><code class="language-java">public interface UserService{
+  Optional&lt;List&lt;User&gt;&gt; listUser();
+}
+</code></pre>
+
+<p>这样的返回结果，会让调用者不知所措，是否我判断Optional之后，还用进行isEmpty的判断呢？</p>
+
+<p>这样带来的返回值歧义！我认为是没有必要的。</p>
+
+<p>我们要约定，对于List这种集合返回值，如果集合真的是null的，请返回空集合(Lists.newArrayList);</p>
+
+<h2 id="使用optional变量">使用Optional变量</h2>
+
+<pre><code class="language-java">Optional&lt;User&gt; userOpt = ...
+</code></pre>
+
+<p>如果有这样的变量userOpt,请记住 ：</p>
+
+<ul>
+<li><p>一定不能直接使用get ，如果这样用，就丧失了Optional本身的含义 （ 比如userOp.get() ）</p></li>
+
+<li><p>不要直接使用getOrThrow ,如果你有这样的需求：获取不到就抛异常。那就要考虑，是否是调用的接口设计的是否合理</p>
+
+<h4 id="getter中的使用">getter中的使用</h4></li>
+</ul>
+
+<p>对于一个java bean,所有的属性都有可能返回null,那是否需要改写所有的getter成为Optional类型呢？</p>
+
+<p><strong>我给大家的建议是，不要这样滥用Optional.</strong></p>
+
+<p>即便 我java bean中的getter是符合Optional的，但是因为java bean 太多了，这样会导致你的代码有50%以上进行Optinal的判断，这样便污染了代码。(我想说，其实你的实体中的字段应该都是由业务含义的，会认真的思考过它存在的价值的，不能因为Optional的存在而滥用)</p>
+
+<p>我们应该更关注于业务，而不只是空值的判断。</p>
+
+<p>请不要在getter中滥用Optional.</p>
+
+<h4 id="小结-1">小结</h4>
+
+<p>可以这样总结Optional的使用：
+- 当使用值为空的情况，并非源于错误时，可以使用Optional!
+- Optional不要用于集合操作!
+- 不要滥用Optional,比如在java bean的getter中!</p>
+
+<h3 id="end">END</h3>
+
+            <p class="post-meta border-bottom pb-3 mb-0">Updated on 30 Oct 2019</p><nav class="pagination mt-3"><a class="nav nav-prev" href="https://hideric.github.io/java/basis/java-%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%8B%BC%E6%8E%A5%E5%A7%BF%E5%8A%BF/" title="Java 字符串拼接姿势"><i class="ti-arrow-left mr-2"></i>Java 字符串拼接姿势</a>
+            <a class="nav nav-next" href="https://hideric.github.io/java/basis/jvm/jvm-%E5%A0%86%E5%86%85%E5%AD%98%E6%BA%A2%E5%87%BA%E5%90%8E%E5%85%B6%E4%BB%96%E7%BA%BF%E7%A8%8B%E6%98%AF%E5%90%A6%E5%8F%AF%E7%BB%A7%E7%BB%AD%E5%B7%A5%E4%BD%9C/" title="JVM 堆内存溢出后，其他线程是否可继续工作？">JVM 堆内存溢出后，其他线程是否可继续工作？<i class="ti-arrow-right ml-2"></i></a>
+            </nav></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- footer -->
+<footer class="section bg-gray pb-0">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-8 text-md-left text-center">
+        <p>The Hugo Documents are copyright © gethugothemes 2018.</p> 
+      </div>
+      <div class="col-md-4 text-md-right text-center">
+        <ul class="list-inline mb-3">
+          
+          <li class="list-inline-item"><a class="text-color d-inline-block p-2" href="#"><i class="ti-facebook"></i></a></li>
+          
+          <li class="list-inline-item"><a class="text-color d-inline-block p-2" href="#"><i class="ti-twitter-alt"></i></a></li>
+          
+          <li class="list-inline-item"><a class="text-color d-inline-block p-2" href="#"><i class="ti-vimeo-alt"></i></a></li>
+          
+          <li class="list-inline-item"><a class="text-color d-inline-block p-2" href="#"><i class="ti-instagram"></i></a></li>
+          
+        </ul>
+      </div>
+    </div>
+  </div>
+</footer>
+<!-- /footer -->
+
+<!-- Bootstrap JS -->
+<script src="https://hideric.github.io/plugins/bootstrap/bootstrap.min.js"></script>
+<!-- highlight -->
+<script src="https://hideric.github.io/plugins/highlight/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+<!-- Main Script -->
+
+<script src="https://hideric.github.io/js/script.min.js"></script>
