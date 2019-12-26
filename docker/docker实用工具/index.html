@@ -1,0 +1,620 @@
+<head>
+  <meta charset="utf-8">
+  <title>docker实用工具</title>
+
+  <meta name="generator" content="Hugo 0.58.3" />
+
+  <!-- mobile responsive meta -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <!-- ** Plugins Needed for the Project ** -->
+  <!-- Bootstrap -->
+  <link rel="stylesheet" href="http://hideric.github.io/plugins/bootstrap/bootstrap.min.css">
+  <!-- themefy-icon -->
+  <link rel="stylesheet" href="http://hideric.github.io/plugins/themify-icons/themify-icons.css">
+  <!-- highlight -->
+  <link rel="stylesheet" href="http://hideric.github.io/plugins/highlight/hybrid.css">
+  <!-- fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700" rel="stylesheet">
+
+  <style>
+  :root{
+    --primary-color:#2f1f48;
+    --secondary-color:#f9f9f9;
+    --text-color:#636363;
+    --text-color-dark:#242738;
+    --white-color:#ffffff;
+  }  
+  </style>
+
+  <!-- Main Stylesheet -->
+  
+  <link rel="stylesheet" href="http://hideric.github.io/css/style.min.css" integrity="" media="screen">
+
+  <!-- jquiry -->
+  <script src="http://hideric.github.io/plugins/jquery/jquery-1.12.4.js"></script>
+
+  <!-- jquary ui -->
+  <script src="http://hideric.github.io/plugins/jquery/jquery-ui.js"></script>
+
+  <!--Favicon-->
+  <link rel="icon" href="http://hideric.github.io/images/favicon.png" type="image/x-icon">
+
+</head>
+
+
+<!-- navigation -->
+<header class="shadow-bottom sticky-top bg-white">
+  <div class="container">
+    <nav class="navbar navbar-expand-lg navbar-light">
+  <a class="navbar-brand" href="http://hideric.github.io/">Hideric</a>
+  <button class="navbar-toggler border-0" type="button" data-toggle="collapse" data-target="#navigation"
+    aria-controls="navigation" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse text-center" id="navigation">
+    <ul class="navbar-nav ml-auto">
+      <li class="nav-item">
+        <a class="nav-link text-dark" href="http://hideric.github.io/">Home</a>
+      </li>
+      
+      
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle text-dark" href="#" role="button" data-toggle="dropdown" aria-haspopup="true"
+          aria-expanded="false">
+          Back-End
+        </a>
+        <div class="dropdown-menu" >
+          
+          <a class="dropdown-item" href="http://hideric.github.io/java">Java</a>
+          
+          <a class="dropdown-item" href="http://hideric.github.io/python">Python</a>
+          
+          <a class="dropdown-item" href="http://hideric.github.io/go">Go</a>
+          
+          <a class="dropdown-item" href="http://hideric.github.io/cpp">C&#43;&#43;</a>
+          
+        </div>
+      </li>
+      
+      
+      
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle text-dark" href="#" role="button" data-toggle="dropdown" aria-haspopup="true"
+          aria-expanded="false">
+          DB
+        </a>
+        <div class="dropdown-menu" >
+          
+          <a class="dropdown-item" href="http://hideric.github.io/mysql">Mysql</a>
+          
+          <a class="dropdown-item" href="http://hideric.github.io/oracle">Oracle</a>
+          
+        </div>
+      </li>
+      
+      
+      
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle text-dark" href="#" role="button" data-toggle="dropdown" aria-haspopup="true"
+          aria-expanded="false">
+          Front-End
+        </a>
+        <div class="dropdown-menu" >
+          
+          <a class="dropdown-item" href="http://hideric.github.io/js">JavaScript</a>
+          
+          <a class="dropdown-item" href="http://hideric.github.io/vue">Vue</a>
+          
+          <a class="dropdown-item" href="http://hideric.github.io/react">React</a>
+          
+          <a class="dropdown-item" href="http://hideric.github.io/rn">React Native</a>
+          
+        </div>
+      </li>
+      
+      
+      
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle text-dark" href="#" role="button" data-toggle="dropdown" aria-haspopup="true"
+          aria-expanded="false">
+          Mid-Ware
+        </a>
+        <div class="dropdown-menu" >
+          
+          <a class="dropdown-item" href="http://hideric.github.io/redis">Redis</a>
+          
+          <a class="dropdown-item" href="http://hideric.github.io/nginx">Nginx</a>
+          
+        </div>
+      </li>
+      
+      
+      
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle text-dark" href="#" role="button" data-toggle="dropdown" aria-haspopup="true"
+          aria-expanded="false">
+          Mobile
+        </a>
+        <div class="dropdown-menu" >
+          
+          <a class="dropdown-item" href="http://hideric.github.io/android">Android</a>
+          
+          <a class="dropdown-item" href="http://hideric.github.io/ios">IOS</a>
+          
+        </div>
+      </li>
+      
+      
+      
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle text-dark" href="#" role="button" data-toggle="dropdown" aria-haspopup="true"
+          aria-expanded="false">
+          OPS
+        </a>
+        <div class="dropdown-menu" >
+          
+          <a class="dropdown-item" href="http://hideric.github.io/k8s">kubernetes</a>
+          
+          <a class="dropdown-item" href="http://hideric.github.io/docker">Docker</a>
+          
+          <a class="dropdown-item" href="http://hideric.github.io/leetcode">Leetcode</a>
+          
+          <a class="dropdown-item" href="http://hideric.github.io/linux">Linux</a>
+          
+        </div>
+      </li>
+      
+      
+      
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle text-dark" href="#" role="button" data-toggle="dropdown" aria-haspopup="true"
+          aria-expanded="false">
+          pages
+        </a>
+        <div class="dropdown-menu" >
+          
+          <a class="dropdown-item" href="http://hideric.github.io/faq">FAQ</a>
+          
+          <a class="dropdown-item" href="http://hideric.github.io/contact">CONTACT</a>
+          
+          <a class="dropdown-item" href="http://hideric.github.io/elements">ELEMENTS</a>
+          
+          <a class="dropdown-item" href="http://hideric.github.io/others">OTHERS</a>
+          
+        </div>
+      </li>
+      
+      
+    </ul>
+    
+    <ul class="list-inline text-center mb-0">
+      
+    </ul>
+  </div>
+</nav>
+  </div>
+</header>
+<!-- /navigation -->
+
+
+<section class="single pt-5 bg-gray">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-3">
+        <div class="p-4 bg-white sticky-top top-100">
+            
+            <nav class="sidebar-menu">
+              <ul class="list-styled">
+            <li class=""><a href="http://hideric.github.io/android/">Android</a>
+              <ul class="">
+            <li class=""><a href="http://hideric.github.io/android/kotlin/kotlin%E5%9B%A2%E9%98%9F%E5%8D%8F%E4%BD%9C/">Kotlin开发服务端应用</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/android/kotlin/kotlin%E7%9A%84%E6%89%A9%E5%B1%95%E5%BA%93/">Kotlin的扩展库</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/android/kotlin/kotlin%E8%AF%AD%E6%B3%95%E7%89%B9%E6%80%A7%E8%83%8C%E5%90%8E%E7%9A%84%E7%9F%A5%E8%AF%86/">Kotlin语法特性背后的知识</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/android/kotlin/kotlin%E9%AB%98%E7%BA%A7%E7%89%B9%E6%80%A7/">Kotlin高级特性</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/android/kotlin/%E7%B1%BB%E4%B8%8E%E5%AF%B9%E8%B1%A1/">类与对象</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/android/kotlin/%E5%87%BD%E6%95%B0%E4%B8%8Elambda%E9%97%AD%E5%8C%85/">函数与Lambda闭包</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/android/kotlin/kotlin%E5%9F%BA%E7%A1%80/">kotlin基础</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/android/tool/f-droidapps/">F-Droid Apps Recommendation</a>
+            </li></ul>
+              
+            </li>
+            <li class=""><a href="http://hideric.github.io/cpp/">C&#43;&#43;</a>
+              <ul class="">
+            <li class=""><a href="http://hideric.github.io/cpp/cprimer/cprimer-%E5%AD%98%E5%82%A8%E7%B1%BB%E5%88%AB%E5%92%8C%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/">CPrimer - 数组与指针</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/cpp/cprimer/cprimer-%E6%95%B0%E7%BB%84%E4%B8%8E%E6%8C%87%E9%92%88/">CPrimer - 数组与指针</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/cpp/cprimer/cprimer-%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%92%8C%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%87%BD%E6%95%B0/">CPrimer - 字符串和字符串函数</a>
+            </li></ul>
+              
+            </li>
+            <li class="parent d-block "><a href="http://hideric.github.io/docker/">Docker</a>
+              <ul class="sub-menu">
+            <li class=" active "><a href="http://hideric.github.io/docker/docker%E5%AE%9E%E7%94%A8%E5%B7%A5%E5%85%B7/">docker实用工具</a>
+            </li></ul>
+              
+            </li>
+            <li class=""><a href="http://hideric.github.io/go/">Go</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/ios/">IOS</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/java/">Java</a>
+              <ul class="">
+            <li class=""><a href="http://hideric.github.io/java/basis/jdk1.8%E7%9A%84localdatetime/">jdk1.8的LocalDateTime</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/java/network/%E4%BD%BF%E7%94%A8dubbo%E8%BF%87%E7%A8%8B%E4%B8%AD%E9%81%87%E5%88%B0%E8%BF%87%E5%93%AA%E4%BA%9B%E5%9D%91/">QPS、TPS、PV、UV、GMV、IP、RPS</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/java/basis/jvm/jvm%E7%AC%94%E8%AE%B0/">JVM笔记</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/java/basis/http%E6%96%AD%E7%82%B9%E7%BB%AD%E4%BC%A0/">HTTP断点续传</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/java/basis/java-%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8/">Java 垃圾收集器</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/java/basis/java-%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%8B%BC%E6%8E%A5%E5%A7%BF%E5%8A%BF/">Java 字符串拼接姿势</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/java/basis/java-%E5%A6%82%E4%BD%95%E6%9B%B4%E4%BC%98%E9%9B%85%E7%9A%84%E5%A4%84%E7%90%86%E7%A9%BA%E5%80%BC/">Java-如何更优雅的处理空值</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/java/basis/jvm/jvm-%E5%A0%86%E5%86%85%E5%AD%98%E6%BA%A2%E5%87%BA%E5%90%8E%E5%85%B6%E4%BB%96%E7%BA%BF%E7%A8%8B%E6%98%AF%E5%90%A6%E5%8F%AF%E7%BB%A7%E7%BB%AD%E5%B7%A5%E4%BD%9C/">JVM 堆内存溢出后，其他线程是否可继续工作？</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/java/framework/mybatis/mybatis%E4%B8%ADlike-%E7%9A%84%E4%BD%BF%E7%94%A8%E6%96%B9%E5%BC%8F%E4%BB%A5%E5%8F%8A%E4%B8%80%E4%BA%9B%E6%B3%A8%E6%84%8F%E7%82%B9/">Mybatis中Like 的使用方式以及一些注意点</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/java/framework/mybatis/mybatis%E5%B1%85%E7%84%B6%E6%9C%89%E5%9D%91%E5%8D%83%E4%B8%87%E5%88%AB%E8%B8%A9/">Mybatis居然有坑，千万别踩！</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/java/framework/spring/spring%E5%BE%AA%E7%8E%AF%E4%BE%9D%E8%B5%96%E7%9A%84%E5%9D%91/">Spring循环依赖的坑</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/java/framework/spring/spring%E7%9A%84%E5%90%84%E7%A7%8D%E6%B3%A8%E8%A7%A3/">Spring的各种注解</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/java/basis/%E4%BB%8E%E5%AE%9E%E8%B7%B5%E8%A7%92%E5%BA%A6%E9%87%8D%E6%96%B0%E7%90%86%E8%A7%A3bio%E5%92%8Cnio/">从实践角度重新理解BIO和NIO</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/java/basis/%E5%85%B3%E4%BA%8E-git-%E6%8F%90%E4%BA%A4%E8%A7%84%E8%8C%83/">关于 Git 提交规范</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/java/basis/jvm/%E6%B3%A8%E6%84%8Fcode-cache%E6%89%93%E6%BB%A1%E5%8F%AF%E5%AF%BC%E8%87%B4%E5%BA%94%E7%94%A8%E6%80%A7%E8%83%BD%E9%99%8D%E4%BD%8E/">注意，Code Cache打满可导致应用性能降低</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/java/basis/hashmap%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/">HashMap源码分析</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/java/framework/spring/spring-%E5%AE%B9%E5%99%A8%E5%90%AF%E5%8A%A8%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/">Spring 容器启动源码解析</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/java/framework/spring/spring-%E7%9A%84-beanutils-%E5%A1%AB%E5%9D%91%E8%AE%B0/">Spring 的 BeanUtils 填坑记</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/java/basis/weakhashmap%E7%94%9F%E4%BA%86%E7%97%85%E7%9A%84-hashmap-/">WeakHashMap，生了病的 HashMap ？</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/java/framework/dubbo/%E4%BD%BF%E7%94%A8dubbo%E8%BF%87%E7%A8%8B%E4%B8%AD%E9%81%87%E5%88%B0%E8%BF%87%E5%93%AA%E4%BA%9B%E5%9D%91/">使用dubbo过程中遇到过哪些坑？</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/java/basis/%E4%B8%80%E4%B8%AAjava%E5%AF%B9%E8%B1%A1%E5%88%B0%E5%BA%95%E5%8D%A0%E7%94%A8%E5%A4%9A%E5%A4%A7%E5%86%85%E5%AD%98/">一个Java对象到底占用多大内存？</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/java/basis/%E4%BD%A0%E7%9C%9F%E7%9A%84%E4%BA%86%E8%A7%A3logback%E5%90%97/">你真的了解logback吗？</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/java/basis/%E8%BF%99%E5%8F%AF%E8%83%BD%E6%98%AFgithub%E4%B8%8A%E6%9C%80%E5%8F%8B%E5%A5%BD%E7%9A%84%E5%88%86%E5%B8%83%E5%BC%8F%E5%8D%B3%E6%97%B6%E9%80%9A%E8%AE%AF%E9%A1%B9%E7%9B%AE..../">这可能是Github上最友好的分布式即时通讯项目.....</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/java/basis/java-8-stream-%E9%9B%86%E5%90%88%E6%93%8D%E4%BD%9C%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B/">Java 8 - Stream 集合操作快速上手</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/java/basis/concurrency/stringbuilder-%E4%B8%BA%E4%BB%80%E4%B9%88%E7%BA%BF%E7%A8%8B%E4%B8%8D%E5%AE%89%E5%85%A8/">StringBuilder 为什么线程不安全？</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/java/basis/jvm/jvm%E4%BC%98%E5%8C%96%E4%B9%8B%E9%80%83%E9%80%B8%E5%88%86%E6%9E%90%E4%B8%8E%E5%88%86%E9%85%8D%E6%B6%88%E9%99%A4/">JVM优化之逃逸分析与分配消除</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/java/framework/security/shiro%E6%A1%86%E6%9E%B6-%E7%94%A8%E6%88%B7%E6%9D%83%E9%99%90%E7%AE%A1%E7%90%86/">Shiro框架 - 用户权限管理</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/java/basis/concurrency/threadlocal%E9%9D%A2%E8%AF%95%E9%A2%98/">ThreadLocal面试题</a>
+            </li></ul>
+              
+            </li>
+            <li class=""><a href="http://hideric.github.io/js/">JavaScript</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/k8s/">Kubernets</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/leetcode/">Leetcode</a>
+              <ul class="">
+            <li class=""><a href="http://hideric.github.io/leetcode/leetcode-5/">LeetCode #5 最长回文子字符串</a>
+            </li></ul>
+              
+            </li>
+            <li class=""><a href="http://hideric.github.io/linux/">Linux</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/mysql/">Mysql</a>
+              <ul class="">
+            <li class=""><a href="http://hideric.github.io/mysql/mysql%E4%BA%8B%E5%8A%A1%E4%B8%8E%E9%9A%94%E7%A6%BB%E7%BA%A7%E5%88%AB/">MySQL事务与隔离级别</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/mysql/mysql%E9%9D%A2%E8%AF%95%E9%A2%98%E5%8F%8A%E5%8D%83%E4%B8%87%E7%BA%A7%E6%95%B0%E6%8D%AE%E6%9F%A5%E8%AF%A2%E4%BC%98%E5%8C%96/">Mysql面试题及千万级数据查询优化</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/mysql/mysql%E7%9A%84count%E8%AF%AD%E5%8F%A5/">MySQL的COUNT语句</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/mysql/mysql-%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E6%80%9D%E8%B7%AF/">MySQL 性能优化思路</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/mysql/%E5%AE%98%E6%96%B9%E5%B7%A5%E5%85%B7mysql-router-%E9%AB%98%E5%8F%AF%E7%94%A8%E5%8E%9F%E7%90%86%E4%B8%8E%E5%AE%9E%E6%88%98/">官方工具｜MySQL Router 高可用原理与实战</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/mysql/mysql-%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%968-%E7%A7%8D%E5%B8%B8%E8%A7%81-sql-%E9%94%99%E8%AF%AF%E7%94%A8%E6%B3%95/">MySQL 性能优化：8 种常见 SQL 错误用法！</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/mysql/index/null%E8%83%BD%E7%94%A8%E7%B4%A2%E5%BC%95/">MySQL中IS NULL、IS NOT NULL、!=不能用索引？</a>
+            </li></ul>
+              
+            </li>
+            <li class=""><a href="http://hideric.github.io/nginx/">Nginx</a>
+              <ul class="">
+            <li class=""><a href="http://hideric.github.io/nginx/%E5%90%8E%E7%AB%AF%E5%AE%9E%E8%B7%B5nginx%E6%97%A5%E5%BF%97%E9%85%8D%E7%BD%AE%E8%B6%85%E8%AF%A6%E7%BB%86/">后端实践：Nginx日志配置（超详细）</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/nginx/%E4%BD%BF%E7%94%A8nginx%E8%BF%9B%E8%A1%8C%E5%9B%9B%E5%B1%82%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1/">使用Nginx进行四层负载均衡</a>
+            </li></ul>
+              
+            </li>
+            <li class=""><a href="http://hideric.github.io/oracle/">Oracle</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/others/">OTHERS</a>
+              <ul class="">
+            <li class=""><a href="http://hideric.github.io/others/term/qps%E6%9C%AF%E8%AF%AD/">秒懂 QPS、TPS、PV、UV、GMV、IP、RPS！</a>
+            </li></ul>
+              
+            </li>
+            <li class=""><a href="http://hideric.github.io/python/">Python</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/react/">React</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/rn/">React Native</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/redis/">Redis</a>
+              <ul class="">
+            <li class=""><a href="http://hideric.github.io/redis/%E5%A6%82%E4%BD%95%E7%94%A8-redis-%E7%BB%9F%E8%AE%A1%E7%8B%AC%E7%AB%8B%E7%94%A8%E6%88%B7%E8%AE%BF%E9%97%AE%E9%87%8F/">如何用 Redis 统计独立用户访问量？</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/redis/redis-%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81%E7%9A%84%E6%AD%A3%E7%A1%AE%E5%AE%9E%E7%8E%B0%E6%96%B9%E5%BC%8Fjava%E7%89%88/">Redis 分布式锁的正确实现方式（Java版）</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/redis/redis-%E5%AE%9E%E7%8E%B0%E9%99%84%E8%BF%91%E7%9A%84%E4%BA%BA%E5%8A%9F%E8%83%BD/">Redis 实现“附近的人”功能</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/redis/%E4%B8%BA%E4%BB%80%E4%B9%88rediscluster%E6%9C%8916384%E4%B8%AA%E6%A7%BD/">为什么RedisCluster有16384个槽?</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/redis/%E5%AD%A6%E4%BC%9A%E8%BF%99%E5%87%A0%E4%B8%AAredis%E6%8A%80%E5%B7%A7%E8%AE%A9%E4%BD%A0%E7%9A%84%E7%A8%8B%E5%BA%8F%E5%BF%AB%E5%A6%82%E9%97%AA%E7%94%B5/">学会这几个Redis技巧，让你的程序快如闪电</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/redis/%E6%AF%94redis%E8%BF%98%E5%BF%AB5%E5%80%8D%E7%9A%84%E4%B8%AD%E9%97%B4%E4%BB%B6%E4%B8%BA%E5%95%A5%E8%BF%99%E4%B9%88%E5%BF%AB/">比Redis还快5倍的中间件，为啥这么快？</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/redis/redis%E9%AB%98%E7%BA%A7%E5%AE%A2%E6%88%B7%E7%AB%AFlettuce%E8%AF%A6%E8%A7%A3/">Redis高级客户端Lettuce详解</a>
+            </li></ul>
+              
+            </li>
+            <li class=""><a href="http://hideric.github.io/vue/">Vue</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/contact/">Contact</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/elements/">Elements</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/faq/">Frequently Asked Questions</a>
+            </li></ul>
+            </nav>
+
+            
+        </div>
+      </div>
+      <div class="col-lg-9">
+        <div class="p-5 bg-white">
+            <h2>docker实用工具</h2>
+            
+
+<h2 id="docker实用工具">docker实用工具</h2>
+
+<h4 id="docker-gc-容器和镜像的垃圾回收-被-docker-system-prune-替代"><del>docker-gc：容器和镜像的垃圾回收</del> (被 <code>docker system prune</code> 替代)</h4>
+
+<p>Docker-gc 工具通过删除不需要的容器和镜像来帮你清理 Docker 主机。它会删除存在超过一个小时的所有容器。此外，它还删除不属于任何留置容器的镜像。</p>
+
+<p>你可以将 docker-gc 作为脚本和容器来使用。我们将以容器的形式运行 docker-gc。若要使用 docker-gc 来查找所有可以删除的容器和镜像，命令如下：</p>
+
+<pre><code class="language-bash">$ docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -e DRY RUN=1 spotify/docker-gc
+</code></pre>
+
+<p>上述命令中，我们加载了 docker.sock 文件，以便 docker-gc 能够与 Docker API 交互。我们传递了一个环境变量 DRY_RUN=1 来查找将被删除的容器和镜像。如果不提供该参数，docker-gc 会删除所有容器和镜像。最好事先确认 docker-gc 要删除的内容。上述命令的输出如下所示：</p>
+
+<pre><code class="language-bash">[2017-04-28T06:27:24] [INFO] : The following container would have been removed 0c1b3b0972bb792bee508 60c35a4 bc08ba32b527d53eab173d12a15c28deb931/vibrant_ yonath
+[2017-04-28T06:27:24] [INFO] : The following container would have been removed 2a72d41e4b25e2782f7844e188643e395650a9ecca660e7a0dc2b7989e5acc28 
+/friendlyhello_ web
+[2017-04-28T06:27:24] [INFO] : The following image would have been removed sha256:00f017a8c2a6e1 fe2f fd05c281 f27d069d2a99323a8cd514dd35f228ba26d2ff
+[busybox: latest]
+[2017-04-28T06:27:24] [ INFO] : The following image would have been removed sha256 :4a323b466a5ac4ce6524 8dd970b538922c54e535700cafe9448b52a3094483ea
+[hello-world:latest]
+[2017-04-28T06:27:24] [INFO] : The following image would have been removed sha256:4a323b4 66a5ac4ce65248dd970b538922c54e535700cafe9448b52a3094483ea
+[python:2.7-slim]
+</code></pre>
+
+<p>docker-gc 还支持一些其他的选项。建议你阅读 docker-gc 文档以了解更多相关信息：</p>
+
+<blockquote>
+<p><a href="https://github.com/spotify/docker-gc/blob/master/README.md">https://github.com/spotify/docker-gc/blob/master/README.md</a></p>
+</blockquote>
+
+<p>GitHub 地址：</p>
+
+<blockquote>
+<p><a href="https://github.com/spotify/docker-gc">https://github.com/spotify/docker-gc</a></p>
+</blockquote>
+
+<h4 id="docker-slim-面向容器的神奇减肥药">docker-slim：面向容器的神奇减肥药</h4>
+
+<p>如果你担心你的 Docker 镜像的大小，docker-slim 可以帮你排忧解难。</p>
+
+<p>docker-slim 工具使用静态和动态分析方法来为你臃肿的镜像瘦身。要使用 docker-slim，可以从 Github 下载 Linux 或者 Mac 的二进制安装包。成功下载之后，将它加入到你的系统变量 PATH 中。</p>
+
+<p>为举例需要，我参考 Docker 官方文档创建了一个名为 friendlyhello 的 Docker 镜像，该镜像大小为 194MB</p>
+
+<p>你可以看到，对于一个简单的应用程序，我们必须下载 194 MB 的数据。让我们用 docker-slim 来看看它能减掉多少脂肪。</p>
+
+<pre><code class="language-bash">docker-slim build --http-probe friendlyhello
+</code></pre>
+
+<p>docker-slim 工具对胖镜像进行一系列的检查、测量，最终创建一个瘦版本的镜像。</p>
+
+<p>镜像大小被减少到 24.9 MB。你可以启动这个容器，它将以同样的方式运行。docker-slim 工具支持 Java、Python、Ruby 和 Node.js 应用。</p>
+
+<p>你可以从其文档中了解更多关于 docker-slim 的信息：</p>
+
+<blockquote>
+<p><a href="https://github.com/docker-slim/docker-slim/blob/master/README.md">https://github.com/docker-slim/docker-slim/blob/master/README.md</a></p>
+</blockquote>
+
+<p>GitHub 地址：</p>
+
+<blockquote>
+<p><a href="https://github.com/docker-slim/docker-slim">https://github.com/docker-slim/docker-slim</a></p>
+</blockquote>
+
+<h4 id="rocker-突破-dockerfile-的限制-项目已终止"><del>rocker：突破 Dockerfile 的限制</del> (项目已终止)</h4>
+
+<p>大多数使用 Docker 的开发人员都使用 Dockerfile 来构建镜像。Dockerfile 是一种声明式的方法，用于定义用户可以在命令行上调用的所有命令，从而组装镜像。</p>
+
+<p>Rocker（<a href="https://github.com/grammarly/rocker）为">https://github.com/grammarly/rocker）为</a> Dockerfile 指令集增加了新的指令。Grammarly 为了解决他们遇到的 Dockerfile 格式的问题，创建了 Rocker。Grammarly 团队写了一篇深入的博客，解释他们创建它的原因。我建议你读一读，以更好地了解 Rocker。他们在博文中强调了两个问题：</p>
+
+<ol>
+<li>Docker 镜像的大小。</li>
+<li>缓慢的构建速度。</li>
+</ol>
+
+<p>该博客还提到了 Rocker 加入的一些新指令。参考 Rocker 文档，了解 Rocker 支持的所有指令：</p>
+
+<blockquote>
+<p><a href="https://github.com/grammarly/rocker/blob/master/README.md">https://github.com/grammarly/rocker/blob/master/README.md</a></p>
+</blockquote>
+
+<ol>
+<li>MOUNT 用于在构建之间共享卷，以便能够被依赖项管理工具重用。</li>
+<li>在 Dockerfile 中原本已有 FROM 指令。而 Rocker 使我们可以添加一条以上的 FROM 指令。这意味着你可以通过单个 Rockerfile 创建多个镜像。第一批指令用于构建产品所有的依赖；第二批指令用于构建产品；这能够极大地降低镜像大小。</li>
+<li>TAG 用于在构建的不同阶段标识镜像，这意味着你不必手动为每个镜像打标签。</li>
+<li>PUSH 用于将镜像推送到镜像仓库。</li>
+<li>ATTACH 使你能够交互式地运行中间步骤。这一点对于调试非常有用。</li>
+</ol>
+
+<p>要使用 Rocker，首先必须在你的机器上安装。对 Mac 用户来说，就是简单地运行几条 brew 命令：</p>
+
+<pre><code class="language-bash">$ brew tap grammarly/tap
+$ brew install grammarly/tap/rocker
+</code></pre>
+
+<p>一旦完成安装，你就可以通过传递 Rockerfile 使用 Rocker 来构建镜像了：</p>
+
+<pre><code class="language-dockerfile">FROM python:2.7-slim
+WORKDIR /app
+ADD . /app
+RUN pip install -r requirements. txt
+EXPOSE 80
+ENV NAME World
+CMD [&quot;python&quot;,&quot;app.Py&quot;]
+TAG shekhargulati/ friendlyhello:{{ .VERSION }}
+PUSH shekhargulati/friendlyhello:{{ .VERSION }}
+</code></pre>
+
+<p>若要构建一个镜像并将其推送到 Docker Hub，你可以运行以下命令：</p>
+
+<pre><code class="language-bash">$ rocker d build --push -var VERSION-1.0
+</code></pre>
+
+<p>GitHub 地址：</p>
+
+<blockquote>
+<p><a href="https://github.com/grammarly/rocker">https://github.com/grammarly/rocker</a></p>
+</blockquote>
+
+<h4 id="ctop-容器的类顶层接口">ctop：容器的类顶层接口</h4>
+
+<p>ctop 是我最近开始使用的一个工具，它能够提供多个容器的实时指标视图。如果你是一个 Mac 用户，可以使用 brew 安装，如下所示：</p>
+
+<pre><code class="language-bash">$ brew install ctop
+</code></pre>
+
+<p>一旦完成安装，就可以开始使用 ctop 了。现在，你只需要配置 DOCKER_HOST 环境变量。</p>
+
+<p>你可以运行 ctop 命令，查看所有容器的状态。</p>
+
+<p>若只想查看正在运行的容器，可以使用 ctop -a 命令。</p>
+
+<p>ctop 是一个简单的工具，对于了解在你的主机上运行的容器很有帮助。你可以在 ctop 文档中了解更多相关信息：</p>
+
+<blockquote>
+<p><a href="https://github.com/bcicen/ctop/blob/master/README.md">https://github.com/bcicen/ctop/blob/master/README.md</a></p>
+</blockquote>
+
+<p>GitHub 地址：</p>
+
+<blockquote>
+<p><a href="https://github.com/bcicen/ctop">https://github.com/bcicen/ctop</a></p>
+</blockquote>
+
+<h4 id="watchtower-自动更新-docker-容器">watchtower：自动更新 Docker 容器</h4>
+
+<p>Watchtower 监视运行容器并监视这些容器最初启动时的镜像有没有变动。当 Watchtower 检测到一个镜像已经有变动时，它会使用新镜像自动重新启动相应的容器。我想在我的本地开发环境中尝试最新的构建镜像，所以使用了它。</p>
+
+<p>Watchtower 本身被打包为 Docker 镜像，因此可以像运行任何其他容器一样运行它。要运行 Watchtower，你需要执行以下命令：</p>
+
+<pre><code class="language-bash">$ docker run -d --name watchtower --rm -v /var/run/docker.sock:/var/run/docker.sock  v2tec/watchtower --interval 30
+</code></pre>
+
+<p>在上面的命令中，我们使用一个挂载文件 /var/run/docker.sock 启动了 Watchtower 容器。这么做是有必要的，为的是使 Watchtower 可以与 Docker 守护 API 进行交互。我们将 30 秒传递给间隔选项 interval。此选项定义了 Watchtower 的轮询间隔。Watchtower 支持更多的选项，你可以根据文档中的描述来使用它们。</p>
+
+<p>我们现在启动一个 Watchtower 可以监视的容器。</p>
+
+<pre><code class="language-bash">$ docker run -p 4000:80 --name friendlyhello shekhargulati/friendlyhello:latest
+</code></pre>
+
+<p>现在，Watchtower 将开始温和地监控这个 friendlyhello 容器。当我将新镜像推送到 Docker Hub 时，Watchtower 在接下来的运行中将检测到一个新的可用的镜像。它将优雅地停止那个容器并使用这个新镜像启动容器。它将传递我们之前传递给这条 run 命令的选项。换句话说，该容器将仍然使用 4000:80 发布端口来启动。</p>
+
+<p>默认情况下，Watchtower 将轮询 Docker Hub 注册表以查找更新的镜像。通过传递环境变量 REPO_USER 和 REPO_PASS 中的注册表凭据，可以将 Watchtower 配置为轮询私有注册表。</p>
+
+<p>要了解更多 Watchtower 的相关信息，建议你阅读 Watchtower 文档</p>
+
+<blockquote>
+<p><a href="https://github.com/v2tec/watchtower/blob/master/README.md">https://github.com/v2tec/watchtower/blob/master/README.md</a></p>
+</blockquote>
+
+<p>GitHub 地址：</p>
+
+<blockquote>
+<p><a href="https://github.com/v2tec/watchtower">https://github.com/v2tec/watchtower</a></p>
+</blockquote>
+
+<h3 id="end">END</h3>
+
+            <p class="post-meta border-bottom pb-3 mb-0">Updated on 26 Dec 2019</p><nav class="pagination mt-3"><a class="nav nav-prev" href="http://hideric.github.io/docker/" title="Docker"><i class="ti-arrow-left mr-2"></i>Docker</a>
+            <a class="nav nav-next" href="http://hideric.github.io/go/" title="Go">Go<i class="ti-arrow-right ml-2"></i></a>
+            </nav></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- footer -->
+<footer class="section bg-gray pb-0">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-8 text-md-left text-center">
+        <p>The Hugo Documents are copyright © gethugothemes 2018.</p> 
+      </div>
+      <div class="col-md-4 text-md-right text-center">
+        <ul class="list-inline mb-3">
+          
+          <li class="list-inline-item"><a class="text-color d-inline-block p-2" href="#"><i class="ti-facebook"></i></a></li>
+          
+          <li class="list-inline-item"><a class="text-color d-inline-block p-2" href="#"><i class="ti-twitter-alt"></i></a></li>
+          
+          <li class="list-inline-item"><a class="text-color d-inline-block p-2" href="#"><i class="ti-vimeo-alt"></i></a></li>
+          
+          <li class="list-inline-item"><a class="text-color d-inline-block p-2" href="#"><i class="ti-instagram"></i></a></li>
+          
+        </ul>
+      </div>
+    </div>
+  </div>
+</footer>
+<!-- /footer -->
+
+<!-- Bootstrap JS -->
+<script src="http://hideric.github.io/plugins/bootstrap/bootstrap.min.js"></script>
+<!-- highlight -->
+<script src="http://hideric.github.io/plugins/highlight/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+<!-- Main Script -->
+
+<script src="http://hideric.github.io/js/script.min.js"></script>

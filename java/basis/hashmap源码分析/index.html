@@ -1,0 +1,803 @@
+<head>
+  <meta charset="utf-8">
+  <title>HashMap源码分析</title>
+
+  <meta name="generator" content="Hugo 0.58.3" />
+
+  <!-- mobile responsive meta -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <!-- ** Plugins Needed for the Project ** -->
+  <!-- Bootstrap -->
+  <link rel="stylesheet" href="http://hideric.github.io/plugins/bootstrap/bootstrap.min.css">
+  <!-- themefy-icon -->
+  <link rel="stylesheet" href="http://hideric.github.io/plugins/themify-icons/themify-icons.css">
+  <!-- highlight -->
+  <link rel="stylesheet" href="http://hideric.github.io/plugins/highlight/hybrid.css">
+  <!-- fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700" rel="stylesheet">
+
+  <style>
+  :root{
+    --primary-color:#2f1f48;
+    --secondary-color:#f9f9f9;
+    --text-color:#636363;
+    --text-color-dark:#242738;
+    --white-color:#ffffff;
+  }  
+  </style>
+
+  <!-- Main Stylesheet -->
+  
+  <link rel="stylesheet" href="http://hideric.github.io/css/style.min.css" integrity="" media="screen">
+
+  <!-- jquiry -->
+  <script src="http://hideric.github.io/plugins/jquery/jquery-1.12.4.js"></script>
+
+  <!-- jquary ui -->
+  <script src="http://hideric.github.io/plugins/jquery/jquery-ui.js"></script>
+
+  <!--Favicon-->
+  <link rel="icon" href="http://hideric.github.io/images/favicon.png" type="image/x-icon">
+
+</head>
+
+
+<!-- navigation -->
+<header class="shadow-bottom sticky-top bg-white">
+  <div class="container">
+    <nav class="navbar navbar-expand-lg navbar-light">
+  <a class="navbar-brand" href="http://hideric.github.io/">Hideric</a>
+  <button class="navbar-toggler border-0" type="button" data-toggle="collapse" data-target="#navigation"
+    aria-controls="navigation" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse text-center" id="navigation">
+    <ul class="navbar-nav ml-auto">
+      <li class="nav-item">
+        <a class="nav-link text-dark" href="http://hideric.github.io/">Home</a>
+      </li>
+      
+      
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle text-dark" href="#" role="button" data-toggle="dropdown" aria-haspopup="true"
+          aria-expanded="false">
+          Back-End
+        </a>
+        <div class="dropdown-menu" >
+          
+          <a class="dropdown-item" href="http://hideric.github.io/java">Java</a>
+          
+          <a class="dropdown-item" href="http://hideric.github.io/python">Python</a>
+          
+          <a class="dropdown-item" href="http://hideric.github.io/go">Go</a>
+          
+          <a class="dropdown-item" href="http://hideric.github.io/cpp">C&#43;&#43;</a>
+          
+        </div>
+      </li>
+      
+      
+      
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle text-dark" href="#" role="button" data-toggle="dropdown" aria-haspopup="true"
+          aria-expanded="false">
+          DB
+        </a>
+        <div class="dropdown-menu" >
+          
+          <a class="dropdown-item" href="http://hideric.github.io/mysql">Mysql</a>
+          
+          <a class="dropdown-item" href="http://hideric.github.io/oracle">Oracle</a>
+          
+        </div>
+      </li>
+      
+      
+      
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle text-dark" href="#" role="button" data-toggle="dropdown" aria-haspopup="true"
+          aria-expanded="false">
+          Front-End
+        </a>
+        <div class="dropdown-menu" >
+          
+          <a class="dropdown-item" href="http://hideric.github.io/js">JavaScript</a>
+          
+          <a class="dropdown-item" href="http://hideric.github.io/vue">Vue</a>
+          
+          <a class="dropdown-item" href="http://hideric.github.io/react">React</a>
+          
+          <a class="dropdown-item" href="http://hideric.github.io/rn">React Native</a>
+          
+        </div>
+      </li>
+      
+      
+      
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle text-dark" href="#" role="button" data-toggle="dropdown" aria-haspopup="true"
+          aria-expanded="false">
+          Mid-Ware
+        </a>
+        <div class="dropdown-menu" >
+          
+          <a class="dropdown-item" href="http://hideric.github.io/redis">Redis</a>
+          
+          <a class="dropdown-item" href="http://hideric.github.io/nginx">Nginx</a>
+          
+        </div>
+      </li>
+      
+      
+      
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle text-dark" href="#" role="button" data-toggle="dropdown" aria-haspopup="true"
+          aria-expanded="false">
+          Mobile
+        </a>
+        <div class="dropdown-menu" >
+          
+          <a class="dropdown-item" href="http://hideric.github.io/android">Android</a>
+          
+          <a class="dropdown-item" href="http://hideric.github.io/ios">IOS</a>
+          
+        </div>
+      </li>
+      
+      
+      
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle text-dark" href="#" role="button" data-toggle="dropdown" aria-haspopup="true"
+          aria-expanded="false">
+          OPS
+        </a>
+        <div class="dropdown-menu" >
+          
+          <a class="dropdown-item" href="http://hideric.github.io/k8s">kubernetes</a>
+          
+          <a class="dropdown-item" href="http://hideric.github.io/docker">Docker</a>
+          
+          <a class="dropdown-item" href="http://hideric.github.io/leetcode">Leetcode</a>
+          
+          <a class="dropdown-item" href="http://hideric.github.io/linux">Linux</a>
+          
+        </div>
+      </li>
+      
+      
+      
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle text-dark" href="#" role="button" data-toggle="dropdown" aria-haspopup="true"
+          aria-expanded="false">
+          pages
+        </a>
+        <div class="dropdown-menu" >
+          
+          <a class="dropdown-item" href="http://hideric.github.io/faq">FAQ</a>
+          
+          <a class="dropdown-item" href="http://hideric.github.io/contact">CONTACT</a>
+          
+          <a class="dropdown-item" href="http://hideric.github.io/elements">ELEMENTS</a>
+          
+          <a class="dropdown-item" href="http://hideric.github.io/others">OTHERS</a>
+          
+        </div>
+      </li>
+      
+      
+    </ul>
+    
+    <ul class="list-inline text-center mb-0">
+      
+    </ul>
+  </div>
+</nav>
+  </div>
+</header>
+<!-- /navigation -->
+
+
+<section class="single pt-5 bg-gray">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-3">
+        <div class="p-4 bg-white sticky-top top-100">
+            
+            <nav class="sidebar-menu">
+              <ul class="list-styled">
+            <li class=""><a href="http://hideric.github.io/android/">Android</a>
+              <ul class="">
+            <li class=""><a href="http://hideric.github.io/android/kotlin/kotlin%E5%9B%A2%E9%98%9F%E5%8D%8F%E4%BD%9C/">Kotlin开发服务端应用</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/android/kotlin/kotlin%E7%9A%84%E6%89%A9%E5%B1%95%E5%BA%93/">Kotlin的扩展库</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/android/kotlin/kotlin%E8%AF%AD%E6%B3%95%E7%89%B9%E6%80%A7%E8%83%8C%E5%90%8E%E7%9A%84%E7%9F%A5%E8%AF%86/">Kotlin语法特性背后的知识</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/android/kotlin/kotlin%E9%AB%98%E7%BA%A7%E7%89%B9%E6%80%A7/">Kotlin高级特性</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/android/kotlin/%E7%B1%BB%E4%B8%8E%E5%AF%B9%E8%B1%A1/">类与对象</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/android/kotlin/%E5%87%BD%E6%95%B0%E4%B8%8Elambda%E9%97%AD%E5%8C%85/">函数与Lambda闭包</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/android/kotlin/kotlin%E5%9F%BA%E7%A1%80/">kotlin基础</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/android/tool/f-droidapps/">F-Droid Apps Recommendation</a>
+            </li></ul>
+              
+            </li>
+            <li class=""><a href="http://hideric.github.io/cpp/">C&#43;&#43;</a>
+              <ul class="">
+            <li class=""><a href="http://hideric.github.io/cpp/cprimer/cprimer-%E5%AD%98%E5%82%A8%E7%B1%BB%E5%88%AB%E5%92%8C%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/">CPrimer - 数组与指针</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/cpp/cprimer/cprimer-%E6%95%B0%E7%BB%84%E4%B8%8E%E6%8C%87%E9%92%88/">CPrimer - 数组与指针</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/cpp/cprimer/cprimer-%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%92%8C%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%87%BD%E6%95%B0/">CPrimer - 字符串和字符串函数</a>
+            </li></ul>
+              
+            </li>
+            <li class=""><a href="http://hideric.github.io/docker/">Docker</a>
+              <ul class="">
+            <li class=""><a href="http://hideric.github.io/docker/docker%E5%AE%9E%E7%94%A8%E5%B7%A5%E5%85%B7/">docker实用工具</a>
+            </li></ul>
+              
+            </li>
+            <li class=""><a href="http://hideric.github.io/go/">Go</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/ios/">IOS</a>
+            </li>
+            <li class="parent d-block "><a href="http://hideric.github.io/java/">Java</a>
+              <ul class="sub-menu">
+            <li class=""><a href="http://hideric.github.io/java/basis/jdk1.8%E7%9A%84localdatetime/">jdk1.8的LocalDateTime</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/java/network/%E4%BD%BF%E7%94%A8dubbo%E8%BF%87%E7%A8%8B%E4%B8%AD%E9%81%87%E5%88%B0%E8%BF%87%E5%93%AA%E4%BA%9B%E5%9D%91/">QPS、TPS、PV、UV、GMV、IP、RPS</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/java/basis/jvm/jvm%E7%AC%94%E8%AE%B0/">JVM笔记</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/java/basis/http%E6%96%AD%E7%82%B9%E7%BB%AD%E4%BC%A0/">HTTP断点续传</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/java/basis/java-%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8/">Java 垃圾收集器</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/java/basis/java-%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%8B%BC%E6%8E%A5%E5%A7%BF%E5%8A%BF/">Java 字符串拼接姿势</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/java/basis/java-%E5%A6%82%E4%BD%95%E6%9B%B4%E4%BC%98%E9%9B%85%E7%9A%84%E5%A4%84%E7%90%86%E7%A9%BA%E5%80%BC/">Java-如何更优雅的处理空值</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/java/basis/jvm/jvm-%E5%A0%86%E5%86%85%E5%AD%98%E6%BA%A2%E5%87%BA%E5%90%8E%E5%85%B6%E4%BB%96%E7%BA%BF%E7%A8%8B%E6%98%AF%E5%90%A6%E5%8F%AF%E7%BB%A7%E7%BB%AD%E5%B7%A5%E4%BD%9C/">JVM 堆内存溢出后，其他线程是否可继续工作？</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/java/framework/mybatis/mybatis%E4%B8%ADlike-%E7%9A%84%E4%BD%BF%E7%94%A8%E6%96%B9%E5%BC%8F%E4%BB%A5%E5%8F%8A%E4%B8%80%E4%BA%9B%E6%B3%A8%E6%84%8F%E7%82%B9/">Mybatis中Like 的使用方式以及一些注意点</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/java/framework/mybatis/mybatis%E5%B1%85%E7%84%B6%E6%9C%89%E5%9D%91%E5%8D%83%E4%B8%87%E5%88%AB%E8%B8%A9/">Mybatis居然有坑，千万别踩！</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/java/framework/spring/spring%E5%BE%AA%E7%8E%AF%E4%BE%9D%E8%B5%96%E7%9A%84%E5%9D%91/">Spring循环依赖的坑</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/java/framework/spring/spring%E7%9A%84%E5%90%84%E7%A7%8D%E6%B3%A8%E8%A7%A3/">Spring的各种注解</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/java/basis/%E4%BB%8E%E5%AE%9E%E8%B7%B5%E8%A7%92%E5%BA%A6%E9%87%8D%E6%96%B0%E7%90%86%E8%A7%A3bio%E5%92%8Cnio/">从实践角度重新理解BIO和NIO</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/java/basis/%E5%85%B3%E4%BA%8E-git-%E6%8F%90%E4%BA%A4%E8%A7%84%E8%8C%83/">关于 Git 提交规范</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/java/basis/jvm/%E6%B3%A8%E6%84%8Fcode-cache%E6%89%93%E6%BB%A1%E5%8F%AF%E5%AF%BC%E8%87%B4%E5%BA%94%E7%94%A8%E6%80%A7%E8%83%BD%E9%99%8D%E4%BD%8E/">注意，Code Cache打满可导致应用性能降低</a>
+            </li>
+            <li class=" active "><a href="http://hideric.github.io/java/basis/hashmap%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/">HashMap源码分析</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/java/framework/spring/spring-%E5%AE%B9%E5%99%A8%E5%90%AF%E5%8A%A8%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/">Spring 容器启动源码解析</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/java/framework/spring/spring-%E7%9A%84-beanutils-%E5%A1%AB%E5%9D%91%E8%AE%B0/">Spring 的 BeanUtils 填坑记</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/java/basis/weakhashmap%E7%94%9F%E4%BA%86%E7%97%85%E7%9A%84-hashmap-/">WeakHashMap，生了病的 HashMap ？</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/java/framework/dubbo/%E4%BD%BF%E7%94%A8dubbo%E8%BF%87%E7%A8%8B%E4%B8%AD%E9%81%87%E5%88%B0%E8%BF%87%E5%93%AA%E4%BA%9B%E5%9D%91/">使用dubbo过程中遇到过哪些坑？</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/java/basis/%E4%B8%80%E4%B8%AAjava%E5%AF%B9%E8%B1%A1%E5%88%B0%E5%BA%95%E5%8D%A0%E7%94%A8%E5%A4%9A%E5%A4%A7%E5%86%85%E5%AD%98/">一个Java对象到底占用多大内存？</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/java/basis/%E4%BD%A0%E7%9C%9F%E7%9A%84%E4%BA%86%E8%A7%A3logback%E5%90%97/">你真的了解logback吗？</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/java/basis/%E8%BF%99%E5%8F%AF%E8%83%BD%E6%98%AFgithub%E4%B8%8A%E6%9C%80%E5%8F%8B%E5%A5%BD%E7%9A%84%E5%88%86%E5%B8%83%E5%BC%8F%E5%8D%B3%E6%97%B6%E9%80%9A%E8%AE%AF%E9%A1%B9%E7%9B%AE..../">这可能是Github上最友好的分布式即时通讯项目.....</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/java/basis/java-8-stream-%E9%9B%86%E5%90%88%E6%93%8D%E4%BD%9C%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B/">Java 8 - Stream 集合操作快速上手</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/java/basis/concurrency/stringbuilder-%E4%B8%BA%E4%BB%80%E4%B9%88%E7%BA%BF%E7%A8%8B%E4%B8%8D%E5%AE%89%E5%85%A8/">StringBuilder 为什么线程不安全？</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/java/basis/jvm/jvm%E4%BC%98%E5%8C%96%E4%B9%8B%E9%80%83%E9%80%B8%E5%88%86%E6%9E%90%E4%B8%8E%E5%88%86%E9%85%8D%E6%B6%88%E9%99%A4/">JVM优化之逃逸分析与分配消除</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/java/framework/security/shiro%E6%A1%86%E6%9E%B6-%E7%94%A8%E6%88%B7%E6%9D%83%E9%99%90%E7%AE%A1%E7%90%86/">Shiro框架 - 用户权限管理</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/java/basis/concurrency/threadlocal%E9%9D%A2%E8%AF%95%E9%A2%98/">ThreadLocal面试题</a>
+            </li></ul>
+              
+            </li>
+            <li class=""><a href="http://hideric.github.io/js/">JavaScript</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/k8s/">Kubernets</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/leetcode/">Leetcode</a>
+              <ul class="">
+            <li class=""><a href="http://hideric.github.io/leetcode/leetcode-5/">LeetCode #5 最长回文子字符串</a>
+            </li></ul>
+              
+            </li>
+            <li class=""><a href="http://hideric.github.io/linux/">Linux</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/mysql/">Mysql</a>
+              <ul class="">
+            <li class=""><a href="http://hideric.github.io/mysql/mysql%E4%BA%8B%E5%8A%A1%E4%B8%8E%E9%9A%94%E7%A6%BB%E7%BA%A7%E5%88%AB/">MySQL事务与隔离级别</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/mysql/mysql%E9%9D%A2%E8%AF%95%E9%A2%98%E5%8F%8A%E5%8D%83%E4%B8%87%E7%BA%A7%E6%95%B0%E6%8D%AE%E6%9F%A5%E8%AF%A2%E4%BC%98%E5%8C%96/">Mysql面试题及千万级数据查询优化</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/mysql/mysql%E7%9A%84count%E8%AF%AD%E5%8F%A5/">MySQL的COUNT语句</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/mysql/mysql-%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E6%80%9D%E8%B7%AF/">MySQL 性能优化思路</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/mysql/%E5%AE%98%E6%96%B9%E5%B7%A5%E5%85%B7mysql-router-%E9%AB%98%E5%8F%AF%E7%94%A8%E5%8E%9F%E7%90%86%E4%B8%8E%E5%AE%9E%E6%88%98/">官方工具｜MySQL Router 高可用原理与实战</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/mysql/mysql-%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%968-%E7%A7%8D%E5%B8%B8%E8%A7%81-sql-%E9%94%99%E8%AF%AF%E7%94%A8%E6%B3%95/">MySQL 性能优化：8 种常见 SQL 错误用法！</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/mysql/index/null%E8%83%BD%E7%94%A8%E7%B4%A2%E5%BC%95/">MySQL中IS NULL、IS NOT NULL、!=不能用索引？</a>
+            </li></ul>
+              
+            </li>
+            <li class=""><a href="http://hideric.github.io/nginx/">Nginx</a>
+              <ul class="">
+            <li class=""><a href="http://hideric.github.io/nginx/%E5%90%8E%E7%AB%AF%E5%AE%9E%E8%B7%B5nginx%E6%97%A5%E5%BF%97%E9%85%8D%E7%BD%AE%E8%B6%85%E8%AF%A6%E7%BB%86/">后端实践：Nginx日志配置（超详细）</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/nginx/%E4%BD%BF%E7%94%A8nginx%E8%BF%9B%E8%A1%8C%E5%9B%9B%E5%B1%82%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1/">使用Nginx进行四层负载均衡</a>
+            </li></ul>
+              
+            </li>
+            <li class=""><a href="http://hideric.github.io/oracle/">Oracle</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/others/">OTHERS</a>
+              <ul class="">
+            <li class=""><a href="http://hideric.github.io/others/term/qps%E6%9C%AF%E8%AF%AD/">秒懂 QPS、TPS、PV、UV、GMV、IP、RPS！</a>
+            </li></ul>
+              
+            </li>
+            <li class=""><a href="http://hideric.github.io/python/">Python</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/react/">React</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/rn/">React Native</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/redis/">Redis</a>
+              <ul class="">
+            <li class=""><a href="http://hideric.github.io/redis/%E5%A6%82%E4%BD%95%E7%94%A8-redis-%E7%BB%9F%E8%AE%A1%E7%8B%AC%E7%AB%8B%E7%94%A8%E6%88%B7%E8%AE%BF%E9%97%AE%E9%87%8F/">如何用 Redis 统计独立用户访问量？</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/redis/redis-%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81%E7%9A%84%E6%AD%A3%E7%A1%AE%E5%AE%9E%E7%8E%B0%E6%96%B9%E5%BC%8Fjava%E7%89%88/">Redis 分布式锁的正确实现方式（Java版）</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/redis/redis-%E5%AE%9E%E7%8E%B0%E9%99%84%E8%BF%91%E7%9A%84%E4%BA%BA%E5%8A%9F%E8%83%BD/">Redis 实现“附近的人”功能</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/redis/%E4%B8%BA%E4%BB%80%E4%B9%88rediscluster%E6%9C%8916384%E4%B8%AA%E6%A7%BD/">为什么RedisCluster有16384个槽?</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/redis/%E5%AD%A6%E4%BC%9A%E8%BF%99%E5%87%A0%E4%B8%AAredis%E6%8A%80%E5%B7%A7%E8%AE%A9%E4%BD%A0%E7%9A%84%E7%A8%8B%E5%BA%8F%E5%BF%AB%E5%A6%82%E9%97%AA%E7%94%B5/">学会这几个Redis技巧，让你的程序快如闪电</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/redis/%E6%AF%94redis%E8%BF%98%E5%BF%AB5%E5%80%8D%E7%9A%84%E4%B8%AD%E9%97%B4%E4%BB%B6%E4%B8%BA%E5%95%A5%E8%BF%99%E4%B9%88%E5%BF%AB/">比Redis还快5倍的中间件，为啥这么快？</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/redis/redis%E9%AB%98%E7%BA%A7%E5%AE%A2%E6%88%B7%E7%AB%AFlettuce%E8%AF%A6%E8%A7%A3/">Redis高级客户端Lettuce详解</a>
+            </li></ul>
+              
+            </li>
+            <li class=""><a href="http://hideric.github.io/vue/">Vue</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/contact/">Contact</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/elements/">Elements</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/faq/">Frequently Asked Questions</a>
+            </li></ul>
+            </nav>
+
+            
+        </div>
+      </div>
+      <div class="col-lg-9">
+        <div class="p-5 bg-white">
+            <h2>HashMap源码分析</h2>
+            
+
+<h2 id="hashmap-源码分析">HashMap 源码分析</h2>
+
+<p>在Java中，HashMap的实现采用了（数组 + 链表 + 红黑树）的复杂结构，数组的一个元素又称作桶。</p>
+
+<p>在添加元素时，会根据hash值算出元素在数组中的位置，如果该位置没有元素，则直接把元素放置在此处，如果该位置有元素了，则把元素以链表的形式放置在链表的尾部。</p>
+
+<p>当一个链表的元素个数达到一定的数量（且数组的长度达到一定的长度）后，则把链表转化为红黑树，从而提高效率。</p>
+
+<p>数组的查询效率为O(1)，链表的查询效率是O(k)，红黑树的查询效率是O(log k)，k为桶中的元素个数，所以当元素数量非常多的时候，转化为红黑树能极大地提高效率。</p>
+
+<h4 id="源码解析">源码解析</h4>
+
+<h5 id="属性">属性</h5>
+
+<pre><code class="language-java">/**
+ * 默认的初始容量为16
+ */
+static final int DEFAULT_INITIAL_CAPACITY = 1 &lt;&lt; 4;
+/**
+ * 最大的容量为2的30次方
+ */
+static final int MAXIMUM_CAPACITY = 1 &lt;&lt; 30;
+/**
+ * 默认的装载因子
+ */
+static final float DEFAULT_LOAD_FACTOR = 0.75f;
+/**
+ * 当一个桶中的元素个数大于等于8时进行树化
+ */
+static final int TREEIFY_THRESHOLD = 8;
+/**
+ * 当一个桶中的元素个数小于等于6时把树转化为链表
+ */
+static final int UNTREEIFY_THRESHOLD = 6;
+/**
+ * 当桶的个数达到64的时候才进行树化
+ */
+static final int MIN_TREEIFY_CAPACITY = 64;
+/**
+ * 数组，又叫作桶（bucket）
+ */
+transient Node&lt;K,V&gt;[] table;
+/**
+ * 作为entrySet()的缓存
+ */
+transient Set&lt;Map.Entry&lt;K,V&gt;&gt; entrySet;
+/**
+ * 元素的数量
+ */
+transient int size;
+/**
+ * 修改次数，用于在迭代的时候执行快速失败策略
+ */
+transient int modCount;
+/**
+ * 当桶的使用数量达到多少时进行扩容，threshold = capacity * loadFactor
+ */
+int threshold;
+/**
+ * 装载因子
+ */
+final float loadFactor;
+</code></pre>
+
+<p>（1）容量</p>
+
+<p>容量为数组的长度，亦即桶的个数，默认为16，最大为2的30次方，当容量达到64时才可以树化。</p>
+
+<p>（2）装载因子</p>
+
+<p>装载因子用来计算容量达到多少时才进行扩容，默认装载因子为0.75。</p>
+
+<p>（3）树化</p>
+
+<p>树化，当容量达到64且链表的长度达到8时进行树化，当链表的长度小于6时反树化。</p>
+
+<h4 id="node内部类">Node内部类</h4>
+
+<p>Node是一个典型的单链表节点，其中，hash用来存储key计算得来的hash值。</p>
+
+<pre><code class="language-java">static class Node&lt;K,V&gt; implements Map.Entry&lt;K,V&gt; {
+        final int hash;
+        final K key;
+        V value;
+        Node&lt;K,V&gt; next;
+}
+</code></pre>
+
+<h4 id="treenode内部类">TreeNode内部类</h4>
+
+<p>这是一个神奇的类，它继承自LinkedHashMap中的Entry类，关于LInkedHashMap.Entry这个类我们后面再讲。</p>
+
+<p>TreeNode是一个典型的树型节点，其中，prev是链表中的节点，用于在删除元素的时候可以快速找到它的前置节点。</p>
+
+<pre><code class="language-java">static final class TreeNode&lt;K,V&gt; extends LinkedHashMap.Entry&lt;K,V&gt; {
+        TreeNode&lt;K,V&gt; parent;  // red-black tree links
+        TreeNode&lt;K,V&gt; left;
+        TreeNode&lt;K,V&gt; right;
+        TreeNode&lt;K,V&gt; prev;    // needed to unlink next upon deletion
+        boolean red;
+}
+// 位于LinkedHashMap中，典型的双向链表节点
+static class Entry&lt;K,V&gt; extends HashMap.Node&lt;K,V&gt; {
+        Entry&lt;K,V&gt; before, after;
+        Entry(int hash, K key, V value, Node&lt;K,V&gt; next) {
+            super(hash, key, value, next);
+        }
+}
+</code></pre>
+
+<h4 id="hashmap-构造方法">HashMap()构造方法</h4>
+
+<p>空参构造方法，全部使用默认值。</p>
+
+<pre><code class="language-java">public HashMap() {
+		this.loadFactor = DEFAULT_LOAD_FACTOR; // all other fields defaulted
+}
+</code></pre>
+
+<h4 id="hashmap-int-initialcapacity-构造方法">HashMap(int initialCapacity)构造方法</h4>
+
+<p>调用HashMap(int initialCapacity, float loadFactor)构造方法，传入默认装载因子。</p>
+
+<pre><code class="language-java">public HashMap(int initialCapacity) {
+		this(initialCapacity, DEFAULT_LOAD_FACTOR);
+}
+</code></pre>
+
+<h4 id="hashmap-int-initialcapacity-构造方法-1">HashMap(int initialCapacity)构造方法</h4>
+
+<p>判断传入的初始容量和装载因子是否合法，并计算扩容门槛，扩容门槛为传入的初始容量往上取最近的2的n次方。</p>
+
+<pre><code class="language-java">public HashMap(int initialCapacity, float loadFactor) {
+        if (initialCapacity &lt; 0)
+            throw new IllegalArgumentException(&quot;Illegal initial capacity: &quot; +
+                                               initialCapacity);
+        if (initialCapacity &gt; MAXIMUM_CAPACITY)
+            initialCapacity = MAXIMUM_CAPACITY;
+        if (loadFactor &lt;= 0 || Float.isNaN(loadFactor))
+            throw new IllegalArgumentException(&quot;Illegal load factor: &quot; +
+                                               loadFactor);
+        this.loadFactor = loadFactor;
+        this.threshold = tableSizeFor(initialCapacity);
+}
+</code></pre>
+
+<h4 id="put-k-key-v-value-方法">put(K key, V value)方法</h4>
+
+<p>添加元素的入口。</p>
+
+<pre><code class="language-java">public V put(K key, V value) {
+		// 调用hash(key)计算出key的hash值
+		return putVal(hash(key), key, value, false, true);
+}
+static final int hash(Object key) {
+  	int h;
+  	// 如果key为null，则hash值为0，否则调用key的hashCode()方法
+  	// 并让高16位与整个hash异或，这样做是为了使计算出的hash更分散
+  	return (key == null) ? 0 : (h = key.hashCode()) ^ (h &gt;&gt;&gt; 16);
+}
+final V putVal(int hash, K key, V value, boolean onlyIfAbsent,
+               boolean evict) {
+    HashMap.Node&lt;K,V&gt;[] tab; HashMap.Node&lt;K,V&gt; p; int n, i;
+  	// 如果桶的数量为0，则初始化
+    if ((tab = table) == null || (n = tab.length) == 0)
+      	// 调用resize()初始化
+        n = (tab = resize()).length;
+  	// (n - 1) &amp; hash 计算元素在哪个桶中
+  	// 如果这个桶中还没有元素，则把这个元素放在桶中的第一个位置
+    if ((p = tab[i = (n - 1) &amp; hash]) == null)
+      	// 新建一个节点放在桶中
+        tab[i] = newNode(hash, key, value, null);
+    else {
+      	// 如果桶中已经有元素存在了
+        HashMap.Node&lt;K,V&gt; e; 
+      	K k;
+      	// 如果桶中第一个元素的key与待插入元素的key相同，保存到e中用于后续修改value值
+        if (p.hash == hash &amp;&amp;
+                ((k = p.key) == key || (key != null &amp;&amp; key.equals(k))))
+            e = p;
+        else if (p instanceof HashMap.TreeNode)
+          	// 如果第一个元素是树节点，则调用树节点的putTreeVal插入元素
+            e = ((TreeNode&lt;K,V&gt;)p).putTreeVal(this, tab, hash, key, value);
+        else {
+          	// 遍历这个桶对应的链表，binCount用于存储链表中元素的个数
+            for (int binCount = 0; ; ++binCount) {
+              	// 如果链表遍历完了都没有找到相同key的元素，说明该key对应的元素不存在，则在链表最后插入一个新节点
+                if ((e = p.next) == null) {
+                    p.next = newNode(hash, key, value, null);
+                  	// 如果插入新节点后链表长度大于8，则判断是否需要树化，因为第一个元素没有加到binCount中，所以这里-1
+                    if (binCount &gt;= TREEIFY_THRESHOLD - 1) // -1 for 1st
+                        treeifyBin(tab, hash);
+                    break;
+                }
+              	// 如果待插入的key在链表中找到了，则退出循环
+                if (e.hash == hash &amp;&amp;
+                        ((k = e.key) == key || (key != null &amp;&amp; key.equals(k))))
+                    break;
+                p = e;
+            }
+        }
+				// 如果找到了对应key的元素
+        if (e != null) { // existing mapping for key
+          	// 记录下旧值
+            V oldValue = e.value;
+          	// 判断是否需要替换旧值
+            if (!onlyIfAbsent || oldValue == null)
+              	// 替换旧值为新值
+                e.value = value;
+          	// 在节点被访问后做点什么事，在LinkedHashMap中用到
+            afterNodeAccess(e);
+          	// 返回旧值
+            return oldValue;
+        }
+    }
+		// 到这里了说明没有找到元素
+  	// 修改次数加1
+    ++modCount;
+  	// 元素数量加1，判断是否需要扩容
+    if (++size &gt; threshold)
+				// 扩容
+        resize();
+  	// 在节点插入后做点什么事，在LinkedHashMap中用到
+    afterNodeInsertion(evict);
+  	// 没找到元素返回null
+    return null;
+}
+</code></pre>
+
+<p>（1）计算key的hash值；</p>
+
+<p>（2）如果桶（数组）数量为0，则初始化桶；</p>
+
+<p>（3）如果key所在的桶没有元素，则直接插入；</p>
+
+<p>（4）如果key所在的桶中的第一个元素的key与待插入的key相同，说明找到了元素，转后续流程（9）处理；</p>
+
+<p>（5）如果第一个元素是树节点，则调用树节点的putTreeVal()寻找元素或插入树节点；</p>
+
+<p>（6）如果不是以上三种情况，则遍历桶对应的链表查找key是否存在于链表中；</p>
+
+<p>（7）如果找到了对应key的元素，则转后续流程（9）处理；</p>
+
+<p>（8）如果没找到对应key的元素，则在链表最后插入一个新节点并判断是否需要树化；</p>
+
+<p>（9）如果找到了对应key的元素，则判断是否需要替换旧值，并直接返回旧值；</p>
+
+<p>（10）如果插入了元素，则数量加1并判断是否需要扩容；</p>
+
+<h4 id="resize-方法">resize()方法</h4>
+
+<p>扩容方法。</p>
+
+<pre><code class="language-java">final HashMap.Node&lt;K,V&gt;[] resize() {
+  	// 旧数组
+    HashMap.Node&lt;K,V&gt;[] oldTab = table;
+  	// 旧容量
+    int oldCap = (oldTab == null) ? 0 : oldTab.length;
+  	// 旧扩容门槛
+    int oldThr = threshold;
+    int newCap, newThr = 0;
+    if (oldCap &gt; 0) {
+        if (oldCap &gt;= MAXIMUM_CAPACITY) {
+          	// 如果旧容量达到了最大容量，则不再进行扩容
+            threshold = Integer.MAX_VALUE;
+            return oldTab;
+        }
+        else if ((newCap = oldCap &lt;&lt; 1) &lt; MAXIMUM_CAPACITY &amp;&amp;
+                oldCap &gt;= DEFAULT_INITIAL_CAPACITY)
+          	// 如果旧容量的两倍小于最大容量并且旧容量大于默认初始容量（16），则容量扩大为两部，扩容门槛也扩大为两倍
+            newThr = oldThr &lt;&lt; 1; // double threshold
+    }
+    else if (oldThr &gt; 0) // initial capacity was placed in threshold
+      	// 使用非默认构造方法创建的map，第一次插入元素会走到这里
+      	// 如果旧容量为0且旧扩容门槛大于0，则把新容量赋值为旧门槛
+        newCap = oldThr;
+    else {               // zero initial threshold signifies using defaults
+      	// 调用默认构造方法创建的map，第一次插入元素会走到这里
+      	// 如果旧容量旧扩容门槛都是0，说明还未初始化过，则初始化容量为默认容量，扩容门槛为默认容量*默认装载因子
+        newCap = DEFAULT_INITIAL_CAPACITY;
+        newThr = (int)(DEFAULT_LOAD_FACTOR * DEFAULT_INITIAL_CAPACITY);
+    }
+    if (newThr == 0) {
+      	// 如果新扩容门槛为0，则计算为容量*装载因子，但不能超过最大容量
+        float ft = (float)newCap * loadFactor;
+        newThr = (newCap &lt; MAXIMUM_CAPACITY &amp;&amp; ft &lt; (float)MAXIMUM_CAPACITY ?
+                (int)ft : Integer.MAX_VALUE);
+    }
+  	// 赋值扩容门槛为新门槛
+    threshold = newThr;
+  	// 新建一个新容量的数组
+    @SuppressWarnings({&quot;rawtypes&quot;,&quot;unchecked&quot;})
+    HashMap.Node&lt;K,V&gt;[] newTab = (HashMap.Node&lt;K,V&gt;[])new HashMap.Node[newCap];
+		// 把桶赋值为新数组
+    table = newTab;
+  	// 如果旧数组不为空，则搬移元素
+    if (oldTab != null) {
+      	// 遍历旧数组
+        for (int j = 0; j &lt; oldCap; ++j) {
+            HashMap.Node&lt;K,V&gt; e;
+          	// 如果桶中第一个元素不为空，赋值给e
+            if ((e = oldTab[j]) != null) {
+              	// 清空旧桶，便于GC回收
+                oldTab[j] = null;
+              	// 如果这个桶中只有一个元素，则计算它在新桶中的位置并把它搬移到新桶中
+              	// 因为每次都扩容两倍，所以这里的第一个元素搬移到新桶的时候新桶肯定还没有元素
+                if (e.next == null)
+                    newTab[e.hash &amp; (newCap - 1)] = e;
+                else if (e instanceof HashMap.TreeNode)
+										// 如果第一个元素是树节点，则把这颗树打散成两颗树插入到新桶中去
+                    ((TreeNode&lt;K,V&gt;)e).split(this, newTab, j, oldCap);
+                else { // preserve order
+                  	// 如果这个链表不止一个元素且不是一颗树
+										// 则分化成两个链表插入到新的桶中去
+                  	// 比如，假如原来容量为4，3、7、11、15这四个元素都在三号桶中
+                  	// 现在扩容到8，则3和11还是在三号桶，7和15要搬移到七号桶中去
+                  	// 也就是分化成了两个链表
+                    HashMap.Node&lt;K,V&gt; loHead = null, loTail = null;
+                    HashMap.Node&lt;K,V&gt; hiHead = null, hiTail = null;
+                    HashMap.Node&lt;K,V&gt; next;
+                    do {
+                        next = e.next;
+                      	// (e.hash &amp; oldCap) == 0的元素放在低位链表中
+                      	// 比如，3 &amp; 4 == 0
+                        if ((e.hash &amp; oldCap) == 0) {
+                            if (loTail == null)
+                                loHead = e;
+                            else
+                                loTail.next = e;
+                            loTail = e;
+                        }
+                        else {
+														// (e.hash &amp; oldCap) != 0的元素放在高位链表中
+                          	// 比如，7 &amp; 4 != 0
+                            if (hiTail == null)
+                                hiHead = e;
+                            else
+                                hiTail.next = e;
+                            hiTail = e;
+                        }
+                    } while ((e = next) != null);
+										// 遍历完成分化成两个链表了
+                  	// 低位链表在新桶中的位置与旧桶一样（即3和11还在三号桶中）
+                    if (loTail != null) {
+                        loTail.next = null;
+                        newTab[j] = loHead;
+                    }
+                  	// 高位链表在新桶中的位置正好是原来的位置加上旧容量（即7和15搬移到七号桶了）
+                    if (hiTail != null) {
+                        hiTail.next = null;
+                        newTab[j + oldCap] = hiHead;
+                    }
+                }
+            }
+        }
+    }
+    return newTab;
+}
+</code></pre>
+
+<h3 id="end">END</h3>
+
+            <p class="post-meta border-bottom pb-3 mb-0">Updated on 30 Oct 2019</p><nav class="pagination mt-3"><a class="nav nav-prev" href="http://hideric.github.io/java/basis/jvm/%E6%B3%A8%E6%84%8Fcode-cache%E6%89%93%E6%BB%A1%E5%8F%AF%E5%AF%BC%E8%87%B4%E5%BA%94%E7%94%A8%E6%80%A7%E8%83%BD%E9%99%8D%E4%BD%8E/" title="注意，Code Cache打满可导致应用性能降低"><i class="ti-arrow-left mr-2"></i>注意，Code Cache打满可导致应用性能降低</a>
+            <a class="nav nav-next" href="http://hideric.github.io/java/framework/spring/spring-%E5%AE%B9%E5%99%A8%E5%90%AF%E5%8A%A8%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/" title="Spring 容器启动源码解析">Spring 容器启动源码解析<i class="ti-arrow-right ml-2"></i></a>
+            </nav></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- footer -->
+<footer class="section bg-gray pb-0">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-8 text-md-left text-center">
+        <p>The Hugo Documents are copyright © gethugothemes 2018.</p> 
+      </div>
+      <div class="col-md-4 text-md-right text-center">
+        <ul class="list-inline mb-3">
+          
+          <li class="list-inline-item"><a class="text-color d-inline-block p-2" href="#"><i class="ti-facebook"></i></a></li>
+          
+          <li class="list-inline-item"><a class="text-color d-inline-block p-2" href="#"><i class="ti-twitter-alt"></i></a></li>
+          
+          <li class="list-inline-item"><a class="text-color d-inline-block p-2" href="#"><i class="ti-vimeo-alt"></i></a></li>
+          
+          <li class="list-inline-item"><a class="text-color d-inline-block p-2" href="#"><i class="ti-instagram"></i></a></li>
+          
+        </ul>
+      </div>
+    </div>
+  </div>
+</footer>
+<!-- /footer -->
+
+<!-- Bootstrap JS -->
+<script src="http://hideric.github.io/plugins/bootstrap/bootstrap.min.js"></script>
+<!-- highlight -->
+<script src="http://hideric.github.io/plugins/highlight/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+<!-- Main Script -->
+
+<script src="http://hideric.github.io/js/script.min.js"></script>

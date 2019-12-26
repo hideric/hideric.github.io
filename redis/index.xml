@@ -2,22 +2,22 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Redis on Hideric&#39;s Blog</title>
-    <link>https://hideric.github.io/redis/</link>
+    <link>http://hideric.github.io/redis/</link>
     <description>Recent content in Redis on Hideric&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>The Hugo Documents are copyright © gethugothemes 2018.</copyright>
     <lastBuildDate>Wed, 07 Aug 2019 11:02:05 +0600</lastBuildDate>
     
-	<atom:link href="https://hideric.github.io/redis/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="http://hideric.github.io/redis/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>如何用 Redis 统计独立用户访问量？</title>
-      <link>https://hideric.github.io/redis/%E5%A6%82%E4%BD%95%E7%94%A8-redis-%E7%BB%9F%E8%AE%A1%E7%8B%AC%E7%AB%8B%E7%94%A8%E6%88%B7%E8%AE%BF%E9%97%AE%E9%87%8F/</link>
+      <link>http://hideric.github.io/redis/%E5%A6%82%E4%BD%95%E7%94%A8-redis-%E7%BB%9F%E8%AE%A1%E7%8B%AC%E7%AB%8B%E7%94%A8%E6%88%B7%E8%AE%BF%E9%97%AE%E9%87%8F/</link>
       <pubDate>Wed, 30 Oct 2019 15:54:22 +0800</pubDate>
       
-      <guid>https://hideric.github.io/redis/%E5%A6%82%E4%BD%95%E7%94%A8-redis-%E7%BB%9F%E8%AE%A1%E7%8B%AC%E7%AB%8B%E7%94%A8%E6%88%B7%E8%AE%BF%E9%97%AE%E9%87%8F/</guid>
+      <guid>http://hideric.github.io/redis/%E5%A6%82%E4%BD%95%E7%94%A8-redis-%E7%BB%9F%E8%AE%A1%E7%8B%AC%E7%AB%8B%E7%94%A8%E6%88%B7%E8%AE%BF%E9%97%AE%E9%87%8F/</guid>
       <description> 如何用 Redis 统计独立用户访问量？  作者：沙茶敏碎碎念来源：https://url.cn/5tQPEQg  众所周至，拼多多的待遇也是高的可怕，在挖人方面也是不遗余力，对于一些工作3年的开发，稍微优秀一点的，都给到30K的Offer，当然，拼多多加班也是出名的，一周上6天班是常态，每天工作时间基本都是超过12个小时，也是相当辛苦的。废话不多说，今天我们来聊一聊拼多多的一道后台面试真题，是一道简单的架构类的题目：拼多多有数亿的用户，那么对于某个网页，怎么使用Redis来统计一个网站的用户访问数呢？使用Hash 哈希是Redis的一种基础数据结构，Redis底层维护的是一个开散列，会把不同的key映射到哈希表上，如果是遇到关键字冲突，那么就会拉出一个链表出来。
 当一个用户访问的时候，如果用户登陆过，那么我们就使用用户的id，如果用户没有登陆过，那么我们也能够前端页面随机生成一个key用来标识用户，当用户访问的时候，我们可以使用HSET命令，key可以选择URI与对应的日期进行拼凑，field可以使用用户的id或者随机标识，value可以简单设置为1。
 当我们要统计某一个网站某一天的访问量的时候，就可以直接使用HLEN来得到最终的结果了。
@@ -37,10 +37,10 @@ END </description>
     
     <item>
       <title>Redis 分布式锁的正确实现方式（Java版）</title>
-      <link>https://hideric.github.io/redis/redis-%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81%E7%9A%84%E6%AD%A3%E7%A1%AE%E5%AE%9E%E7%8E%B0%E6%96%B9%E5%BC%8Fjava%E7%89%88/</link>
+      <link>http://hideric.github.io/redis/redis-%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81%E7%9A%84%E6%AD%A3%E7%A1%AE%E5%AE%9E%E7%8E%B0%E6%96%B9%E5%BC%8Fjava%E7%89%88/</link>
       <pubDate>Wed, 30 Oct 2019 15:38:52 +0800</pubDate>
       
-      <guid>https://hideric.github.io/redis/redis-%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81%E7%9A%84%E6%AD%A3%E7%A1%AE%E5%AE%9E%E7%8E%B0%E6%96%B9%E5%BC%8Fjava%E7%89%88/</guid>
+      <guid>http://hideric.github.io/redis/redis-%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81%E7%9A%84%E6%AD%A3%E7%A1%AE%E5%AE%9E%E7%8E%B0%E6%96%B9%E5%BC%8Fjava%E7%89%88/</guid>
       <description>Redis 分布式锁的正确实现方式（Java版） 本文来源：
 https://www.cnblogs.com/linjiqin/p/8003838.html
 前言 分布式锁一般有三种实现方式：
@@ -60,10 +60,10 @@ public class RedisTool { private static final String LOCK_SUCCESS = &amp;quot;OK
     
     <item>
       <title>Redis 实现“附近的人”功能</title>
-      <link>https://hideric.github.io/redis/redis-%E5%AE%9E%E7%8E%B0%E9%99%84%E8%BF%91%E7%9A%84%E4%BA%BA%E5%8A%9F%E8%83%BD/</link>
+      <link>http://hideric.github.io/redis/redis-%E5%AE%9E%E7%8E%B0%E9%99%84%E8%BF%91%E7%9A%84%E4%BA%BA%E5%8A%9F%E8%83%BD/</link>
       <pubDate>Wed, 30 Oct 2019 15:38:52 +0800</pubDate>
       
-      <guid>https://hideric.github.io/redis/redis-%E5%AE%9E%E7%8E%B0%E9%99%84%E8%BF%91%E7%9A%84%E4%BA%BA%E5%8A%9F%E8%83%BD/</guid>
+      <guid>http://hideric.github.io/redis/redis-%E5%AE%9E%E7%8E%B0%E9%99%84%E8%BF%91%E7%9A%84%E4%BA%BA%E5%8A%9F%E8%83%BD/</guid>
       <description>Redis 实现“附近的人”功能  来源：
 https://juejin.im/post/5da40462f265da5baf410a11
  前言 ： 针对“附近的人”这一位置服务领域的应用场景，常见的可使用PG、MySQL和MongoDB等多种DB的空间索引进行实现。 而Redis另辟蹊径，结合其有序队列zset以及geohash编码，实现了空间搜索功能，且拥有极高的运行效率。
@@ -89,10 +89,10 @@ GEOADD key longitude latitude member [longitude latitude member ...]  将给定�
     
     <item>
       <title>为什么RedisCluster有16384个槽?</title>
-      <link>https://hideric.github.io/redis/%E4%B8%BA%E4%BB%80%E4%B9%88rediscluster%E6%9C%8916384%E4%B8%AA%E6%A7%BD/</link>
+      <link>http://hideric.github.io/redis/%E4%B8%BA%E4%BB%80%E4%B9%88rediscluster%E6%9C%8916384%E4%B8%AA%E6%A7%BD/</link>
       <pubDate>Wed, 30 Oct 2019 15:38:52 +0800</pubDate>
       
-      <guid>https://hideric.github.io/redis/%E4%B8%BA%E4%BB%80%E4%B9%88rediscluster%E6%9C%8916384%E4%B8%AA%E6%A7%BD/</guid>
+      <guid>http://hideric.github.io/redis/%E4%B8%BA%E4%BB%80%E4%B9%88rediscluster%E6%9C%8916384%E4%B8%AA%E6%A7%BD/</guid>
       <description>为什么RedisCluster有16384个槽? 引言 为什么有16384个槽么ps:CRC16算法产生的hash值有16bit，该算法可以产生2^16-=65536个值。换句话说，值是分布在0~65535之间。那作者在做mod运算的时候，为什么不mod65536，而选择mod16384？
 其实我当初第一次思考这个问题的时候，我心里是这么想的，作者应该是觉得16384就够了，然后我就开始查这方面资料。
 很幸运的是，这个问题，作者是给出了回答的！地址如下:https://github.com/antirez/redis/issues/2576
@@ -103,10 +103,10 @@ GEOADD key longitude latitude member [longitude latitude member ...]  将给定�
     
     <item>
       <title>学会这几个Redis技巧，让你的程序快如闪电</title>
-      <link>https://hideric.github.io/redis/%E5%AD%A6%E4%BC%9A%E8%BF%99%E5%87%A0%E4%B8%AAredis%E6%8A%80%E5%B7%A7%E8%AE%A9%E4%BD%A0%E7%9A%84%E7%A8%8B%E5%BA%8F%E5%BF%AB%E5%A6%82%E9%97%AA%E7%94%B5/</link>
+      <link>http://hideric.github.io/redis/%E5%AD%A6%E4%BC%9A%E8%BF%99%E5%87%A0%E4%B8%AAredis%E6%8A%80%E5%B7%A7%E8%AE%A9%E4%BD%A0%E7%9A%84%E7%A8%8B%E5%BA%8F%E5%BF%AB%E5%A6%82%E9%97%AA%E7%94%B5/</link>
       <pubDate>Wed, 30 Oct 2019 15:38:52 +0800</pubDate>
       
-      <guid>https://hideric.github.io/redis/%E5%AD%A6%E4%BC%9A%E8%BF%99%E5%87%A0%E4%B8%AAredis%E6%8A%80%E5%B7%A7%E8%AE%A9%E4%BD%A0%E7%9A%84%E7%A8%8B%E5%BA%8F%E5%BF%AB%E5%A6%82%E9%97%AA%E7%94%B5/</guid>
+      <guid>http://hideric.github.io/redis/%E5%AD%A6%E4%BC%9A%E8%BF%99%E5%87%A0%E4%B8%AAredis%E6%8A%80%E5%B7%A7%E8%AE%A9%E4%BD%A0%E7%9A%84%E7%A8%8B%E5%BA%8F%E5%BF%AB%E5%A6%82%E9%97%AA%E7%94%B5/</guid>
       <description>学会这几个Redis技巧，让你的程序快如闪电  本文来源：https://dwz.cn/RseclNiY
  一、Redis封装架构讲解 实际上NewLife.Redis是一个完整的Redis协议功能的实现，但是Redis的核心功能并没有在这里面，而是在NewLife.Core里面。
 这里可以打开看一下，NewLife.Core里面有一个NewLife.Caching的命名空间，里面有一个Redis类，里面实现了Redis的基本功能；另一个类是RedisClient是Redis的客户端。
@@ -167,10 +167,10 @@ Redis的主要性能瓶颈是序列化、网络带宽和内存大小，滥用时
     
     <item>
       <title>比Redis还快5倍的中间件，为啥这么快？</title>
-      <link>https://hideric.github.io/redis/%E6%AF%94redis%E8%BF%98%E5%BF%AB5%E5%80%8D%E7%9A%84%E4%B8%AD%E9%97%B4%E4%BB%B6%E4%B8%BA%E5%95%A5%E8%BF%99%E4%B9%88%E5%BF%AB/</link>
+      <link>http://hideric.github.io/redis/%E6%AF%94redis%E8%BF%98%E5%BF%AB5%E5%80%8D%E7%9A%84%E4%B8%AD%E9%97%B4%E4%BB%B6%E4%B8%BA%E5%95%A5%E8%BF%99%E4%B9%88%E5%BF%AB/</link>
       <pubDate>Wed, 30 Oct 2019 15:38:52 +0800</pubDate>
       
-      <guid>https://hideric.github.io/redis/%E6%AF%94redis%E8%BF%98%E5%BF%AB5%E5%80%8D%E7%9A%84%E4%B8%AD%E9%97%B4%E4%BB%B6%E4%B8%BA%E5%95%A5%E8%BF%99%E4%B9%88%E5%BF%AB/</guid>
+      <guid>http://hideric.github.io/redis/%E6%AF%94redis%E8%BF%98%E5%BF%AB5%E5%80%8D%E7%9A%84%E4%B8%AD%E9%97%B4%E4%BB%B6%E4%B8%BA%E5%95%A5%E8%BF%99%E4%B9%88%E5%BF%AB/</guid>
       <description>比Redis还快5倍的中间件，为啥这么快？  作者：羽洵
 来源：http://suo.im/4Cx7u
  今天给大家介绍的是KeyDB，KeyDB项目是从redis fork出来的分支。众所周知redis是一个单线程的kv内存存储系统，而KeyDB在100%兼容redis API的情况下将redis改造成多线程。
@@ -197,10 +197,10 @@ struct ticket { uint16_t m_active; //解锁+1 uint16_t m_avail; //加锁+1 }; st
     
     <item>
       <title>Redis高级客户端Lettuce详解</title>
-      <link>https://hideric.github.io/redis/redis%E9%AB%98%E7%BA%A7%E5%AE%A2%E6%88%B7%E7%AB%AFlettuce%E8%AF%A6%E8%A7%A3/</link>
+      <link>http://hideric.github.io/redis/redis%E9%AB%98%E7%BA%A7%E5%AE%A2%E6%88%B7%E7%AB%AFlettuce%E8%AF%A6%E8%A7%A3/</link>
       <pubDate>Wed, 30 Oct 2019 15:38:44 +0800</pubDate>
       
-      <guid>https://hideric.github.io/redis/redis%E9%AB%98%E7%BA%A7%E5%AE%A2%E6%88%B7%E7%AB%AFlettuce%E8%AF%A6%E8%A7%A3/</guid>
+      <guid>http://hideric.github.io/redis/redis%E9%AB%98%E7%BA%A7%E5%AE%A2%E6%88%B7%E7%AB%AFlettuce%E8%AF%A6%E8%A7%A3/</guid>
       <description>Redis高级客户端Lettuce详解 前提 Lettuce是一个Redis的Java驱动包，初识她的时候是使用RedisTemplate的时候遇到点问题Debug到底层的一些源码，发现spring-data-redis的驱动包在某个版本之后替换为Lettuce。Lettuce翻译为生菜，没错，就是吃的那种生菜，所以它的Logo长这样：
 既然能被Spring生态所认可，Lettuce想必有过人之处，于是笔者花时间阅读她的官方文档，整理测试示例，写下这篇文章。编写本文时所使用的版本为Lettuce 5.1.8.RELEASE，SpringBoot 2.1.8.RELEASE，JDK [8,11]。
 Lettuce简介 Lettuce是一个高性能基于Java编写的Redis驱动框架，底层集成了Project Reactor提供天然的反应式编程，通信框架集成了Netty使用了非阻塞IO，5.x版本之后融合了JDK1.8的异步编程特性，在保证高性能的同时提供了十分丰富易用的API，5.1版本的新特性如下：

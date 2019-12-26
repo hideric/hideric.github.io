@@ -2,22 +2,105 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Android on Hideric&#39;s Blog</title>
-    <link>https://hideric.github.io/android/</link>
+    <link>http://hideric.github.io/android/</link>
     <description>Recent content in Android on Hideric&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>The Hugo Documents are copyright © gethugothemes 2018.</copyright>
     <lastBuildDate>Wed, 07 Aug 2019 11:02:05 +0600</lastBuildDate>
     
-	<atom:link href="https://hideric.github.io/android/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="http://hideric.github.io/android/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
+      <title>Kotlin开发服务端应用</title>
+      <link>http://hideric.github.io/android/kotlin/kotlin%E5%9B%A2%E9%98%9F%E5%8D%8F%E4%BD%9C/</link>
+      <pubDate>Mon, 02 Dec 2019 16:49:23 +0800</pubDate>
+      
+      <guid>http://hideric.github.io/android/kotlin/kotlin%E5%9B%A2%E9%98%9F%E5%8D%8F%E4%BD%9C/</guid>
+      <description>Kotlin开发服务端应用 1.对Kotlin有特殊支持的服务器端开发框架  Spring 5.0 + Vert.x // 基于JVM的web响应式框架 Ktor // JetBrains官方出品的Kotlin快速开发框架  2.使用Http Servlet 创建Kotlin版Web应用    3.使用Spring Boot创建RESTful Web服务 4.使用Kotlin开发Web前端 Kotlin可以与第三方库公用
+ TypeScript // ts2kt React // create-react-kotlin-app  ==========================
+ 官方工具库 将Kotlin代码转换成JavaScript 使用Kotlin与DOM元素交互  5.使用Kotlin开发Native代码  从HelloWorld开始，使用Kotlin开发原生应用  Kotlin-native // 用来编译kotlin的编译器
+konanc -o hello Hello.kt ./hello.kexe   创建Kotlin Native基础库
+konanc utils.kt -p library -o utils konanc -o sample sample.kt -l utils # 通常为了防止使用绝对路径，安装基础库 klib install utils klib remove utils   6.</description>
+    </item>
+    
+    <item>
+      <title>Kotlin的扩展库</title>
+      <link>http://hideric.github.io/android/kotlin/kotlin%E7%9A%84%E6%89%A9%E5%B1%95%E5%BA%93/</link>
+      <pubDate>Mon, 02 Dec 2019 16:49:23 +0800</pubDate>
+      
+      <guid>http://hideric.github.io/android/kotlin/kotlin%E7%9A%84%E6%89%A9%E5%B1%95%E5%BA%93/</guid>
+      <description>Kotlin的扩展库 1.kotlin.coroutines（Kotlin协程库） 协程不一定是线程开启的，也有可能是进程开启的
+通过提升CPU利用率，减少线程切换进而提升程序运行效率（不会像线程一样阻塞后占依旧用cpu）
+协程的特性：
+ 可控制：协程能做到可被控制的发起子任务 轻量级：协程非常小，占用资源比线程还少 语法糖：使多任务或多线程切换不再使用回调语法  启动协程的方式
+ runBlocking : T // 用于执行协程任务，通常只用于启动最外层协程，用于从线程切换到协程 launch : Job // 最常用的执行协程任务 Async/await : Deferred // 用于执行协程任务，并得到执行结果
+fun main(args: Array&amp;lt;String&amp;gt;) = runBlocking&amp;lt;Unit&amp;gt; { // 外层携程 val job = launch { // 内层又开启协程 repeat(1000) { i -&amp;gt; println(&amp;quot;挂起中 $i ...&amp;quot;) delay(500L) } } delay(1300L) println(&amp;quot;main:: 主线程等待中&amp;quot;) job.cancel() job.join() // join函数不起作用，因为job协程已经被取消了 println(&amp;quot;main:: 即将完成退出&amp;quot;) } // 输出 挂起中 0 ... 挂起中 1 .</description>
+    </item>
+    
+    <item>
+      <title>Kotlin语法特性背后的知识</title>
+      <link>http://hideric.github.io/android/kotlin/kotlin%E8%AF%AD%E6%B3%95%E7%89%B9%E6%80%A7%E8%83%8C%E5%90%8E%E7%9A%84%E7%9F%A5%E8%AF%86/</link>
+      <pubDate>Mon, 02 Dec 2019 16:49:23 +0800</pubDate>
+      
+      <guid>http://hideric.github.io/android/kotlin/kotlin%E8%AF%AD%E6%B3%95%E7%89%B9%E6%80%A7%E8%83%8C%E5%90%8E%E7%9A%84%E7%9F%A5%E8%AF%86/</guid>
+      <description>Kotlin语法特性背后的知识 1.变量、常量与只读 var与val声明的变量，最本质的区别是：val不能有setter
+fun main() { val hello = Hello() println(hello.string) hello.string = &amp;quot;world&amp;quot; println(hello.string) println(hello.string2) } class Hello{ var string: String? = null get() { return field + &amp;quot;hello&amp;quot; // 这里必须使用field关键字，直接使用string会造成循环引用问题 } set(value) { field = value + &amp;quot;set&amp;quot; } val string2: String? = null get() { return field + &amp;quot;hello&amp;quot; } } // 输出 nullhello worldsethello nullhello  val == 产量？
+class Person(var birthYear: Int) { val age: Int get() { return Calendar.</description>
+    </item>
+    
+    <item>
+      <title>Kotlin高级特性</title>
+      <link>http://hideric.github.io/android/kotlin/kotlin%E9%AB%98%E7%BA%A7%E7%89%B9%E6%80%A7/</link>
+      <pubDate>Mon, 02 Dec 2019 15:11:24 +0800</pubDate>
+      
+      <guid>http://hideric.github.io/android/kotlin/kotlin%E9%AB%98%E7%BA%A7%E7%89%B9%E6%80%A7/</guid>
+      <description>Kotlin高级特性 1.解构 在Kotlin中允许将一个类进行拆解
+fun main() { val user = User(12, &amp;quot;name&amp;quot;) val (age, name) = user // 解构，将user对象拆解给一个(age, name)变量 println(age) println(name) } class User(var age: Int, var name: String) { operator fun component1() = age // 解构赋值时调用的函数 operator fun component2() = name } // operator：将一个函数标记为重载一个操作符或者实现一个约定  解构更常用在遍历map的时候
+val map = mapOf&amp;lt;String, String&amp;gt;(&amp;quot;key&amp;quot; to &amp;quot;key&amp;quot;, &amp;quot;value&amp;quot; to &amp;quot;value&amp;quot;) for ((k, v) in map) { println(&amp;quot;$k -- $v&amp;quot;) }  2.循环与集合操作符 var count: Int for (count = 0; count &amp;lt; 10; count++){ // &amp;hellip; }</description>
+    </item>
+    
+    <item>
+      <title>类与对象</title>
+      <link>http://hideric.github.io/android/kotlin/%E7%B1%BB%E4%B8%8E%E5%AF%B9%E8%B1%A1/</link>
+      <pubDate>Sun, 01 Dec 2019 14:48:15 +0800</pubDate>
+      
+      <guid>http://hideric.github.io/android/kotlin/%E7%B1%BB%E4%B8%8E%E5%AF%B9%E8%B1%A1/</guid>
+      <description>类与对象 1.构造函数 类声明方式:
+class MainActivity : AppCompatActivity() // class 类名 : 父类,如果一个类的父类没有显式声明，那么父类是Any而不是Object，后面的父类的小括号代表调用父类的无参构造 class MainActivity : AppCompatActivity(), OnClickListener // 继承的接口可以直接在后面逗号隔开，不需要书写implements // Kotlin的类默认是public final的 open class MainActivity : AppCompatActivity() // 如果不需要final，在类前面添加open修饰符  类的构造函数：
+// MainActivity.kt open class MainActivity(var int: Int) { init { println(&amp;quot;xxxlog&amp;quot;) // 类的构造函数被调用时执行 } override fun hashCode(): Int { return super.hashCode() } override fun toString(): String { return super.toString() } } // 有多个构造函数的话需要显式得声明多级构造函数 class TestView : View { // 次级构造函数必须直接或者间接的继承主构造函数或者父类构造函数 constructor(context: Context) : super(context) { println(&amp;quot;constructor&amp;quot;) } constructor(context: Context, attrs: AttributeSet?</description>
+    </item>
+    
+    <item>
+      <title>函数与Lambda闭包</title>
+      <link>http://hideric.github.io/android/kotlin/%E5%87%BD%E6%95%B0%E4%B8%8Elambda%E9%97%AD%E5%8C%85/</link>
+      <pubDate>Fri, 29 Nov 2019 16:13:15 +0800</pubDate>
+      
+      <guid>http://hideric.github.io/android/kotlin/%E5%87%BD%E6%95%B0%E4%B8%8Elambda%E9%97%AD%E5%8C%85/</guid>
+      <description>函数与Lambda闭包 1.函数的特性语法 Kotlin不像java只有方法，它还保留了函数的特性
+fun echo(name: String) { println(&amp;quot;$name&amp;quot;) } // 带有默认值的参数,不传参数使用默认值 // 有默认值的函数可以大大减小重载函数的数量 fun echo(name: String = &amp;quot;Z&amp;quot;) { println(&amp;quot;$name&amp;quot;) } // 只有一行语句的函数 fun echo(name: String) = println(&amp;quot;$name&amp;quot;)  2.嵌套函数 // 用途： // 在某些条件下触发递归的函数 // 不希望被外部函数访问到的函数 fun function(str: String) { val str = &amp;quot;hello world&amp;quot; fun say(count: Int = 10) { println(str) if (count &amp;gt; 0) { say(count - 1) } } say() } // 输出10次hello world  3.扩展函数 Kotlin有一个巨大的优势，可以静态的给一个类扩展成员方法以及成员变量</description>
+    </item>
+    
+    <item>
+      <title>kotlin基础</title>
+      <link>http://hideric.github.io/android/kotlin/kotlin%E5%9F%BA%E7%A1%80/</link>
+      <pubDate>Fri, 29 Nov 2019 14:47:15 +0800</pubDate>
+      
+      <guid>http://hideric.github.io/android/kotlin/kotlin%E5%9F%BA%E7%A1%80/</guid>
+      <description>Kotlin基础 1.基础语法  当编译器可以推断出类型时，可以省略类型定义
+var age: Int = 18 var name: String = &amp;quot;asd&amp;quot; var age = 18 var name = &amp;quot;asd&amp;quot;  kotlin有空安全类型
+var name: String = null	// String类型表示不会为空,当直接定义为null时编译器报错 var name2: String? = null // 当不知道定义的变量是否为空时，使用?  强转（允许为null强转为不能为null）
+fun main(args: Array&amp;lt;String&amp;gt;) { name = name2!! // 直接赋值编译器报错，需要使用!!强转 name2 = name // 可以直接赋值 }  函数定义
+// 参数名:参数类型 :返回值类型 fun printLen(str: String): String { println(&amp;quot;这个字符串是：$str&amp;quot;) // kotlin的模版语法 return &amp;quot;&amp;quot; }   2.</description>
+    </item>
+    
+    <item>
       <title>F-Droid Apps Recommendation</title>
-      <link>https://hideric.github.io/android/tool/f-droidapps/</link>
+      <link>http://hideric.github.io/android/tool/f-droidapps/</link>
       <pubDate>Wed, 07 Aug 2019 11:02:05 +0600</pubDate>
       
-      <guid>https://hideric.github.io/android/tool/f-droidapps/</guid>
+      <guid>http://hideric.github.io/android/tool/f-droidapps/</guid>
       <description> F-Droid，一个可替代的应用商店，里面只包含自由及开源应用。如果这里没有你要的应用，你可以使用 Aurora Store，一个从应用商店里下载应用且不需要使用谷歌帐号或被追踪的客户端  应用清单
  AdAway &amp;gt; 系统广告拦截器，使用 hosts 文件拦截所有的广告 AfWall &amp;gt; 一个防火墙，可以阻止不想要的连接 Amaze &amp;gt; 替代系统的文件管理器，允许文件的 root 访问权限，并且拥有 zip/unzip 功能 Ameixa &amp;gt; 大多数应用的图标包 andOTP &amp;gt; 替代谷歌验证器/Authy，一个可以用来登录启用了双因子验证2FA的网站账户的 TOTP 应用，可以使用 PIN 码备份和锁定 AnySoftKeyboard/AOSP Keyboard &amp;gt; 开源键盘，它有许多主题和语言包，我也是该项目的一员 Audio Recorder &amp;gt; 如其名字，允许你从麦克风录制不同格式的音频文件 Battery Charge Limit &amp;gt; 当到 80% 时自动停止充电，降低电池磨损battery wear并增加寿命 DAVx5 &amp;gt; 这是我最常用的应用之一，对我来说它基本上替代了谷歌联系人、谷歌日历和谷歌 Tasks，它连接着我的 Nextcloud 环境可以让我完全控制自己的数据 Document Viewer &amp;gt; 一个可以打开数百种文件格式的查看器应用，快速、轻量 Deezloader Remix &amp;gt; 让我可以在 Deezer 上下载高质量 MP3 的应用 Easy xkcd &amp;gt; xkcd 漫画阅读器，我喜欢这些 xkcd 漫画 Etar &amp;gt; 日历应用，替代谷歌日历，与 DAVx5 一同工作 FastHub-Libre &amp;gt; 一个 GitHub 客户端，完全 FOSS（自由及开源软件），非常实用如果你像我一样喜欢使用 Github 的话 Fennec F-Droid &amp;gt; 替代谷歌 Chrome 和其他类似的应用，一个为 F-Droid 打造的火狐浏览器，不含专有二进制代码并允许安装扩展提升浏览体验 Gadgetbridge &amp;gt; 替代小米运动，可以用来配对小米硬件的应用，追踪你的健康、步数、睡眠等。 K-9 Mail &amp;gt; 邮件客户端，替代 GMail 应用，可定制并可以添加多个账户 Lawnchair &amp;gt; 启动器，可以替代 Nova Launcher 或 Pixel Launcher，允许自定义和各种改变，也支持图标包 Mattermost &amp;gt; 可以连接 Mattermost 服务器的应用。Mattermost 是一个 Slack 替代品 NewPipe &amp;gt; 最好的 YouTube 客户端（我认为），可以替代 YoubTube，它完全是 FOSS，免除 YouTube 广告，占用更少空间，允许背景播放，允许下载视频/音频等。试一试吧 Nextcloud SMS &amp;gt; 允许备份/同步 SMS 到我的 Nextcloud 环境 Nextcloud Notes &amp;gt; 允许我创建，修改，删除，分享笔记并同步/备份到 Nextcloud 环境 OpenTasks &amp;gt; 允许我创建、修改、删除任务并同步到我的 Nextcloud 环境 OsmAnd~ &amp;gt; 一个地图应用，使用 OpenStreetMap，允许下载离线地图和导航 QKSMS &amp;gt; 我最喜欢的短信应用，可以替代原来的 Messaging 应用，拥有漂亮的界面，拥有备份、个性化、延迟发送等特性 Resplash/Mysplash &amp;gt; 允许你无限地从 Unsplash 下载无数的漂亮壁纸，全都可以免费使用和修改。 ScreenCam &amp;gt; 一个录屏工具，允许各样的自定义和录制模式，没有广告并且免费 SecScanQR &amp;gt; 二维码识别应用，快速轻量 Send Reduced Free &amp;gt; 这个应用可以在发送之前通过移除 PII（个人识别信息personally identifiable information）和减小尺寸，让你立即分享大图 Slide &amp;gt; 开源 Reddit 客户端 Telegram FOSS &amp;gt; 没有追踪和 Google Services 的纯净版 Telegram 安卓客户端 TrebleShot &amp;gt; 这个天才般的应用可以让你通过 WIFI 分享文件给其它设备，真的超快，甚至无需连接网络 Tusky &amp;gt; Tusky 是 Mastodon 平台的客户端（替代 Twitter） Unit Converter Ultimate &amp;gt; 这款应用可以一键在 200 种单位之间来回转换，非常快并且完全离线 Vinyl Music Player &amp;gt; 我首选的音乐播放器，可以替代谷歌音乐播放器或其他你已经安装的音乐播放器，它有漂亮的界面和许多特性 VPN Hotspot &amp;gt; 这款应用可以让我打开热点的时候分享 VPN，因此我可以在笔记本上什么都不用做就可以安全地浏览网页 Google Camera（与 Camera API 2 结合起来，需要 F-Droid 的基本的 microG 才能工作） Instagram MyVodafoneAL （运营商应用） ProtonMail （email 应用） Titanium Backup（备份应用数据，wifi 密码，通话记录等） WhatsApp （专有的端到端聊天应用，几乎我认识的所有人都有它）  </description>
     </item>

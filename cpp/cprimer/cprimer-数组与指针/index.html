@@ -1,0 +1,638 @@
+<head>
+  <meta charset="utf-8">
+  <title>CPrimer - 数组与指针</title>
+
+  <meta name="generator" content="Hugo 0.58.3" />
+
+  <!-- mobile responsive meta -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <!-- ** Plugins Needed for the Project ** -->
+  <!-- Bootstrap -->
+  <link rel="stylesheet" href="http://hideric.github.io/plugins/bootstrap/bootstrap.min.css">
+  <!-- themefy-icon -->
+  <link rel="stylesheet" href="http://hideric.github.io/plugins/themify-icons/themify-icons.css">
+  <!-- highlight -->
+  <link rel="stylesheet" href="http://hideric.github.io/plugins/highlight/hybrid.css">
+  <!-- fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700" rel="stylesheet">
+
+  <style>
+  :root{
+    --primary-color:#2f1f48;
+    --secondary-color:#f9f9f9;
+    --text-color:#636363;
+    --text-color-dark:#242738;
+    --white-color:#ffffff;
+  }  
+  </style>
+
+  <!-- Main Stylesheet -->
+  
+  <link rel="stylesheet" href="http://hideric.github.io/css/style.min.css" integrity="" media="screen">
+
+  <!-- jquiry -->
+  <script src="http://hideric.github.io/plugins/jquery/jquery-1.12.4.js"></script>
+
+  <!-- jquary ui -->
+  <script src="http://hideric.github.io/plugins/jquery/jquery-ui.js"></script>
+
+  <!--Favicon-->
+  <link rel="icon" href="http://hideric.github.io/images/favicon.png" type="image/x-icon">
+
+</head>
+
+
+<!-- navigation -->
+<header class="shadow-bottom sticky-top bg-white">
+  <div class="container">
+    <nav class="navbar navbar-expand-lg navbar-light">
+  <a class="navbar-brand" href="http://hideric.github.io/">Hideric</a>
+  <button class="navbar-toggler border-0" type="button" data-toggle="collapse" data-target="#navigation"
+    aria-controls="navigation" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse text-center" id="navigation">
+    <ul class="navbar-nav ml-auto">
+      <li class="nav-item">
+        <a class="nav-link text-dark" href="http://hideric.github.io/">Home</a>
+      </li>
+      
+      
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle text-dark" href="#" role="button" data-toggle="dropdown" aria-haspopup="true"
+          aria-expanded="false">
+          Back-End
+        </a>
+        <div class="dropdown-menu" >
+          
+          <a class="dropdown-item" href="http://hideric.github.io/java">Java</a>
+          
+          <a class="dropdown-item" href="http://hideric.github.io/python">Python</a>
+          
+          <a class="dropdown-item" href="http://hideric.github.io/go">Go</a>
+          
+          <a class="dropdown-item" href="http://hideric.github.io/cpp">C&#43;&#43;</a>
+          
+        </div>
+      </li>
+      
+      
+      
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle text-dark" href="#" role="button" data-toggle="dropdown" aria-haspopup="true"
+          aria-expanded="false">
+          DB
+        </a>
+        <div class="dropdown-menu" >
+          
+          <a class="dropdown-item" href="http://hideric.github.io/mysql">Mysql</a>
+          
+          <a class="dropdown-item" href="http://hideric.github.io/oracle">Oracle</a>
+          
+        </div>
+      </li>
+      
+      
+      
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle text-dark" href="#" role="button" data-toggle="dropdown" aria-haspopup="true"
+          aria-expanded="false">
+          Front-End
+        </a>
+        <div class="dropdown-menu" >
+          
+          <a class="dropdown-item" href="http://hideric.github.io/js">JavaScript</a>
+          
+          <a class="dropdown-item" href="http://hideric.github.io/vue">Vue</a>
+          
+          <a class="dropdown-item" href="http://hideric.github.io/react">React</a>
+          
+          <a class="dropdown-item" href="http://hideric.github.io/rn">React Native</a>
+          
+        </div>
+      </li>
+      
+      
+      
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle text-dark" href="#" role="button" data-toggle="dropdown" aria-haspopup="true"
+          aria-expanded="false">
+          Mid-Ware
+        </a>
+        <div class="dropdown-menu" >
+          
+          <a class="dropdown-item" href="http://hideric.github.io/redis">Redis</a>
+          
+          <a class="dropdown-item" href="http://hideric.github.io/nginx">Nginx</a>
+          
+        </div>
+      </li>
+      
+      
+      
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle text-dark" href="#" role="button" data-toggle="dropdown" aria-haspopup="true"
+          aria-expanded="false">
+          Mobile
+        </a>
+        <div class="dropdown-menu" >
+          
+          <a class="dropdown-item" href="http://hideric.github.io/android">Android</a>
+          
+          <a class="dropdown-item" href="http://hideric.github.io/ios">IOS</a>
+          
+        </div>
+      </li>
+      
+      
+      
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle text-dark" href="#" role="button" data-toggle="dropdown" aria-haspopup="true"
+          aria-expanded="false">
+          OPS
+        </a>
+        <div class="dropdown-menu" >
+          
+          <a class="dropdown-item" href="http://hideric.github.io/k8s">kubernetes</a>
+          
+          <a class="dropdown-item" href="http://hideric.github.io/docker">Docker</a>
+          
+          <a class="dropdown-item" href="http://hideric.github.io/leetcode">Leetcode</a>
+          
+          <a class="dropdown-item" href="http://hideric.github.io/linux">Linux</a>
+          
+        </div>
+      </li>
+      
+      
+      
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle text-dark" href="#" role="button" data-toggle="dropdown" aria-haspopup="true"
+          aria-expanded="false">
+          pages
+        </a>
+        <div class="dropdown-menu" >
+          
+          <a class="dropdown-item" href="http://hideric.github.io/faq">FAQ</a>
+          
+          <a class="dropdown-item" href="http://hideric.github.io/contact">CONTACT</a>
+          
+          <a class="dropdown-item" href="http://hideric.github.io/elements">ELEMENTS</a>
+          
+          <a class="dropdown-item" href="http://hideric.github.io/others">OTHERS</a>
+          
+        </div>
+      </li>
+      
+      
+    </ul>
+    
+    <ul class="list-inline text-center mb-0">
+      
+    </ul>
+  </div>
+</nav>
+  </div>
+</header>
+<!-- /navigation -->
+
+
+<section class="single pt-5 bg-gray">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-3">
+        <div class="p-4 bg-white sticky-top top-100">
+            
+            <nav class="sidebar-menu">
+              <ul class="list-styled">
+            <li class=""><a href="http://hideric.github.io/android/">Android</a>
+              <ul class="">
+            <li class=""><a href="http://hideric.github.io/android/kotlin/kotlin%E5%9B%A2%E9%98%9F%E5%8D%8F%E4%BD%9C/">Kotlin开发服务端应用</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/android/kotlin/kotlin%E7%9A%84%E6%89%A9%E5%B1%95%E5%BA%93/">Kotlin的扩展库</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/android/kotlin/kotlin%E8%AF%AD%E6%B3%95%E7%89%B9%E6%80%A7%E8%83%8C%E5%90%8E%E7%9A%84%E7%9F%A5%E8%AF%86/">Kotlin语法特性背后的知识</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/android/kotlin/kotlin%E9%AB%98%E7%BA%A7%E7%89%B9%E6%80%A7/">Kotlin高级特性</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/android/kotlin/%E7%B1%BB%E4%B8%8E%E5%AF%B9%E8%B1%A1/">类与对象</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/android/kotlin/%E5%87%BD%E6%95%B0%E4%B8%8Elambda%E9%97%AD%E5%8C%85/">函数与Lambda闭包</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/android/kotlin/kotlin%E5%9F%BA%E7%A1%80/">kotlin基础</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/android/tool/f-droidapps/">F-Droid Apps Recommendation</a>
+            </li></ul>
+              
+            </li>
+            <li class="parent d-block "><a href="http://hideric.github.io/cpp/">C&#43;&#43;</a>
+              <ul class="sub-menu">
+            <li class=""><a href="http://hideric.github.io/cpp/cprimer/cprimer-%E5%AD%98%E5%82%A8%E7%B1%BB%E5%88%AB%E5%92%8C%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/">CPrimer - 数组与指针</a>
+            </li>
+            <li class=" active "><a href="http://hideric.github.io/cpp/cprimer/cprimer-%E6%95%B0%E7%BB%84%E4%B8%8E%E6%8C%87%E9%92%88/">CPrimer - 数组与指针</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/cpp/cprimer/cprimer-%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%92%8C%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%87%BD%E6%95%B0/">CPrimer - 字符串和字符串函数</a>
+            </li></ul>
+              
+            </li>
+            <li class=""><a href="http://hideric.github.io/docker/">Docker</a>
+              <ul class="">
+            <li class=""><a href="http://hideric.github.io/docker/docker%E5%AE%9E%E7%94%A8%E5%B7%A5%E5%85%B7/">docker实用工具</a>
+            </li></ul>
+              
+            </li>
+            <li class=""><a href="http://hideric.github.io/go/">Go</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/ios/">IOS</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/java/">Java</a>
+              <ul class="">
+            <li class=""><a href="http://hideric.github.io/java/basis/jdk1.8%E7%9A%84localdatetime/">jdk1.8的LocalDateTime</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/java/network/%E4%BD%BF%E7%94%A8dubbo%E8%BF%87%E7%A8%8B%E4%B8%AD%E9%81%87%E5%88%B0%E8%BF%87%E5%93%AA%E4%BA%9B%E5%9D%91/">QPS、TPS、PV、UV、GMV、IP、RPS</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/java/basis/jvm/jvm%E7%AC%94%E8%AE%B0/">JVM笔记</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/java/basis/http%E6%96%AD%E7%82%B9%E7%BB%AD%E4%BC%A0/">HTTP断点续传</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/java/basis/java-%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8/">Java 垃圾收集器</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/java/basis/java-%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%8B%BC%E6%8E%A5%E5%A7%BF%E5%8A%BF/">Java 字符串拼接姿势</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/java/basis/java-%E5%A6%82%E4%BD%95%E6%9B%B4%E4%BC%98%E9%9B%85%E7%9A%84%E5%A4%84%E7%90%86%E7%A9%BA%E5%80%BC/">Java-如何更优雅的处理空值</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/java/basis/jvm/jvm-%E5%A0%86%E5%86%85%E5%AD%98%E6%BA%A2%E5%87%BA%E5%90%8E%E5%85%B6%E4%BB%96%E7%BA%BF%E7%A8%8B%E6%98%AF%E5%90%A6%E5%8F%AF%E7%BB%A7%E7%BB%AD%E5%B7%A5%E4%BD%9C/">JVM 堆内存溢出后，其他线程是否可继续工作？</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/java/framework/mybatis/mybatis%E4%B8%ADlike-%E7%9A%84%E4%BD%BF%E7%94%A8%E6%96%B9%E5%BC%8F%E4%BB%A5%E5%8F%8A%E4%B8%80%E4%BA%9B%E6%B3%A8%E6%84%8F%E7%82%B9/">Mybatis中Like 的使用方式以及一些注意点</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/java/framework/mybatis/mybatis%E5%B1%85%E7%84%B6%E6%9C%89%E5%9D%91%E5%8D%83%E4%B8%87%E5%88%AB%E8%B8%A9/">Mybatis居然有坑，千万别踩！</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/java/framework/spring/spring%E5%BE%AA%E7%8E%AF%E4%BE%9D%E8%B5%96%E7%9A%84%E5%9D%91/">Spring循环依赖的坑</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/java/framework/spring/spring%E7%9A%84%E5%90%84%E7%A7%8D%E6%B3%A8%E8%A7%A3/">Spring的各种注解</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/java/basis/%E4%BB%8E%E5%AE%9E%E8%B7%B5%E8%A7%92%E5%BA%A6%E9%87%8D%E6%96%B0%E7%90%86%E8%A7%A3bio%E5%92%8Cnio/">从实践角度重新理解BIO和NIO</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/java/basis/%E5%85%B3%E4%BA%8E-git-%E6%8F%90%E4%BA%A4%E8%A7%84%E8%8C%83/">关于 Git 提交规范</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/java/basis/jvm/%E6%B3%A8%E6%84%8Fcode-cache%E6%89%93%E6%BB%A1%E5%8F%AF%E5%AF%BC%E8%87%B4%E5%BA%94%E7%94%A8%E6%80%A7%E8%83%BD%E9%99%8D%E4%BD%8E/">注意，Code Cache打满可导致应用性能降低</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/java/basis/hashmap%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/">HashMap源码分析</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/java/framework/spring/spring-%E5%AE%B9%E5%99%A8%E5%90%AF%E5%8A%A8%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/">Spring 容器启动源码解析</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/java/framework/spring/spring-%E7%9A%84-beanutils-%E5%A1%AB%E5%9D%91%E8%AE%B0/">Spring 的 BeanUtils 填坑记</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/java/basis/weakhashmap%E7%94%9F%E4%BA%86%E7%97%85%E7%9A%84-hashmap-/">WeakHashMap，生了病的 HashMap ？</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/java/framework/dubbo/%E4%BD%BF%E7%94%A8dubbo%E8%BF%87%E7%A8%8B%E4%B8%AD%E9%81%87%E5%88%B0%E8%BF%87%E5%93%AA%E4%BA%9B%E5%9D%91/">使用dubbo过程中遇到过哪些坑？</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/java/basis/%E4%B8%80%E4%B8%AAjava%E5%AF%B9%E8%B1%A1%E5%88%B0%E5%BA%95%E5%8D%A0%E7%94%A8%E5%A4%9A%E5%A4%A7%E5%86%85%E5%AD%98/">一个Java对象到底占用多大内存？</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/java/basis/%E4%BD%A0%E7%9C%9F%E7%9A%84%E4%BA%86%E8%A7%A3logback%E5%90%97/">你真的了解logback吗？</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/java/basis/%E8%BF%99%E5%8F%AF%E8%83%BD%E6%98%AFgithub%E4%B8%8A%E6%9C%80%E5%8F%8B%E5%A5%BD%E7%9A%84%E5%88%86%E5%B8%83%E5%BC%8F%E5%8D%B3%E6%97%B6%E9%80%9A%E8%AE%AF%E9%A1%B9%E7%9B%AE..../">这可能是Github上最友好的分布式即时通讯项目.....</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/java/basis/java-8-stream-%E9%9B%86%E5%90%88%E6%93%8D%E4%BD%9C%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B/">Java 8 - Stream 集合操作快速上手</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/java/basis/concurrency/stringbuilder-%E4%B8%BA%E4%BB%80%E4%B9%88%E7%BA%BF%E7%A8%8B%E4%B8%8D%E5%AE%89%E5%85%A8/">StringBuilder 为什么线程不安全？</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/java/basis/jvm/jvm%E4%BC%98%E5%8C%96%E4%B9%8B%E9%80%83%E9%80%B8%E5%88%86%E6%9E%90%E4%B8%8E%E5%88%86%E9%85%8D%E6%B6%88%E9%99%A4/">JVM优化之逃逸分析与分配消除</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/java/framework/security/shiro%E6%A1%86%E6%9E%B6-%E7%94%A8%E6%88%B7%E6%9D%83%E9%99%90%E7%AE%A1%E7%90%86/">Shiro框架 - 用户权限管理</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/java/basis/concurrency/threadlocal%E9%9D%A2%E8%AF%95%E9%A2%98/">ThreadLocal面试题</a>
+            </li></ul>
+              
+            </li>
+            <li class=""><a href="http://hideric.github.io/js/">JavaScript</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/k8s/">Kubernets</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/leetcode/">Leetcode</a>
+              <ul class="">
+            <li class=""><a href="http://hideric.github.io/leetcode/leetcode-5/">LeetCode #5 最长回文子字符串</a>
+            </li></ul>
+              
+            </li>
+            <li class=""><a href="http://hideric.github.io/linux/">Linux</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/mysql/">Mysql</a>
+              <ul class="">
+            <li class=""><a href="http://hideric.github.io/mysql/mysql%E4%BA%8B%E5%8A%A1%E4%B8%8E%E9%9A%94%E7%A6%BB%E7%BA%A7%E5%88%AB/">MySQL事务与隔离级别</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/mysql/mysql%E9%9D%A2%E8%AF%95%E9%A2%98%E5%8F%8A%E5%8D%83%E4%B8%87%E7%BA%A7%E6%95%B0%E6%8D%AE%E6%9F%A5%E8%AF%A2%E4%BC%98%E5%8C%96/">Mysql面试题及千万级数据查询优化</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/mysql/mysql%E7%9A%84count%E8%AF%AD%E5%8F%A5/">MySQL的COUNT语句</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/mysql/mysql-%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E6%80%9D%E8%B7%AF/">MySQL 性能优化思路</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/mysql/%E5%AE%98%E6%96%B9%E5%B7%A5%E5%85%B7mysql-router-%E9%AB%98%E5%8F%AF%E7%94%A8%E5%8E%9F%E7%90%86%E4%B8%8E%E5%AE%9E%E6%88%98/">官方工具｜MySQL Router 高可用原理与实战</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/mysql/mysql-%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%968-%E7%A7%8D%E5%B8%B8%E8%A7%81-sql-%E9%94%99%E8%AF%AF%E7%94%A8%E6%B3%95/">MySQL 性能优化：8 种常见 SQL 错误用法！</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/mysql/index/null%E8%83%BD%E7%94%A8%E7%B4%A2%E5%BC%95/">MySQL中IS NULL、IS NOT NULL、!=不能用索引？</a>
+            </li></ul>
+              
+            </li>
+            <li class=""><a href="http://hideric.github.io/nginx/">Nginx</a>
+              <ul class="">
+            <li class=""><a href="http://hideric.github.io/nginx/%E5%90%8E%E7%AB%AF%E5%AE%9E%E8%B7%B5nginx%E6%97%A5%E5%BF%97%E9%85%8D%E7%BD%AE%E8%B6%85%E8%AF%A6%E7%BB%86/">后端实践：Nginx日志配置（超详细）</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/nginx/%E4%BD%BF%E7%94%A8nginx%E8%BF%9B%E8%A1%8C%E5%9B%9B%E5%B1%82%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1/">使用Nginx进行四层负载均衡</a>
+            </li></ul>
+              
+            </li>
+            <li class=""><a href="http://hideric.github.io/oracle/">Oracle</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/others/">OTHERS</a>
+              <ul class="">
+            <li class=""><a href="http://hideric.github.io/others/term/qps%E6%9C%AF%E8%AF%AD/">秒懂 QPS、TPS、PV、UV、GMV、IP、RPS！</a>
+            </li></ul>
+              
+            </li>
+            <li class=""><a href="http://hideric.github.io/python/">Python</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/react/">React</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/rn/">React Native</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/redis/">Redis</a>
+              <ul class="">
+            <li class=""><a href="http://hideric.github.io/redis/%E5%A6%82%E4%BD%95%E7%94%A8-redis-%E7%BB%9F%E8%AE%A1%E7%8B%AC%E7%AB%8B%E7%94%A8%E6%88%B7%E8%AE%BF%E9%97%AE%E9%87%8F/">如何用 Redis 统计独立用户访问量？</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/redis/redis-%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81%E7%9A%84%E6%AD%A3%E7%A1%AE%E5%AE%9E%E7%8E%B0%E6%96%B9%E5%BC%8Fjava%E7%89%88/">Redis 分布式锁的正确实现方式（Java版）</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/redis/redis-%E5%AE%9E%E7%8E%B0%E9%99%84%E8%BF%91%E7%9A%84%E4%BA%BA%E5%8A%9F%E8%83%BD/">Redis 实现“附近的人”功能</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/redis/%E4%B8%BA%E4%BB%80%E4%B9%88rediscluster%E6%9C%8916384%E4%B8%AA%E6%A7%BD/">为什么RedisCluster有16384个槽?</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/redis/%E5%AD%A6%E4%BC%9A%E8%BF%99%E5%87%A0%E4%B8%AAredis%E6%8A%80%E5%B7%A7%E8%AE%A9%E4%BD%A0%E7%9A%84%E7%A8%8B%E5%BA%8F%E5%BF%AB%E5%A6%82%E9%97%AA%E7%94%B5/">学会这几个Redis技巧，让你的程序快如闪电</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/redis/%E6%AF%94redis%E8%BF%98%E5%BF%AB5%E5%80%8D%E7%9A%84%E4%B8%AD%E9%97%B4%E4%BB%B6%E4%B8%BA%E5%95%A5%E8%BF%99%E4%B9%88%E5%BF%AB/">比Redis还快5倍的中间件，为啥这么快？</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/redis/redis%E9%AB%98%E7%BA%A7%E5%AE%A2%E6%88%B7%E7%AB%AFlettuce%E8%AF%A6%E8%A7%A3/">Redis高级客户端Lettuce详解</a>
+            </li></ul>
+              
+            </li>
+            <li class=""><a href="http://hideric.github.io/vue/">Vue</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/contact/">Contact</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/elements/">Elements</a>
+            </li>
+            <li class=""><a href="http://hideric.github.io/faq/">Frequently Asked Questions</a>
+            </li></ul>
+            </nav>
+
+            
+        </div>
+      </div>
+      <div class="col-lg-9">
+        <div class="p-5 bg-white">
+            <h2>CPrimer - 数组与指针</h2>
+            
+
+<h2 id="cprimer-数组与指针">CPrimer - 数组与指针</h2>
+
+<h4 id="解引用未初始化的指针">解引用未初始化的指针</h4>
+
+<h5 id="千万不要解引用未初始化的指针">千万不要解引用未初始化的指针</h5>
+
+<pre><code class="language-c">int *pt;	// 未初始化的指针
+*pt = 5;	// 严重的错误
+</code></pre>
+
+<p>第二行的意思是把5储存在pt指向的位置，但是pt未被初始化，其值是一个随机值，所以不知道5储存到何处，可能会擦写数据或代码。</p>
+
+<h4 id="const关键字修饰数组或指针">const关键字修饰数组或指针</h4>
+
+<ol>
+<li>const修饰的数组无法改变值（编译器报错）;</li>
+
+<li><p>指向const的指针不能用于改变值，但是可以让指针指向数组的别处;</p>
+
+<pre><code class="language-c">double rates[5] = {88.99, 100.12, 59.45, 183.11, 340.5};
+const double * pd = rates;	// pd指向数组的首元素
+*pd = 29.89;	// 不允许，指针不能用于改变值
+pd[2] = 222.22;	// 不允许，同上
+rates[0] = 99.99;	// 允许，因为rates未被const限定
+pd++;	// 让pd指向rates[1]，允许
+</code></pre></li>
+
+<li><p>把const数据或非const数据的地址初始化为指向const的指针或者赋值给指向const的指针是合法的；</p>
+
+<pre><code class="language-c">double rates[5] = {88.99, 100.12, 59.45, 183.11, 340.5};
+const double locked[4] = {0.08, 0.075, 0.0725, 0.07};
+const double * pc = rates;	// 把非const数据初始化为指向const的指针，有效
+pc = locked;	// 把const数据赋值给指向const的指针，有效
+pc = &amp;rates[3];	// 把非const数据赋值给指向const的指针，有效
+</code></pre></li>
+
+<li><p>只能把非const数据的地址赋给普通指针；</p>
+
+<pre><code class="language-c">double rates[5] = {88.99, 100.12, 59.45, 183.11, 340.5};
+const double locked[4] = {0.08, 0.075, 0.0725, 0.07};
+double * pnc = rates;	// 把非const数据初始化为普通指针，无效
+pnc = locked;	// 把const数据赋值给指向普通指针，无效
+pnc = &amp;rates[3];	// 把非const数据赋值给普通指针，有效
+</code></pre></li>
+
+<li><p>const初始化一个不能指向别处的指针（可以修改指针指向的值，但是只能指向初始化时设置的地址）；</p>
+
+<pre><code class="language-c">double rates[5] = {88.99, 100.12, 59.45, 183.11, 340.5};
+double * const pc = rates; // pc指向数组的开始
+pc = &amp;rates[2];	// 不允许，因为该指针不能指向别处
+*pc = 92.99; // 没问题--更改rates[0]的值
+</code></pre></li>
+
+<li><p>创建指针时可以使用两次const，该指针既不能更改它所指向的地址，也不能修改指向地址上的值；</p>
+
+<pre><code class="language-c">double rates[5] = {88.99, 100.12, 59.45, 183.11, 340.5};
+const double * const pc = rates;
+pc = &amp;rates[2]; // 不允许
+*pc = 92.99; // 不允许
+</code></pre></li>
+</ol>
+
+<h4 id="指针和多维数组">指针和多维数组</h4>
+
+<p><strong>地址的地址或指针的指针就是双重间接的例子</strong></p>
+
+<pre><code class="language-c">#include &lt;stdio.h&gt;
+
+int main(void) {
+  	int zippo[4][2] = {{2, 4}, {6, 8}, {1, 3}, {5, 7}};
+    printf(&quot;zippo = %p, zippo + 1 = %p\n&quot;, zippo, zippo + 1);
+    printf(&quot;zippo[0] = %p, zippo[0] + 1 = %p\n&quot;, zippo[0], zippo[0] + 1);
+    printf(&quot;*zippo = %p, *zippo + 1 = %p\n&quot;, *zippo, *zippo + 1);
+    printf(&quot;zippo[0][0] = %d\n&quot;, zippo[0][0]);
+    printf(&quot;*zippo[0] = %d\n&quot;, *zippo[0]);
+    printf(&quot;**zippo = %d\n&quot;, **zippo);
+    printf(&quot;zippo[2][1] = %d\n&quot;, zippo[2][1]);
+    printf(&quot;*(*(zippo+2)+1) = %d\n&quot;, *(*(zippo + 2) + 1));
+}
+</code></pre>
+
+<p><strong>输出：</strong></p>
+
+<pre><code class="language-bash">zippo = 0x7ffeefbff4f0, zippo + 1 = 0x7ffeefbff4f8	// zippo指向8个字节对象，+1等于地址+8
+zippo[0] = 0x7ffeefbff4f0, zippo[0] + 1 = 0x7ffeefbff4f4 // zippo[0]指向4个字节对象，+1等于+4
+*zippo = 0x7ffeefbff4f0, *zippo + 1 = 0x7ffeefbff4f4 // *zippo 等同于 zippo[0]
+zippo[0][0] = 2
+*zippo[0] = 2
+**zippo = 2
+zippo[2][1] = 3
+*(*(zippo+2)+1) = 3
+</code></pre>
+
+<p><strong>指向多维数组的指针</strong></p>
+
+<pre><code class="language-c">int (*pz)[2]; // pz指向一个内含2个int类型值的数组，[]优先级高于*，所以需要()
+int * pax[2]; // pax是一个内含2个指针元素的数组，每个元素都指向int的指针
+</code></pre>
+
+<p><strong>指针的兼容性</strong></p>
+
+<pre><code class="language-c">int n = 5;
+double x;
+int * p1 = &amp;n;
+double * pd = &amp;x;
+x = n;	// 隐式类型转换，数值类型之间
+pd = p1;	// 编译时错误
+// 更复杂的类型
+int * pt;
+int(*pa)[3];
+int ar1[2][3];
+int ar2[3][2];
+int **p2; //一个指向指针的指针
+pt = &amp;ar1[0][0]; // 都是指向int的指针
+pt = ar1[0]; // 都是指向int的指针
+pt = ar1; // 无效
+pa = ar1; // 都是指向内含3个int类型元素数组的指针
+pa = ar2; // 无效
+p2 = &amp;pt; // both pointer-to-int *
+*p2 = ar2[0]; // 都是指向int的指针
+p2 = ar2; // 无效
+</code></pre>
+
+<p><strong>多重解引用让人费解</strong></p>
+
+<pre><code class="language-c">int x = 20;
+const int y = 23;
+int * p1 = &amp;x;
+const int * p2 = &amp;y;
+const int **pp2;
+const int n = 13;
+p1 = p2; // 不安全，把const指针赋给非const指针，这样可以使用新的指针改变const指针指向的数据，编译器警告
+p2 = p1; // 有效，把非const指针赋给const指针
+pp2 = &amp;p1; // 不安全，嵌套指针类型赋值，导致const限定符失效，const表示不能通过*pp2修改它所指向的内容
+*pp2 = &amp;n; // 有效，两者都声明为const，但是将导致p1指向n（*pp2已被修改）
+*p1 = 10; // 有效，但是这将改变n的值（n的值不应该被修改）
+</code></pre>
+
+<p><strong>C const 和 C++ const</strong></p>
+
+<p>区别是：</p>
+
+<ol>
+<li><p>C++允许在声明数组大小时使用const整数，而C不允许；</p></li>
+
+<li><p>C++的指针赋值检查更严格；</p>
+
+<pre><code class="language-c">const int y;
+const int * p2 = &amp;y;
+int * p1;
+p1 = p2; // C++中不允许，但是C中只给警告
+// c++不允许把const指针赋给非const指针，但是C允许
+</code></pre></li>
+</ol>
+
+<p><strong>函数和多维数组</strong></p>
+
+<ol>
+<li><p>定义函数接收二维数组</p>
+
+<pre><code class="language-c">void function(int (*pt)[4]); // 接收4列n行的二维数组
+// 当且仅当pt是一个函数的形式参数时，可以这样声明：
+void function(int pt[][4]); // 第一个方括号是空的，表示pt是一个指针。
+</code></pre></li>
+
+<li><p>声明一个指向N维数组的指针</p>
+
+<pre><code class="language-c">int sum4d(int ar[][12][20][30], int rows); // 只能省略最左边方括号中的值
+int sum4d(int (*ar)[12][20][30], int rows);
+</code></pre></li>
+</ol>
+
+<p><strong>变长数组</strong></p>
+
+<pre><code class="language-c">int sum2d(int rows, int cols, int ar[rows][cols]); // 允许
+int sum2d(int ar[rows][cols], int rows, int cols); // 不允许，变量rows，cols未定义
+</code></pre>
+
+<p><strong>复合字面量</strong></p>
+
+<p>复合字面量：基本类型的常量，数组的匿名数组</p>
+
+<pre><code class="language-c">(int [2]){10, 20}; // 复合字面量
+(int[]){50, 20, 90}; // 可以省略数组大小，内含3个元素的复合字面量
+// 因为复合字面量是匿名的，所以只能创建的同时使用它
+int *pt1;
+pt1 = (int[2]){10, 20}; // 复合字面量的类型名也代表首元素的地址，所以可以把它赋给指向int的指针
+</code></pre>
+
+<p>可以把这种用法应用于多维数组</p>
+
+<pre><code class="language-c">int (*pt2)[4]; // 声明一个指向二维数组的指针，该数组内含2个数组元素
+// 每个元素是内含4个int类型值的数组
+pt2 = (int [2][4]) {{1, 2, 3, -9}, {4, 5, 6, -8}};
+// 复合字面量的类型是2 x 4的int数组
+</code></pre>
+
+            <p class="post-meta border-bottom pb-3 mb-0">Updated on 26 Nov 2019</p><nav class="pagination mt-3"><a class="nav nav-prev" href="http://hideric.github.io/cpp/cprimer/cprimer-%E5%AD%98%E5%82%A8%E7%B1%BB%E5%88%AB%E5%92%8C%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/" title="CPrimer - 数组与指针"><i class="ti-arrow-left mr-2"></i>CPrimer - 数组与指针</a>
+            <a class="nav nav-next" href="http://hideric.github.io/cpp/cprimer/cprimer-%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%92%8C%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%87%BD%E6%95%B0/" title="CPrimer - 字符串和字符串函数">CPrimer - 字符串和字符串函数<i class="ti-arrow-right ml-2"></i></a>
+            </nav></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- footer -->
+<footer class="section bg-gray pb-0">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-8 text-md-left text-center">
+        <p>The Hugo Documents are copyright © gethugothemes 2018.</p> 
+      </div>
+      <div class="col-md-4 text-md-right text-center">
+        <ul class="list-inline mb-3">
+          
+          <li class="list-inline-item"><a class="text-color d-inline-block p-2" href="#"><i class="ti-facebook"></i></a></li>
+          
+          <li class="list-inline-item"><a class="text-color d-inline-block p-2" href="#"><i class="ti-twitter-alt"></i></a></li>
+          
+          <li class="list-inline-item"><a class="text-color d-inline-block p-2" href="#"><i class="ti-vimeo-alt"></i></a></li>
+          
+          <li class="list-inline-item"><a class="text-color d-inline-block p-2" href="#"><i class="ti-instagram"></i></a></li>
+          
+        </ul>
+      </div>
+    </div>
+  </div>
+</footer>
+<!-- /footer -->
+
+<!-- Bootstrap JS -->
+<script src="http://hideric.github.io/plugins/bootstrap/bootstrap.min.js"></script>
+<!-- highlight -->
+<script src="http://hideric.github.io/plugins/highlight/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+<!-- Main Script -->
+
+<script src="http://hideric.github.io/js/script.min.js"></script>

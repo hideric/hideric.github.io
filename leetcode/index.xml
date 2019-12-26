@@ -2,22 +2,22 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Leetcode on Hideric&#39;s Blog</title>
-    <link>https://hideric.github.io/leetcode/</link>
+    <link>http://hideric.github.io/leetcode/</link>
     <description>Recent content in Leetcode on Hideric&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>The Hugo Documents are copyright © gethugothemes 2018.</copyright>
     <lastBuildDate>Wed, 07 Aug 2019 11:02:05 +0600</lastBuildDate>
     
-	<atom:link href="https://hideric.github.io/leetcode/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="http://hideric.github.io/leetcode/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>LeetCode #5 最长回文子字符串</title>
-      <link>https://hideric.github.io/leetcode/leetcode-5/</link>
+      <link>http://hideric.github.io/leetcode/leetcode-5/</link>
       <pubDate>Wed, 07 Aug 2019 11:02:05 +0600</pubDate>
       
-      <guid>https://hideric.github.io/leetcode/leetcode-5/</guid>
+      <guid>http://hideric.github.io/leetcode/leetcode-5/</guid>
       <description>最长回文子字符串(Longest Palindromic Substring) Medium
 给定一个字符串s，找到s中最长的回文子字符串。你可以假设s的最大长度为1000。
  示例 1:

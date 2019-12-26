@@ -2,15 +2,27 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Docker on Hideric&#39;s Blog</title>
-    <link>https://hideric.github.io/docker/</link>
+    <link>http://hideric.github.io/docker/</link>
     <description>Recent content in Docker on Hideric&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>The Hugo Documents are copyright © gethugothemes 2018.</copyright>
     <lastBuildDate>Wed, 07 Aug 2019 11:02:05 +0600</lastBuildDate>
     
-	<atom:link href="https://hideric.github.io/docker/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="http://hideric.github.io/docker/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>docker实用工具</title>
+      <link>http://hideric.github.io/docker/docker%E5%AE%9E%E7%94%A8%E5%B7%A5%E5%85%B7/</link>
+      <pubDate>Thu, 26 Dec 2019 14:50:01 +0800</pubDate>
+      
+      <guid>http://hideric.github.io/docker/docker%E5%AE%9E%E7%94%A8%E5%B7%A5%E5%85%B7/</guid>
+      <description>docker实用工具 docker-gc：容器和镜像的垃圾回收 (被 docker system prune 替代) Docker-gc 工具通过删除不需要的容器和镜像来帮你清理 Docker 主机。它会删除存在超过一个小时的所有容器。此外，它还删除不属于任何留置容器的镜像。
+你可以将 docker-gc 作为脚本和容器来使用。我们将以容器的形式运行 docker-gc。若要使用 docker-gc 来查找所有可以删除的容器和镜像，命令如下：
+$ docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -e DRY RUN=1 spotify/docker-gc  上述命令中，我们加载了 docker.sock 文件，以便 docker-gc 能够与 Docker API 交互。我们传递了一个环境变量 DRY_RUN=1 来查找将被删除的容器和镜像。如果不提供该参数，docker-gc 会删除所有容器和镜像。最好事先确认 docker-gc 要删除的内容。上述命令的输出如下所示：
+[2017-04-28T06:27:24] [INFO] : The following container would have been removed 0c1b3b0972bb792bee508 60c35a4 bc08ba32b527d53eab173d12a15c28deb931/vibrant_ yonath [2017-04-28T06:27:24] [INFO] : The following container would have been removed 2a72d41e4b25e2782f7844e188643e395650a9ecca660e7a0dc2b7989e5acc28 /friendlyhello_ web [2017-04-28T06:27:24] [INFO] : The following image would have been removed sha256:00f017a8c2a6e1 fe2f fd05c281 f27d069d2a99323a8cd514dd35f228ba26d2ff [busybox: latest] [2017-04-28T06:27:24] [ INFO] : The following image would have been removed sha256 :4a323b466a5ac4ce6524 8dd970b538922c54e535700cafe9448b52a3094483ea [hello-world:latest] [2017-04-28T06:27:24] [INFO] : The following image would have been removed sha256:4a323b4 66a5ac4ce65248dd970b538922c54e535700cafe9448b52a3094483ea [python:2.</description>
+    </item>
     
   </channel>
 </rss>
