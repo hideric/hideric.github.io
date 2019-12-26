@@ -2,22 +2,22 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Java on Hideric&#39;s Blog</title>
-    <link>http://hideric.github.io/java/</link>
+    <link>https://hideric.github.io/java/</link>
     <description>Recent content in Java on Hideric&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>The Hugo Documents are copyright © gethugothemes 2018.</copyright>
     <lastBuildDate>Wed, 07 Aug 2019 11:02:05 +0600</lastBuildDate>
     
-	<atom:link href="http://hideric.github.io/java/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://hideric.github.io/java/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>jdk1.8的LocalDateTime</title>
-      <link>http://hideric.github.io/java/basis/jdk1.8%E7%9A%84localdatetime/</link>
+      <link>https://hideric.github.io/java/basis/jdk1.8%E7%9A%84localdatetime/</link>
       <pubDate>Thu, 19 Dec 2019 13:57:23 +0800</pubDate>
       
-      <guid>http://hideric.github.io/java/basis/jdk1.8%E7%9A%84localdatetime/</guid>
+      <guid>https://hideric.github.io/java/basis/jdk1.8%E7%9A%84localdatetime/</guid>
       <description>jdk1.8的LocalDateTime 为什么需要LocalDate、LocalTime、LocalDateTime Date如果不格式化，打印出的日期可读性差
 Tue Sep 10 09:34:04 CST 2019  使用SimpleDateFormat对时间进行格式化，但SimpleDateFormat是线程不安全的 SimpleDateFormat的format方法最终调用代码：
 private StringBuffer format(Date date, StringBuffer toAppendTo, FieldDelegate delegate) { // Convert input date to time field list calendar.setTime(date); boolean useDateFormatSymbols = useDateFormatSymbols(); for (int i = 0; i &amp;lt; compiledPattern.length; ) { int tag = compiledPattern[i] &amp;gt;&amp;gt;&amp;gt; 8; int count = compiledPattern[i++] &amp;amp; 0xff; if (count == 255) { count = compiledPattern[i++] &amp;lt;&amp;lt; 16; count |= compiledPattern[i++]; } switch (tag) { case TAG_QUOTE_ASCII_CHAR: toAppendTo.</description>
@@ -25,10 +25,10 @@ private StringBuffer format(Date date, StringBuffer toAppendTo, FieldDelegate de
     
     <item>
       <title>QPS、TPS、PV、UV、GMV、IP、RPS</title>
-      <link>http://hideric.github.io/java/network/%E4%BD%BF%E7%94%A8dubbo%E8%BF%87%E7%A8%8B%E4%B8%AD%E9%81%87%E5%88%B0%E8%BF%87%E5%93%AA%E4%BA%9B%E5%9D%91/</link>
+      <link>https://hideric.github.io/java/network/%E4%BD%BF%E7%94%A8dubbo%E8%BF%87%E7%A8%8B%E4%B8%AD%E9%81%87%E5%88%B0%E8%BF%87%E5%93%AA%E4%BA%9B%E5%9D%91/</link>
       <pubDate>Tue, 17 Dec 2019 09:47:22 +0800</pubDate>
       
-      <guid>http://hideric.github.io/java/network/%E4%BD%BF%E7%94%A8dubbo%E8%BF%87%E7%A8%8B%E4%B8%AD%E9%81%87%E5%88%B0%E8%BF%87%E5%93%AA%E4%BA%9B%E5%9D%91/</guid>
+      <guid>https://hideric.github.io/java/network/%E4%BD%BF%E7%94%A8dubbo%E8%BF%87%E7%A8%8B%E4%B8%AD%E9%81%87%E5%88%B0%E8%BF%87%E5%93%AA%E4%BA%9B%E5%9D%91/</guid>
       <description>QPS、TPS、PV、UV、GMV、IP、RPS QPS
 Queries Per Second，每秒查询数。每秒能够响应的查询次数。
 QPS是对一个特定的查询服务器在规定时间内所处理流量多少的衡量标准，在因特网上，作为域名系统服务器的机器的性能经常用每秒查询率来衡量。每秒的响应请求数，也即是最大吞吐能力。
@@ -47,10 +47,10 @@ GMV，是 Gross Merchandise Volume 的简称。只要是订单，不管消费者
     
     <item>
       <title>JVM笔记</title>
-      <link>http://hideric.github.io/java/basis/jvm/jvm%E7%AC%94%E8%AE%B0/</link>
+      <link>https://hideric.github.io/java/basis/jvm/jvm%E7%AC%94%E8%AE%B0/</link>
       <pubDate>Fri, 15 Nov 2019 18:21:11 +0800</pubDate>
       
-      <guid>http://hideric.github.io/java/basis/jvm/jvm%E7%AC%94%E8%AE%B0/</guid>
+      <guid>https://hideric.github.io/java/basis/jvm/jvm%E7%AC%94%E8%AE%B0/</guid>
       <description>1.七个阶段：加载、验证、准备、解析、初始化、使用、卸载。 1.1.其中加载、验证、准备、初始化这4个阶段是按顺序开始执行的（并不是结束一个才开始下一个）。解析可能发生在加载后也可能发生在初始化前后 1.2.加载阶段： 1.2.1.将字节码二进制流读取到jvm，将字节码中的常量池信息、类信息复制到虚拟机常量池中，并在内存中生成一个代表这个类的java.lang.Class对象。 1.2.2.非数组类由自定义加载器加载，数组类本身不通过类加载器创建，而是虚拟机直接创建，但是数组的E类型如果不是引用类型的话由引导类加载器加载（启动类加载器），否则由加载该类的类的类加载器加载。 1.2.3.数组类不是引用类型的话可见性将默认为public。 1.2.4.hotspot class对象创建在方法区。 1.3.验证阶段： 1.3.1.目的是确保字节码二进制流中包含的信息符合jvm规范，不会破坏jvm，因为字节码二进制流的来源有多样性，虚拟机需要做初始化前的校验控制。 1.3.2.主要是对数据格式和符号引用进行校验（是否能找到对应的类、字段、方法，访问性，不通过会抛出IllegalAccessError、NoSuchMethodError等异常）。 1.4.准备阶段： 1.4.1.此过程是正式为类变量（static）分配内存并设置类变量的初始值，内存在方法区分配。 1.4.2.static变量的初始化数据类型为零值，char对应的&amp;rsquo;\u0000&amp;rsquo;，boolean对应false，引用类型为null。 1.4.3.final修饰的static变量为常量，在编译成的class文件中就有constantValue值，此阶段会直接初始化为 ConstantValue的值。 1.5.解析阶段： 1.5.1.工作是将虚拟机常量池内的符号引用替换为直接引用，使用调用者类的类加载器加载引用类。 1.5.2.解析完成前要进行符号引用验证，同验证阶段的符号引用验证。 1.6.初始化阶段： 1.6.1.工作是执行类构造器。此方法是由编译器自动收集类的所有类变量（static）的赋值动作和静态语句块中的语句合并产生的。 1.6.2.接口无法拥有static{}，但是只要有static变量就会触发类构造器，否则编译过后的class文件中没有。 1.6.3.多个线程初始化一个类，虚拟机保证只会初始化一次，其他线程阻塞，其他线程在初始化线程退出或者异常后结束。 1.6.4.非法向前引用：static变量在static{}后定义，编译通过，但是static块中输出打印会提示非法向前引用且编译不通过。 1.6.5.父类的先执行。 2.类加载器： 2.1.加载字节码二进制流过程在虚拟机外部实现，让程序自己决定如何去获取所需要的类，此动作&amp;rdquo;类加载器&amp;rdquo;。 2.2.每个类加载器有一个独立的类名称空间，与这个类本身确立在虚拟机中的唯一性，比较两个类是否相等（equals、instanceof）必须在同一个类加载器的前提下才有意义 2.3.除启动类加载器BootstrapClassLoader是C++编写的虚拟机内部的加载器之外其余的加载器都是java编写的继承自java.lang.ClassLoader类。 2.4.加载器分类 2.4.1.启动类加载器： ​ 2.4.1.1.[JAVA_HOME]\lib下的类库（rt.jar），虚拟机识别的名字，不识别也无法加载。
 ​ 2.4.1.2.-Xbootstrappath参数指定的路径中的
 ​ 2.4.1.3.如果需要把加载请求委派给引导类加载器，直接用null代替即可。
@@ -65,10 +65,10 @@ GMV，是 Gross Merchandise Volume 的简称。只要是订单，不管消费者
     
     <item>
       <title>HTTP断点续传</title>
-      <link>http://hideric.github.io/java/basis/http%E6%96%AD%E7%82%B9%E7%BB%AD%E4%BC%A0/</link>
+      <link>https://hideric.github.io/java/basis/http%E6%96%AD%E7%82%B9%E7%BB%AD%E4%BC%A0/</link>
       <pubDate>Wed, 30 Oct 2019 15:41:01 +0800</pubDate>
       
-      <guid>http://hideric.github.io/java/basis/http%E6%96%AD%E7%82%B9%E7%BB%AD%E4%BC%A0/</guid>
+      <guid>https://hideric.github.io/java/basis/http%E6%96%AD%E7%82%B9%E7%BB%AD%E4%BC%A0/</guid>
       <description>HTTP断点续传 0x01: 简述
 断点续传：指的是在上传/下载时，将任务（一个文件或压缩包）人为的划分为几个部分，每一个部分采用一个线程进行上传/下载，如果碰到网络故障，可以从已经上传/下载的部分开始继续上传/下载未完成的部分，而没有必要从头开始上传/下载。可以节省时间，提高速度。
 0x02: 断点续传的用途
@@ -85,10 +85,10 @@ Range 头部的格式有以下几种情况： - Range: bytes=0-499 表示第 0-4
     
     <item>
       <title>Java 垃圾收集器</title>
-      <link>http://hideric.github.io/java/basis/java-%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8/</link>
+      <link>https://hideric.github.io/java/basis/java-%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8/</link>
       <pubDate>Wed, 30 Oct 2019 15:41:01 +0800</pubDate>
       
-      <guid>http://hideric.github.io/java/basis/java-%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8/</guid>
+      <guid>https://hideric.github.io/java/basis/java-%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8/</guid>
       <description>Java 垃圾收集器 概念准备
 下面了解几个概念以帮助后面的学习：线程暂停（Stop The World）、安全点（Safepoint）、安全区（Safe region）。
 在执行可达性分析的时候会出现在分析的过程中对象关系引用等发生了变化，为了保证分析的准确性，就必须在分析的过程中暂停所有Java线程，Sun将这一事件称作“Stop The World”。
@@ -128,10 +128,10 @@ CMS收集器工作时，尽可能让GC线程和用户线程并发执行，以达
     
     <item>
       <title>Java 字符串拼接姿势</title>
-      <link>http://hideric.github.io/java/basis/java-%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%8B%BC%E6%8E%A5%E5%A7%BF%E5%8A%BF/</link>
+      <link>https://hideric.github.io/java/basis/java-%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%8B%BC%E6%8E%A5%E5%A7%BF%E5%8A%BF/</link>
       <pubDate>Wed, 30 Oct 2019 15:41:01 +0800</pubDate>
       
-      <guid>http://hideric.github.io/java/basis/java-%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%8B%BC%E6%8E%A5%E5%A7%BF%E5%8A%BF/</guid>
+      <guid>https://hideric.github.io/java/basis/java-%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%8B%BC%E6%8E%A5%E5%A7%BF%E5%8A%BF/</guid>
       <description>Java 字符串拼接姿势 01、“+”号操作符 要说姿势，“+”号操作符必须是字符串拼接最常用的一种了，没有之一。
 String chenmo = &amp;quot;沉默&amp;quot;; String wanger = &amp;quot;王二&amp;quot;; System.out.println(chenmo + wanger);  我们把这段代码使用 JAD 反编译一下。
 String chenmo = &amp;quot;\u6C89\u9ED8&amp;quot;; // 沉默 String wanger = &amp;quot;\u738B\u4E8C&amp;quot;; // 王二 System.out.println((new StringBuilder(String.valueOf(chenmo))).append(wanger).toString());  我去，原来编译的时候把“+”号操作符替换成了 StringBuilder 的 append 方法。也就是说，“+”号操作符在拼接字符串的时候只是一种形式主义，让开发者使用起来比较简便，代码看起来比较简洁，读起来比较顺畅。算是 Java 的一种语法糖吧。
@@ -143,10 +143,10 @@ public AbstractStringBuilder append(String str) { if (str == null) return append
     
     <item>
       <title>Java-如何更优雅的处理空值</title>
-      <link>http://hideric.github.io/java/basis/java-%E5%A6%82%E4%BD%95%E6%9B%B4%E4%BC%98%E9%9B%85%E7%9A%84%E5%A4%84%E7%90%86%E7%A9%BA%E5%80%BC/</link>
+      <link>https://hideric.github.io/java/basis/java-%E5%A6%82%E4%BD%95%E6%9B%B4%E4%BC%98%E9%9B%85%E7%9A%84%E5%A4%84%E7%90%86%E7%A9%BA%E5%80%BC/</link>
       <pubDate>Wed, 30 Oct 2019 15:41:01 +0800</pubDate>
       
-      <guid>http://hideric.github.io/java/basis/java-%E5%A6%82%E4%BD%95%E6%9B%B4%E4%BC%98%E9%9B%85%E7%9A%84%E5%A4%84%E7%90%86%E7%A9%BA%E5%80%BC/</guid>
+      <guid>https://hideric.github.io/java/basis/java-%E5%A6%82%E4%BD%95%E6%9B%B4%E4%BC%98%E9%9B%85%E7%9A%84%E5%A4%84%E7%90%86%E7%A9%BA%E5%80%BC/</guid>
       <description>Java:如何更优雅的处理空值  来源：lrwinxhttps://lrwinx.github.io/  导语 在笔者几年的开发经验中，经常看到项目中存在到处空值判断的情况，这些判断，会让人觉得摸不着头绪，它的出现很有可能和当前的业务逻辑并没有关系。但它会让你很头疼。
 有时候，更可怕的是系统因为这些空值的情况，会抛出空指针异常，导致业务系统发生问题。
 此篇文章，我总结了几种关于空值的处理手法，希望对读者有帮助。
@@ -167,10 +167,10 @@ public List&amp;lt;User&amp;gt; listUser(){ List&amp;lt;User&amp;gt; userList = 
     
     <item>
       <title>JVM 堆内存溢出后，其他线程是否可继续工作？</title>
-      <link>http://hideric.github.io/java/basis/jvm/jvm-%E5%A0%86%E5%86%85%E5%AD%98%E6%BA%A2%E5%87%BA%E5%90%8E%E5%85%B6%E4%BB%96%E7%BA%BF%E7%A8%8B%E6%98%AF%E5%90%A6%E5%8F%AF%E7%BB%A7%E7%BB%AD%E5%B7%A5%E4%BD%9C/</link>
+      <link>https://hideric.github.io/java/basis/jvm/jvm-%E5%A0%86%E5%86%85%E5%AD%98%E6%BA%A2%E5%87%BA%E5%90%8E%E5%85%B6%E4%BB%96%E7%BA%BF%E7%A8%8B%E6%98%AF%E5%90%A6%E5%8F%AF%E7%BB%A7%E7%BB%AD%E5%B7%A5%E4%BD%9C/</link>
       <pubDate>Wed, 30 Oct 2019 15:41:01 +0800</pubDate>
       
-      <guid>http://hideric.github.io/java/basis/jvm/jvm-%E5%A0%86%E5%86%85%E5%AD%98%E6%BA%A2%E5%87%BA%E5%90%8E%E5%85%B6%E4%BB%96%E7%BA%BF%E7%A8%8B%E6%98%AF%E5%90%A6%E5%8F%AF%E7%BB%A7%E7%BB%AD%E5%B7%A5%E4%BD%9C/</guid>
+      <guid>https://hideric.github.io/java/basis/jvm/jvm-%E5%A0%86%E5%86%85%E5%AD%98%E6%BA%A2%E5%87%BA%E5%90%8E%E5%85%B6%E4%BB%96%E7%BA%BF%E7%A8%8B%E6%98%AF%E5%90%A6%E5%8F%AF%E7%BB%A7%E7%BB%AD%E5%B7%A5%E4%BD%9C/</guid>
       <description>JVM 堆内存溢出后，其他线程是否可继续工作？ 最近网上出现一个美团面试题：“一个线程OOM后，其他线程还能运行吗？”。我看网上出现了很多不靠谱的答案。这道题其实很有难度，涉及的知识点有jvm内存分配、作用域、gc等，不是简单的是与否的问题。
 由于题目中给出的OOM，java中OOM又分很多类型；比如：堆溢出（“java.lang.OutOfMemoryError: Java heap space”）、永久带溢出（“java.lang.OutOfMemoryError:Permgen space”）、不能创建线程（“java.lang.OutOfMemoryError:Unable to create new native thread”）等很多种情况。
 本文主要是分析堆溢出对应用带来的影响。
@@ -181,10 +181,10 @@ public class JvmThread { public static void main(String[] args) { new Thread(() 
     
     <item>
       <title>Mybatis中Like 的使用方式以及一些注意点</title>
-      <link>http://hideric.github.io/java/framework/mybatis/mybatis%E4%B8%ADlike-%E7%9A%84%E4%BD%BF%E7%94%A8%E6%96%B9%E5%BC%8F%E4%BB%A5%E5%8F%8A%E4%B8%80%E4%BA%9B%E6%B3%A8%E6%84%8F%E7%82%B9/</link>
+      <link>https://hideric.github.io/java/framework/mybatis/mybatis%E4%B8%ADlike-%E7%9A%84%E4%BD%BF%E7%94%A8%E6%96%B9%E5%BC%8F%E4%BB%A5%E5%8F%8A%E4%B8%80%E4%BA%9B%E6%B3%A8%E6%84%8F%E7%82%B9/</link>
       <pubDate>Wed, 30 Oct 2019 15:41:01 +0800</pubDate>
       
-      <guid>http://hideric.github.io/java/framework/mybatis/mybatis%E4%B8%ADlike-%E7%9A%84%E4%BD%BF%E7%94%A8%E6%96%B9%E5%BC%8F%E4%BB%A5%E5%8F%8A%E4%B8%80%E4%BA%9B%E6%B3%A8%E6%84%8F%E7%82%B9/</guid>
+      <guid>https://hideric.github.io/java/framework/mybatis/mybatis%E4%B8%ADlike-%E7%9A%84%E4%BD%BF%E7%94%A8%E6%96%B9%E5%BC%8F%E4%BB%A5%E5%8F%8A%E4%B8%80%E4%BA%9B%E6%B3%A8%E6%84%8F%E7%82%B9/</guid>
       <description> Mybatis中Like 的使用方式以及一些注意点 模糊查询在项目中还是经常使用的，本文就简单整理Mybatis中使用Like进行模糊查询的几种写法以及一些常见的问题。
 初始数据 方式一 在Mybatis中的第一种写法：
 这种会有sql注入的问题，需要明白在 Mybatis中&amp;nbsp;$&amp;nbsp;和&amp;nbsp;#&amp;nbsp;使用的区别。这种写法也不能加jdbcType=VARCHAR,否则也会报错。
@@ -217,10 +217,10 @@ public class JvmThread { public static void main(String[] args) { new Thread(() 
     
     <item>
       <title>Mybatis居然有坑，千万别踩！</title>
-      <link>http://hideric.github.io/java/framework/mybatis/mybatis%E5%B1%85%E7%84%B6%E6%9C%89%E5%9D%91%E5%8D%83%E4%B8%87%E5%88%AB%E8%B8%A9/</link>
+      <link>https://hideric.github.io/java/framework/mybatis/mybatis%E5%B1%85%E7%84%B6%E6%9C%89%E5%9D%91%E5%8D%83%E4%B8%87%E5%88%AB%E8%B8%A9/</link>
       <pubDate>Wed, 30 Oct 2019 15:41:01 +0800</pubDate>
       
-      <guid>http://hideric.github.io/java/framework/mybatis/mybatis%E5%B1%85%E7%84%B6%E6%9C%89%E5%9D%91%E5%8D%83%E4%B8%87%E5%88%AB%E8%B8%A9/</guid>
+      <guid>https://hideric.github.io/java/framework/mybatis/mybatis%E5%B1%85%E7%84%B6%E6%9C%89%E5%9D%91%E5%8D%83%E4%B8%87%E5%88%AB%E8%B8%A9/</guid>
       <description>Mybatis居然有坑，千万别踩！ 来源：http://h5ip.cn/aJgJ
 Mybatis是一个开源的轻量级半自动化ORM框架，使得面向对象应用程序与关系数据库的映射变得更加容易。MyBatis使用xml描述符或注解将对象与存储过程或SQL语句相结合。Mybatis最大优点是应用程序与Sql进行解耦，sql语句是写在Xml Mapper文件中。
 OGNL表达式在Mybatis当中应用非常广泛，其表达式的灵活性使得动态Sql功能的非常强大。OGNL是Object-Graph Navigation Language的缩写，代表对象图导航语言。OGNL是一种EL表达式语言，用于设置和获取Java对象的属性，并且可以对列表进行投影选择以及执行lambda表达式。Ognl类提供了许多简便方法用于执行表达式的。Struts2发布的每个版本都会出现的新的高危可执行漏洞也是因为它使用了灵活的OGNL表达式。
@@ -230,10 +230,10 @@ OGNL表达式在Mybatis当中应用非常广泛，其表达式的灵活性使得
     
     <item>
       <title>Spring循环依赖的坑</title>
-      <link>http://hideric.github.io/java/framework/spring/spring%E5%BE%AA%E7%8E%AF%E4%BE%9D%E8%B5%96%E7%9A%84%E5%9D%91/</link>
+      <link>https://hideric.github.io/java/framework/spring/spring%E5%BE%AA%E7%8E%AF%E4%BE%9D%E8%B5%96%E7%9A%84%E5%9D%91/</link>
       <pubDate>Wed, 30 Oct 2019 15:41:01 +0800</pubDate>
       
-      <guid>http://hideric.github.io/java/framework/spring/spring%E5%BE%AA%E7%8E%AF%E4%BE%9D%E8%B5%96%E7%9A%84%E5%9D%91/</guid>
+      <guid>https://hideric.github.io/java/framework/spring/spring%E5%BE%AA%E7%8E%AF%E4%BE%9D%E8%B5%96%E7%9A%84%E5%9D%91/</guid>
       <description>Spring循环依赖的坑  作者：Mythsman
 原文：https://blog.mythsman.com/post/5d838c7c2db8a452e9b7082c/
  前言 这两天工作遇到了一个挺有意思的Spring循环依赖的问题，但是这个和以往遇到的循环依赖问题都不太一样，隐藏的相当隐蔽，网络上也很少看到有其他人遇到类似的问题。这里权且称他非典型Spring循环依赖问题。但是我相信我肯定不是第一个踩这个坑的，也一定不是最后一个，可能只是因为踩过的人比较少、鲜有记录罢了。因此这里权且记录一下这个坑，方便后人查看。正如鲁迅（我）说过，“这个世上本没有坑，踩的人多了，也便成了坑”。
@@ -277,10 +277,10 @@ Spring的依赖注入模型 这一部分网上有很多相关内容，我的理�
     
     <item>
       <title>Spring的各种注解</title>
-      <link>http://hideric.github.io/java/framework/spring/spring%E7%9A%84%E5%90%84%E7%A7%8D%E6%B3%A8%E8%A7%A3/</link>
+      <link>https://hideric.github.io/java/framework/spring/spring%E7%9A%84%E5%90%84%E7%A7%8D%E6%B3%A8%E8%A7%A3/</link>
       <pubDate>Wed, 30 Oct 2019 15:41:01 +0800</pubDate>
       
-      <guid>http://hideric.github.io/java/framework/spring/spring%E7%9A%84%E5%90%84%E7%A7%8D%E6%B3%A8%E8%A7%A3/</guid>
+      <guid>https://hideric.github.io/java/framework/spring/spring%E7%9A%84%E5%90%84%E7%A7%8D%E6%B3%A8%E8%A7%A3/</guid>
       <description>Spring的各种注解  作者：digdeep &amp;nbsp;&amp;nbsp;来源：http://1t.click/ataS
  Spring中的注解大概可以分为两大类：
 1.spring的bean容器相关的注解，或者说bean工厂相关的注解；
@@ -295,10 +295,10 @@ Java中1.5中开始引入注解，我们最熟悉的应该是：@Override, 它�
     
     <item>
       <title>从实践角度重新理解BIO和NIO</title>
-      <link>http://hideric.github.io/java/basis/%E4%BB%8E%E5%AE%9E%E8%B7%B5%E8%A7%92%E5%BA%A6%E9%87%8D%E6%96%B0%E7%90%86%E8%A7%A3bio%E5%92%8Cnio/</link>
+      <link>https://hideric.github.io/java/basis/%E4%BB%8E%E5%AE%9E%E8%B7%B5%E8%A7%92%E5%BA%A6%E9%87%8D%E6%96%B0%E7%90%86%E8%A7%A3bio%E5%92%8Cnio/</link>
       <pubDate>Wed, 30 Oct 2019 15:41:01 +0800</pubDate>
       
-      <guid>http://hideric.github.io/java/basis/%E4%BB%8E%E5%AE%9E%E8%B7%B5%E8%A7%92%E5%BA%A6%E9%87%8D%E6%96%B0%E7%90%86%E8%A7%A3bio%E5%92%8Cnio/</guid>
+      <guid>https://hideric.github.io/java/basis/%E4%BB%8E%E5%AE%9E%E8%B7%B5%E8%A7%92%E5%BA%A6%E9%87%8D%E6%96%B0%E7%90%86%E8%A7%A3bio%E5%92%8Cnio/</guid>
       <description>从实践角度重新理解BIO和NIO 前言 这段时间自己在看一些Java中BIO和NIO之类的东西，看了很多博客，发现各种关于NIO的概念说的天花乱坠头头是道，可以说是非常的完整，但是整个看下来之后，自己对NIO还是一知半解的状态，所以这篇文章不会提到很多的概念，而是站在一个实践的角度，写一些我自己关于NIO的见解，站在实践过后的高度下再回去看概念，应该对概念会有一个更好的理解。
 实现一个简易单线程服务器 要讲明白BIO和NIO，首先我们应该自己实现一个简易的服务器，不用太复杂，单线程即可。
 为什么使用单线程作为演示 因为在单线程环境下可以很好地对比出BIO和NIO的一个区别，当然我也会演示在实际环境中BIO的所谓一个请求对应一个线程的状况。
@@ -307,10 +307,10 @@ Java中1.5中开始引入注解，我们最熟悉的应该是：@Override, 它�
     
     <item>
       <title>关于 Git 提交规范</title>
-      <link>http://hideric.github.io/java/basis/%E5%85%B3%E4%BA%8E-git-%E6%8F%90%E4%BA%A4%E8%A7%84%E8%8C%83/</link>
+      <link>https://hideric.github.io/java/basis/%E5%85%B3%E4%BA%8E-git-%E6%8F%90%E4%BA%A4%E8%A7%84%E8%8C%83/</link>
       <pubDate>Wed, 30 Oct 2019 15:41:01 +0800</pubDate>
       
-      <guid>http://hideric.github.io/java/basis/%E5%85%B3%E4%BA%8E-git-%E6%8F%90%E4%BA%A4%E8%A7%84%E8%8C%83/</guid>
+      <guid>https://hideric.github.io/java/basis/%E5%85%B3%E4%BA%8E-git-%E6%8F%90%E4%BA%A4%E8%A7%84%E8%8C%83/</guid>
       <description>关于 Git 提交规范  来源：人人贷大前端技术中心juejin.im/post/5d0b3f8c6fb9a07ec07fc5d0
 git是现在市面上最流行的版本控制工具，书写良好的commit message能大大提高代码维护的效率。但是在日常开发中由于缺少对commit message的约束，导致填写内容随意、质量参差不齐，可读性低亦难以维护。
 在项目中引入commit message规范已是迫在眉睫。
@@ -326,10 +326,10 @@ git是现在市面上最流行的版本控制工具，书写良好的commit mess
     
     <item>
       <title>注意，Code Cache打满可导致应用性能降低</title>
-      <link>http://hideric.github.io/java/basis/jvm/%E6%B3%A8%E6%84%8Fcode-cache%E6%89%93%E6%BB%A1%E5%8F%AF%E5%AF%BC%E8%87%B4%E5%BA%94%E7%94%A8%E6%80%A7%E8%83%BD%E9%99%8D%E4%BD%8E/</link>
+      <link>https://hideric.github.io/java/basis/jvm/%E6%B3%A8%E6%84%8Fcode-cache%E6%89%93%E6%BB%A1%E5%8F%AF%E5%AF%BC%E8%87%B4%E5%BA%94%E7%94%A8%E6%80%A7%E8%83%BD%E9%99%8D%E4%BD%8E/</link>
       <pubDate>Wed, 30 Oct 2019 15:41:01 +0800</pubDate>
       
-      <guid>http://hideric.github.io/java/basis/jvm/%E6%B3%A8%E6%84%8Fcode-cache%E6%89%93%E6%BB%A1%E5%8F%AF%E5%AF%BC%E8%87%B4%E5%BA%94%E7%94%A8%E6%80%A7%E8%83%BD%E9%99%8D%E4%BD%8E/</guid>
+      <guid>https://hideric.github.io/java/basis/jvm/%E6%B3%A8%E6%84%8Fcode-cache%E6%89%93%E6%BB%A1%E5%8F%AF%E5%AF%BC%E8%87%B4%E5%BA%94%E7%94%A8%E6%80%A7%E8%83%BD%E9%99%8D%E4%BD%8E/</guid>
       <description>注意，Code Cache打满可导致应用性能降低  作者：猿码道juejin.im/post/5aebf997f265da0ba76f99db  0 问题描述 一个应用在运行一段时间后，随着访问量不断增加，突然处理能力下降。但是从流量，jstack，gc上看基本正常。感觉好像突然从 “健康状态” 进入了 “虚弱状态”。
 1 排查问题 1.在JVM日志里，可以发现如下log：
 Java HotSpot(TM) 64-Bit Server VM warning: CodeCache is full. Compiler has been disabled. Java HotSpot(TM) 64-Bit Server VM warning: Try increasing the code cache size using -XX:ReservedCodeCacheSize=. ... “CompilerThread0” java.lang.OutOfMemoryError: requested 2854248 bytes for Chunk::new. Out of swap space?  说明CodeCache已经满了。而且导致这个时候JIT就会停止，JIT一旦停止，就不会再起来了，可以想象一下，如果很多代码没有办法去JIT的话，性能就会比较差。
@@ -341,10 +341,10 @@ jinfo -flag ReservedCodeCacheSize  2 解决问题 1.一个可行的方法，就�
     
     <item>
       <title>HashMap源码分析</title>
-      <link>http://hideric.github.io/java/basis/hashmap%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/</link>
+      <link>https://hideric.github.io/java/basis/hashmap%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/</link>
       <pubDate>Wed, 30 Oct 2019 15:39:39 +0800</pubDate>
       
-      <guid>http://hideric.github.io/java/basis/hashmap%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/</guid>
+      <guid>https://hideric.github.io/java/basis/hashmap%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/</guid>
       <description>HashMap 源码分析 在Java中，HashMap的实现采用了（数组 + 链表 + 红黑树）的复杂结构，数组的一个元素又称作桶。
 在添加元素时，会根据hash值算出元素在数组中的位置，如果该位置没有元素，则直接把元素放置在此处，如果该位置有元素了，则把元素以链表的形式放置在链表的尾部。
 当一个链表的元素个数达到一定的数量（且数组的长度达到一定的长度）后，则把链表转化为红黑树，从而提高效率。
@@ -354,10 +354,10 @@ jinfo -flag ReservedCodeCacheSize  2 解决问题 1.一个可行的方法，就�
     
     <item>
       <title>Spring 容器启动源码解析</title>
-      <link>http://hideric.github.io/java/framework/spring/spring-%E5%AE%B9%E5%99%A8%E5%90%AF%E5%8A%A8%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/</link>
+      <link>https://hideric.github.io/java/framework/spring/spring-%E5%AE%B9%E5%99%A8%E5%90%AF%E5%8A%A8%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/</link>
       <pubDate>Wed, 30 Oct 2019 15:39:39 +0800</pubDate>
       
-      <guid>http://hideric.github.io/java/framework/spring/spring-%E5%AE%B9%E5%99%A8%E5%90%AF%E5%8A%A8%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/</guid>
+      <guid>https://hideric.github.io/java/framework/spring/spring-%E5%AE%B9%E5%99%A8%E5%90%AF%E5%8A%A8%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/</guid>
       <description>Spring 容器启动源码解析 &amp;nbsp; &amp;nbsp;01&amp;nbsp;前言&amp;nbsp; &amp;nbsp;
 最近搭建的工程都是基于SpringBoot，简化配置的感觉真爽。但有个以前的项目还是用SpringMvc写的，看到满满的配置xml文件，却有一种想去深入了解的冲动。折腾了好几天，决心去写这篇关于Spring启动的博客，自己是个刚入职的小白，技术水平有限，也是硬着头皮看源码去Debug，很多不懂的地方还请谅解！
 &amp;nbsp; &amp;nbsp;02 概念&amp;nbsp; &amp;nbsp;
@@ -375,10 +375,10 @@ jinfo -flag ReservedCodeCacheSize  2 解决问题 1.一个可行的方法，就�
     
     <item>
       <title>Spring 的 BeanUtils 填坑记</title>
-      <link>http://hideric.github.io/java/framework/spring/spring-%E7%9A%84-beanutils-%E5%A1%AB%E5%9D%91%E8%AE%B0/</link>
+      <link>https://hideric.github.io/java/framework/spring/spring-%E7%9A%84-beanutils-%E5%A1%AB%E5%9D%91%E8%AE%B0/</link>
       <pubDate>Wed, 30 Oct 2019 15:39:39 +0800</pubDate>
       
-      <guid>http://hideric.github.io/java/framework/spring/spring-%E7%9A%84-beanutils-%E5%A1%AB%E5%9D%91%E8%AE%B0/</guid>
+      <guid>https://hideric.github.io/java/framework/spring/spring-%E7%9A%84-beanutils-%E5%A1%AB%E5%9D%91%E8%AE%B0/</guid>
       <description>Spring 的 BeanUtils 填坑记  作者：绝色天龙原文：www.jianshu.com/p/357b55852efc
  背景
 最近项目中在和第三方进行联调一个接口，我们这边发送http请求给对方，然后接收对方的回应，代码都是老代码。
@@ -397,10 +397,10 @@ private List orders; private AddRequest.Ticket ticket; private List payments;  A
     
     <item>
       <title>WeakHashMap，生了病的 HashMap ？</title>
-      <link>http://hideric.github.io/java/basis/weakhashmap%E7%94%9F%E4%BA%86%E7%97%85%E7%9A%84-hashmap-/</link>
+      <link>https://hideric.github.io/java/basis/weakhashmap%E7%94%9F%E4%BA%86%E7%97%85%E7%9A%84-hashmap-/</link>
       <pubDate>Wed, 30 Oct 2019 15:39:39 +0800</pubDate>
       
-      <guid>http://hideric.github.io/java/basis/weakhashmap%E7%94%9F%E4%BA%86%E7%97%85%E7%9A%84-hashmap-/</guid>
+      <guid>https://hideric.github.io/java/basis/weakhashmap%E7%94%9F%E4%BA%86%E7%97%85%E7%9A%84-hashmap-/</guid>
       <description>WeakHashMap，生了病的 HashMap ？ 在 Map 家族中，WeakHashMap 是一个很特殊的成员，从名字上看与 HashMap 相关，但是与 HashMap 有着很大的差别，翻译成中文后表示弱 HashMap，俗称缓存 HashMap。
 01、摘要 在集合系列的第一章，咱们了解到，Map 的实现类有 HashMap、LinkedHashMap、TreeMap、IdentityHashMap、WeakHashMap、Hashtable、Properties 等等。
 本文主要从数据结构和算法层面，探讨 WeakHashMap 的实现。
@@ -411,10 +411,10 @@ public static void main(String[] args) { Map weakHashMap = new WeakHashMap(); //
     
     <item>
       <title>使用dubbo过程中遇到过哪些坑？</title>
-      <link>http://hideric.github.io/java/framework/dubbo/%E4%BD%BF%E7%94%A8dubbo%E8%BF%87%E7%A8%8B%E4%B8%AD%E9%81%87%E5%88%B0%E8%BF%87%E5%93%AA%E4%BA%9B%E5%9D%91/</link>
+      <link>https://hideric.github.io/java/framework/dubbo/%E4%BD%BF%E7%94%A8dubbo%E8%BF%87%E7%A8%8B%E4%B8%AD%E9%81%87%E5%88%B0%E8%BF%87%E5%93%AA%E4%BA%9B%E5%9D%91/</link>
       <pubDate>Wed, 30 Oct 2019 15:39:39 +0800</pubDate>
       
-      <guid>http://hideric.github.io/java/framework/dubbo/%E4%BD%BF%E7%94%A8dubbo%E8%BF%87%E7%A8%8B%E4%B8%AD%E9%81%87%E5%88%B0%E8%BF%87%E5%93%AA%E4%BA%9B%E5%9D%91/</guid>
+      <guid>https://hideric.github.io/java/framework/dubbo/%E4%BD%BF%E7%94%A8dubbo%E8%BF%87%E7%A8%8B%E4%B8%AD%E9%81%87%E5%88%B0%E8%BF%87%E5%93%AA%E4%BA%9B%E5%9D%91/</guid>
       <description>使用dubbo过程中遇到过哪些坑？ Dubbo[ |ˈdʌbəʊ| ,发音为打波] 稳如狗，哪有坑？
 如果你用过Dubbo，但是没碰到过什么坑，那只能说明你还没有深交Dubbo，看看笔者那些年使用Dubbo踩过的坑！
 父子类有相同属性时值丢失 假设Provider提供的服务中某个服务的参数是WordDTO，并且WordDTO继承自BaseDTO，两个类的定义如下：
@@ -428,10 +428,10 @@ try { String hello = demoService.saySomething(wordDTO); System.out.println(hello
     
     <item>
       <title>一个Java对象到底占用多大内存？</title>
-      <link>http://hideric.github.io/java/basis/%E4%B8%80%E4%B8%AAjava%E5%AF%B9%E8%B1%A1%E5%88%B0%E5%BA%95%E5%8D%A0%E7%94%A8%E5%A4%9A%E5%A4%A7%E5%86%85%E5%AD%98/</link>
+      <link>https://hideric.github.io/java/basis/%E4%B8%80%E4%B8%AAjava%E5%AF%B9%E8%B1%A1%E5%88%B0%E5%BA%95%E5%8D%A0%E7%94%A8%E5%A4%9A%E5%A4%A7%E5%86%85%E5%AD%98/</link>
       <pubDate>Wed, 30 Oct 2019 15:38:52 +0800</pubDate>
       
-      <guid>http://hideric.github.io/java/basis/%E4%B8%80%E4%B8%AAjava%E5%AF%B9%E8%B1%A1%E5%88%B0%E5%BA%95%E5%8D%A0%E7%94%A8%E5%A4%9A%E5%A4%A7%E5%86%85%E5%AD%98/</guid>
+      <guid>https://hideric.github.io/java/basis/%E4%B8%80%E4%B8%AAjava%E5%AF%B9%E8%B1%A1%E5%88%B0%E5%BA%95%E5%8D%A0%E7%94%A8%E5%A4%9A%E5%A4%A7%E5%86%85%E5%AD%98/</guid>
       <description>一个Java对象到底占用多大内存？ 一个Java对象到底占用多大内存？
 为了复现这个问题，准备了4个最简单类：
 class AAAAA {} class BBBBB { int a = 1; } class CCCCC { long a = 1L; } class DDDDD { String s = &amp;quot;hello&amp;quot;; }  当然了，再来个主函数：
@@ -440,10 +440,10 @@ final List&amp;lt;AAAAA&amp;gt; aaa = new ArrayList&amp;lt;&amp;gt;(100000); fin
     
     <item>
       <title>你真的了解logback吗？</title>
-      <link>http://hideric.github.io/java/basis/%E4%BD%A0%E7%9C%9F%E7%9A%84%E4%BA%86%E8%A7%A3logback%E5%90%97/</link>
+      <link>https://hideric.github.io/java/basis/%E4%BD%A0%E7%9C%9F%E7%9A%84%E4%BA%86%E8%A7%A3logback%E5%90%97/</link>
       <pubDate>Wed, 30 Oct 2019 15:38:52 +0800</pubDate>
       
-      <guid>http://hideric.github.io/java/basis/%E4%BD%A0%E7%9C%9F%E7%9A%84%E4%BA%86%E8%A7%A3logback%E5%90%97/</guid>
+      <guid>https://hideric.github.io/java/basis/%E4%BD%A0%E7%9C%9F%E7%9A%84%E4%BA%86%E8%A7%A3logback%E5%90%97/</guid>
       <description>你真的了解logback吗？ logback是java的日志开源组件，是log4j创始人写的，性能比log4j要好，目前主要分为3个模块
  logback-core:核心代码模块
  logback-classic:log4j的一个改良版本，同时实现了slf4j的接口，这样你如果之后要切换其他日志组件也是一件很容易的事
@@ -461,10 +461,10 @@ final List&amp;lt;AAAAA&amp;gt; aaa = new ArrayList&amp;lt;&amp;gt;(100000); fin
     
     <item>
       <title>这可能是Github上最友好的分布式即时通讯项目.....</title>
-      <link>http://hideric.github.io/java/basis/%E8%BF%99%E5%8F%AF%E8%83%BD%E6%98%AFgithub%E4%B8%8A%E6%9C%80%E5%8F%8B%E5%A5%BD%E7%9A%84%E5%88%86%E5%B8%83%E5%BC%8F%E5%8D%B3%E6%97%B6%E9%80%9A%E8%AE%AF%E9%A1%B9%E7%9B%AE..../</link>
+      <link>https://hideric.github.io/java/basis/%E8%BF%99%E5%8F%AF%E8%83%BD%E6%98%AFgithub%E4%B8%8A%E6%9C%80%E5%8F%8B%E5%A5%BD%E7%9A%84%E5%88%86%E5%B8%83%E5%BC%8F%E5%8D%B3%E6%97%B6%E9%80%9A%E8%AE%AF%E9%A1%B9%E7%9B%AE..../</link>
       <pubDate>Wed, 30 Oct 2019 15:38:52 +0800</pubDate>
       
-      <guid>http://hideric.github.io/java/basis/%E8%BF%99%E5%8F%AF%E8%83%BD%E6%98%AFgithub%E4%B8%8A%E6%9C%80%E5%8F%8B%E5%A5%BD%E7%9A%84%E5%88%86%E5%B8%83%E5%BC%8F%E5%8D%B3%E6%97%B6%E9%80%9A%E8%AE%AF%E9%A1%B9%E7%9B%AE..../</guid>
+      <guid>https://hideric.github.io/java/basis/%E8%BF%99%E5%8F%AF%E8%83%BD%E6%98%AFgithub%E4%B8%8A%E6%9C%80%E5%8F%8B%E5%A5%BD%E7%9A%84%E5%88%86%E5%B8%83%E5%BC%8F%E5%8D%B3%E6%97%B6%E9%80%9A%E8%AE%AF%E9%A1%B9%E7%9B%AE..../</guid>
       <description> 这可能是Github上最友好的分布式即时通讯项目&amp;hellip;. CIM(CROSS-IM)&amp;nbsp;一款面向开发者的 IM(即时通讯)系统；同时提供了一些组件帮助开发者构建一款属于自己可水平扩展的 IM 。借助CIM你可以实现一下需求，如IM即时通讯、适用于APP的消息推送中间件、IOT海量连接场景中的消息透传中间件等。此项目使用java开发，作者也是非常贴心，给出了详细的功能介绍，技术架构，和项目部署。
 目前实现的主要功能有以下几点：群聊、私聊、聊天记录查询、服务端自动剔除离线客户端、客户端自动重连、延时消息、分组群聊、离线消息等。基本功能还是比较全的，可以覆盖主要的使用场景。在安全方面，协议支持消息加密，还为客户端提供了相关的策略。
 以私聊功能为例向大家简单展示一下其功能。  私聊首先需要知道对方的 userID 才能进行。 输入命令&amp;nbsp;:olu 可列出所有在线用户。  接着使用 userId;;消息内容&amp;nbsp;的格式即可发送私聊消息。
@@ -482,10 +482,10 @@ IM 客户端；给用户使用的消息终端，一个命令即可启动并向�
     
     <item>
       <title>Java 8 - Stream 集合操作快速上手</title>
-      <link>http://hideric.github.io/java/basis/java-8-stream-%E9%9B%86%E5%90%88%E6%93%8D%E4%BD%9C%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B/</link>
+      <link>https://hideric.github.io/java/basis/java-8-stream-%E9%9B%86%E5%90%88%E6%93%8D%E4%BD%9C%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B/</link>
       <pubDate>Wed, 30 Oct 2019 15:38:44 +0800</pubDate>
       
-      <guid>http://hideric.github.io/java/basis/java-8-stream-%E9%9B%86%E5%90%88%E6%93%8D%E4%BD%9C%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B/</guid>
+      <guid>https://hideric.github.io/java/basis/java-8-stream-%E9%9B%86%E5%90%88%E6%93%8D%E4%BD%9C%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B/</guid>
       <description>Java 8 - Stream 集合操作快速上手  转自：简书，作者：我是你的小眼睛儿www.jianshu.com/p/9fe8632d0bc2
  目录
  Stream简介 为什么要使用Stream 实例数据源 Filter Map FlatMap Reduce Collect Optional 并发 调试  Stream简介
@@ -501,10 +501,10 @@ public class Data { private static List&amp;lt;PersonModel&amp;gt; list = null; 
     
     <item>
       <title>StringBuilder 为什么线程不安全？</title>
-      <link>http://hideric.github.io/java/basis/concurrency/stringbuilder-%E4%B8%BA%E4%BB%80%E4%B9%88%E7%BA%BF%E7%A8%8B%E4%B8%8D%E5%AE%89%E5%85%A8/</link>
+      <link>https://hideric.github.io/java/basis/concurrency/stringbuilder-%E4%B8%BA%E4%BB%80%E4%B9%88%E7%BA%BF%E7%A8%8B%E4%B8%8D%E5%AE%89%E5%85%A8/</link>
       <pubDate>Wed, 30 Oct 2019 15:38:44 +0800</pubDate>
       
-      <guid>http://hideric.github.io/java/basis/concurrency/stringbuilder-%E4%B8%BA%E4%BB%80%E4%B9%88%E7%BA%BF%E7%A8%8B%E4%B8%8D%E5%AE%89%E5%85%A8/</guid>
+      <guid>https://hideric.github.io/java/basis/concurrency/stringbuilder-%E4%B8%BA%E4%BB%80%E4%B9%88%E7%BA%BF%E7%A8%8B%E4%B8%8D%E5%AE%89%E5%85%A8/</guid>
       <description>StringBuilder 为什么线程不安全？  转自：掘金，作者：千山qianshanjuejin.im/post/5d6228046fb9a06add4e37fe
  分析
  在分析设个问题之前我们要知道StringBuilder和StringBuffer的内部实现跟String类一样，都是通过一个char数组存储字符串的，不同的是String类里面的char数组是final修饰的，是不可变的，而StringBuilder和StringBuffer的char数组是可变的。
@@ -518,10 +518,10 @@ public class StringBuilderDemo { public static void main(String[] args) throws I
     
     <item>
       <title>JVM优化之逃逸分析与分配消除</title>
-      <link>http://hideric.github.io/java/basis/jvm/jvm%E4%BC%98%E5%8C%96%E4%B9%8B%E9%80%83%E9%80%B8%E5%88%86%E6%9E%90%E4%B8%8E%E5%88%86%E9%85%8D%E6%B6%88%E9%99%A4/</link>
+      <link>https://hideric.github.io/java/basis/jvm/jvm%E4%BC%98%E5%8C%96%E4%B9%8B%E9%80%83%E9%80%B8%E5%88%86%E6%9E%90%E4%B8%8E%E5%88%86%E9%85%8D%E6%B6%88%E9%99%A4/</link>
       <pubDate>Wed, 30 Oct 2019 15:29:26 +0800</pubDate>
       
-      <guid>http://hideric.github.io/java/basis/jvm/jvm%E4%BC%98%E5%8C%96%E4%B9%8B%E9%80%83%E9%80%B8%E5%88%86%E6%9E%90%E4%B8%8E%E5%88%86%E9%85%8D%E6%B6%88%E9%99%A4/</guid>
+      <guid>https://hideric.github.io/java/basis/jvm/jvm%E4%BC%98%E5%8C%96%E4%B9%8B%E9%80%83%E9%80%B8%E5%88%86%E6%9E%90%E4%B8%8E%E5%88%86%E9%85%8D%E6%B6%88%E9%99%A4/</guid>
       <description>要了解逃逸分析背后的基本原理，我们先来看下这段有问题的C代码——当然这个是没法用Java来写的：
 这段C代码在栈上创建了一个int类型的变量，然后把它的指针作为函数的返回值返回了。这样做是有问题的，因为当 get_the_int() 函数返回的时候，int所在的栈帧就已经被销毁了，后面你再去访问这个地址的话，就不知道里面存储的到底是什么了。
 Java平台设计的一个主要目标就是要消除这种类型的bug。从设计上，JVM就不具备这种低级的“根据位置索引来读内存”的能力。这类操作对应的Java字节码是putfield和getfield。
@@ -556,10 +556,10 @@ JVM底层的实现和源代码可以在HotSpot VM的源码opto/escape.hpp中找�
     
     <item>
       <title>Shiro框架 - 用户权限管理</title>
-      <link>http://hideric.github.io/java/framework/security/shiro%E6%A1%86%E6%9E%B6-%E7%94%A8%E6%88%B7%E6%9D%83%E9%99%90%E7%AE%A1%E7%90%86/</link>
+      <link>https://hideric.github.io/java/framework/security/shiro%E6%A1%86%E6%9E%B6-%E7%94%A8%E6%88%B7%E6%9D%83%E9%99%90%E7%AE%A1%E7%90%86/</link>
       <pubDate>Wed, 07 Aug 2019 11:02:05 +0600</pubDate>
       
-      <guid>http://hideric.github.io/java/framework/security/shiro%E6%A1%86%E6%9E%B6-%E7%94%A8%E6%88%B7%E6%9D%83%E9%99%90%E7%AE%A1%E7%90%86/</guid>
+      <guid>https://hideric.github.io/java/framework/security/shiro%E6%A1%86%E6%9E%B6-%E7%94%A8%E6%88%B7%E6%9D%83%E9%99%90%E7%AE%A1%E7%90%86/</guid>
       <description>用户权限管理一般是对用户页面、按钮的访问权限管理。Shiro框架是一个强大且易用的Java安全框架，执行身份验证、授权、密码和会话管理，对于Shiro的介绍这里就不多说。本篇博客主要是了解Shiro的基础使用方法，在权限管理系统中集成Shiro实现登录、url和页面按钮的访问控制。
 一、引入依赖
 使用SpringBoot集成Shiro时，在pom.xml中可以引入shiro-spring-boot-web-starter。由于使用的是thymeleaf框架，thymeleaf与Shiro结合需要 引入thymeleaf-extras-shiro。
@@ -570,10 +570,10 @@ package com.example.config; import org.apache.shiro.mgt.SecurityManager; import 
     
     <item>
       <title>ThreadLocal面试题</title>
-      <link>http://hideric.github.io/java/basis/concurrency/threadlocal%E9%9D%A2%E8%AF%95%E9%A2%98/</link>
+      <link>https://hideric.github.io/java/basis/concurrency/threadlocal%E9%9D%A2%E8%AF%95%E9%A2%98/</link>
       <pubDate>Wed, 07 Aug 2019 11:02:05 +0600</pubDate>
       
-      <guid>http://hideric.github.io/java/basis/concurrency/threadlocal%E9%9D%A2%E8%AF%95%E9%A2%98/</guid>
+      <guid>https://hideric.github.io/java/basis/concurrency/threadlocal%E9%9D%A2%E8%AF%95%E9%A2%98/</guid>
       <description>说明
 面试官：讲讲你对ThreadLocal的一些理解。
 那么我们该怎么回答呢？？？？你也可以思考下，下面看看零度的思考；

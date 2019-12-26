@@ -2,31 +2,31 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>C&#43;&#43; on Hideric&#39;s Blog</title>
-    <link>http://hideric.github.io/cpp/</link>
+    <link>https://hideric.github.io/cpp/</link>
     <description>Recent content in C&#43;&#43; on Hideric&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>The Hugo Documents are copyright © gethugothemes 2018.</copyright>
     <lastBuildDate>Wed, 07 Aug 2019 11:02:05 +0600</lastBuildDate>
     
-	<atom:link href="http://hideric.github.io/cpp/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://hideric.github.io/cpp/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>CPrimer - 数组与指针</title>
-      <link>http://hideric.github.io/cpp/cprimer/cprimer-%E5%AD%98%E5%82%A8%E7%B1%BB%E5%88%AB%E5%92%8C%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/</link>
+      <link>https://hideric.github.io/cpp/cprimer/cprimer-%E5%AD%98%E5%82%A8%E7%B1%BB%E5%88%AB%E5%92%8C%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/</link>
       <pubDate>Fri, 29 Nov 2019 10:58:19 +0800</pubDate>
       
-      <guid>http://hideric.github.io/cpp/cprimer/cprimer-%E5%AD%98%E5%82%A8%E7%B1%BB%E5%88%AB%E5%92%8C%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/</guid>
+      <guid>https://hideric.github.io/cpp/cprimer/cprimer-%E5%AD%98%E5%82%A8%E7%B1%BB%E5%88%AB%E5%92%8C%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/</guid>
       <description>CPrimer - 数组与指针 1.存储类别 C提供stoage、class等模型或存储类别在内存中储存数据。</description>
     </item>
     
     <item>
       <title>CPrimer - 数组与指针</title>
-      <link>http://hideric.github.io/cpp/cprimer/cprimer-%E6%95%B0%E7%BB%84%E4%B8%8E%E6%8C%87%E9%92%88/</link>
+      <link>https://hideric.github.io/cpp/cprimer/cprimer-%E6%95%B0%E7%BB%84%E4%B8%8E%E6%8C%87%E9%92%88/</link>
       <pubDate>Tue, 26 Nov 2019 22:07:12 +0800</pubDate>
       
-      <guid>http://hideric.github.io/cpp/cprimer/cprimer-%E6%95%B0%E7%BB%84%E4%B8%8E%E6%8C%87%E9%92%88/</guid>
+      <guid>https://hideric.github.io/cpp/cprimer/cprimer-%E6%95%B0%E7%BB%84%E4%B8%8E%E6%8C%87%E9%92%88/</guid>
       <description>CPrimer - 数组与指针 解引用未初始化的指针 千万不要解引用未初始化的指针 int *pt;	// 未初始化的指针 *pt = 5;	// 严重的错误  第二行的意思是把5储存在pt指向的位置，但是pt未被初始化，其值是一个随机值，所以不知道5储存到何处，可能会擦写数据或代码。
 const关键字修饰数组或指针  const修饰的数组无法改变值（编译器报错）; 指向const的指针不能用于改变值，但是可以让指针指向数组的别处;
 double rates[5] = {88.99, 100.12, 59.45, 183.11, 340.5}; const double * pd = rates;	// pd指向数组的首元素 *pd = 29.89;	// 不允许，指针不能用于改变值 pd[2] = 222.22;	// 不允许，同上 rates[0] = 99.99;	// 允许，因为rates未被const限定 pd++;	// 让pd指向rates[1]，允许  把const数据或非const数据的地址初始化为指向const的指针或者赋值给指向const的指针是合法的；
@@ -35,10 +35,10 @@ double rates[5] = {88.99, 100.12, 59.45, 183.11, 340.5}; const double locked[4] 
     
     <item>
       <title>CPrimer - 字符串和字符串函数</title>
-      <link>http://hideric.github.io/cpp/cprimer/cprimer-%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%92%8C%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%87%BD%E6%95%B0/</link>
+      <link>https://hideric.github.io/cpp/cprimer/cprimer-%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%92%8C%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%87%BD%E6%95%B0/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>http://hideric.github.io/cpp/cprimer/cprimer-%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%92%8C%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%87%BD%E6%95%B0/</guid>
+      <guid>https://hideric.github.io/cpp/cprimer/cprimer-%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%92%8C%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%87%BD%E6%95%B0/</guid>
       <description>CPrimer - 字符串和字符串函数 表示字符串和字符串IO 字符串常量属于静态存储类别，函数中使用字符串常量，只会被储存一次，程序生命期内存在，即使函数调用多次。用双引号括起来的内容被视为指向该字符串储存位置的指针，类似于数组名作为指向数组位置的指针。
 printf(&amp;quot;%s, %p, %c\n&amp;quot;, &amp;quot;We&amp;quot;, &amp;quot;are&amp;quot;, *&amp;quot;space&amp;quot;); // *&amp;quot;space&amp;quot;的首字符是指针所指向的位置 // 输出： We, 0x100000fac, s  字符串数组初始化
 const char m1[40] = &amp;quot;Limit yourself to one line&#39;s worth.&amp;quot;; const char m1[40] = {&#39;L&#39;, &#39;i&#39; ... &#39;h&#39;, &#39;.&#39;, &#39;\0&#39;}; // 最后没有这个\0就不是字符串，而是字符数组  指定数组大小时，要确保数组的元素个数至少比字符串长度多1，所有未被使用的元素都被自动初始化为\0。

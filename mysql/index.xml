@@ -2,32 +2,32 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Mysql on Hideric&#39;s Blog</title>
-    <link>http://hideric.github.io/mysql/</link>
+    <link>https://hideric.github.io/mysql/</link>
     <description>Recent content in Mysql on Hideric&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>The Hugo Documents are copyright © gethugothemes 2018.</copyright>
     <lastBuildDate>Wed, 07 Aug 2019 11:02:05 +0600</lastBuildDate>
     
-	<atom:link href="http://hideric.github.io/mysql/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://hideric.github.io/mysql/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>MySQL事务与隔离级别</title>
-      <link>http://hideric.github.io/mysql/mysql%E4%BA%8B%E5%8A%A1%E4%B8%8E%E9%9A%94%E7%A6%BB%E7%BA%A7%E5%88%AB/</link>
+      <link>https://hideric.github.io/mysql/mysql%E4%BA%8B%E5%8A%A1%E4%B8%8E%E9%9A%94%E7%A6%BB%E7%BA%A7%E5%88%AB/</link>
       <pubDate>Wed, 18 Dec 2019 15:01:21 +0800</pubDate>
       
-      <guid>http://hideric.github.io/mysql/mysql%E4%BA%8B%E5%8A%A1%E4%B8%8E%E9%9A%94%E7%A6%BB%E7%BA%A7%E5%88%AB/</guid>
+      <guid>https://hideric.github.io/mysql/mysql%E4%BA%8B%E5%8A%A1%E4%B8%8E%E9%9A%94%E7%A6%BB%E7%BA%A7%E5%88%AB/</guid>
       <description>MySQL事务与隔离级别 解决mysql LOCK TABLES 后事务无法回滚的问题
 // service中加了spring事务，但是出现异常释放锁后不回滚 @Service @Transactional class Service { public void fun() { try{ .... lock tables ... }finally{ unlock tables...; } } } // 解决方法：改为controller层回滚 class Controller { public ModelAndView handleRequest(HttpServletRequest req, HttpServletResponse resp) throws Exception { ModelAndView mav = new ModelAndView(); Result result = new Result(); try { result = service.fun(); } catch (Exception e) { result.setMsg(e.getMessage()); }finally { sfm.unlockTable(null); } }  MySQL读写锁  获取MySQL的读锁表示，所有线程只可读操作，写阻塞 获取MySQL的写锁表示，只有当前线程可读写（只限一次操作），其他线程读写阻塞 session1释放读锁后，session2可以加读锁，但无法加写锁     id num type     1 10 1   2 20 1    创建t表、s表</description>
     </item>
     
     <item>
       <title>Mysql面试题及千万级数据查询优化</title>
-      <link>http://hideric.github.io/mysql/mysql%E9%9D%A2%E8%AF%95%E9%A2%98%E5%8F%8A%E5%8D%83%E4%B8%87%E7%BA%A7%E6%95%B0%E6%8D%AE%E6%9F%A5%E8%AF%A2%E4%BC%98%E5%8C%96/</link>
+      <link>https://hideric.github.io/mysql/mysql%E9%9D%A2%E8%AF%95%E9%A2%98%E5%8F%8A%E5%8D%83%E4%B8%87%E7%BA%A7%E6%95%B0%E6%8D%AE%E6%9F%A5%E8%AF%A2%E4%BC%98%E5%8C%96/</link>
       <pubDate>Wed, 30 Oct 2019 15:41:01 +0800</pubDate>
       
-      <guid>http://hideric.github.io/mysql/mysql%E9%9D%A2%E8%AF%95%E9%A2%98%E5%8F%8A%E5%8D%83%E4%B8%87%E7%BA%A7%E6%95%B0%E6%8D%AE%E6%9F%A5%E8%AF%A2%E4%BC%98%E5%8C%96/</guid>
+      <guid>https://hideric.github.io/mysql/mysql%E9%9D%A2%E8%AF%95%E9%A2%98%E5%8F%8A%E5%8D%83%E4%B8%87%E7%BA%A7%E6%95%B0%E6%8D%AE%E6%9F%A5%E8%AF%A2%E4%BC%98%E5%8C%96/</guid>
       <description>Mysql面试题及千万级数据查询优化 Mysql数据库中一个表里有一千多万条数据，怎么快速的查出第900万条后的100条数据？
 怎么查，谁能告诉我答案？有没有人想着，不就一条语句搞定嘛
 select * from table limit 9000000,100;  那我们试试，去执行下这个SQL看看吧
@@ -53,10 +53,10 @@ select * from test limit 10000000,100;</description>
     
     <item>
       <title>MySQL的COUNT语句</title>
-      <link>http://hideric.github.io/mysql/mysql%E7%9A%84count%E8%AF%AD%E5%8F%A5/</link>
+      <link>https://hideric.github.io/mysql/mysql%E7%9A%84count%E8%AF%AD%E5%8F%A5/</link>
       <pubDate>Wed, 30 Oct 2019 15:39:40 +0800</pubDate>
       
-      <guid>http://hideric.github.io/mysql/mysql%E7%9A%84count%E8%AF%AD%E5%8F%A5/</guid>
+      <guid>https://hideric.github.io/mysql/mysql%E7%9A%84count%E8%AF%AD%E5%8F%A5/</guid>
       <description>MySQL的COUNT语句 数据库查询相信很多人都不陌生，所有经常有人调侃程序员就是CRUD专员，这所谓的CRUD指的就是数据库的增删改查。
 在数据库的增删改查操作中，使用最频繁的就是查询操作。而在所有查询操作中，统计数量操作更是经常被用到。
 关于数据库中行数统计，无论是MySQL还是Oracle，都有一个函数可以使用，那就是COUNT
@@ -85,10 +85,10 @@ select count(*),count(id),count(id2) from #bla results 7 3 2  除了COUNT(id)和
     
     <item>
       <title>MySQL 性能优化思路</title>
-      <link>http://hideric.github.io/mysql/mysql-%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E6%80%9D%E8%B7%AF/</link>
+      <link>https://hideric.github.io/mysql/mysql-%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E6%80%9D%E8%B7%AF/</link>
       <pubDate>Wed, 30 Oct 2019 15:39:39 +0800</pubDate>
       
-      <guid>http://hideric.github.io/mysql/mysql-%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E6%80%9D%E8%B7%AF/</guid>
+      <guid>https://hideric.github.io/mysql/mysql-%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E6%80%9D%E8%B7%AF/</guid>
       <description>MySQL 性能优化思路 一、前言
 MySQL调优对于很多程序员而言，都是一个非常棘手的问题，多数情况都是因为对数据库出现问题的情况和处理思路不清晰。在进行MySQL的优化之前必须要了解的就是MySQL的查询过程，很多的查询优化工作实际上就是遵循一些原则让MySQL的优化器能够按照预想的合理方式运行而已。
 今天给大家讲解MySQL的优化实战，助你高薪之路顺畅！
@@ -125,10 +125,10 @@ MySQL调优对于很多程序员而言，都是一个非常棘手的问题，多
     
     <item>
       <title>官方工具｜MySQL Router 高可用原理与实战</title>
-      <link>http://hideric.github.io/mysql/%E5%AE%98%E6%96%B9%E5%B7%A5%E5%85%B7mysql-router-%E9%AB%98%E5%8F%AF%E7%94%A8%E5%8E%9F%E7%90%86%E4%B8%8E%E5%AE%9E%E6%88%98/</link>
+      <link>https://hideric.github.io/mysql/%E5%AE%98%E6%96%B9%E5%B7%A5%E5%85%B7mysql-router-%E9%AB%98%E5%8F%AF%E7%94%A8%E5%8E%9F%E7%90%86%E4%B8%8E%E5%AE%9E%E6%88%98/</link>
       <pubDate>Wed, 30 Oct 2019 15:39:39 +0800</pubDate>
       
-      <guid>http://hideric.github.io/mysql/%E5%AE%98%E6%96%B9%E5%B7%A5%E5%85%B7mysql-router-%E9%AB%98%E5%8F%AF%E7%94%A8%E5%8E%9F%E7%90%86%E4%B8%8E%E5%AE%9E%E6%88%98/</guid>
+      <guid>https://hideric.github.io/mysql/%E5%AE%98%E6%96%B9%E5%B7%A5%E5%85%B7mysql-router-%E9%AB%98%E5%8F%AF%E7%94%A8%E5%8E%9F%E7%90%86%E4%B8%8E%E5%AE%9E%E6%88%98/</guid>
       <description>官方工具｜MySQL Router 高可用原理与实战 Mysql route介绍 什么是mysql route MySQL Router是处于应用client和dbserver之间的轻量级代理程序，它能检测，分析和转发查询到后端数据库实例，并把结果返回给client。是mysql-proxy的一个替代品。其架构图和功能如下。
 （1）Router实现读写分离，程序不是直接连接数据库IP，而是固定连接到mysql router。MySQL Router对前端应用是透明的。应用程序把MySQL Router当作是普通的mysql实例，把查询发给MySQL Router,而MySQL Router会把查询结果返回给前端的应用程序。
 （2）从数据库服务器故障，业务可以正常运行。由MySQL Router来进行自动下线不可用服务器。程序配置不需要任何修改。
@@ -142,10 +142,10 @@ mysql router实验架构介绍 实验环境架构图如下：
     
     <item>
       <title>MySQL 性能优化：8 种常见 SQL 错误用法！</title>
-      <link>http://hideric.github.io/mysql/mysql-%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%968-%E7%A7%8D%E5%B8%B8%E8%A7%81-sql-%E9%94%99%E8%AF%AF%E7%94%A8%E6%B3%95/</link>
+      <link>https://hideric.github.io/mysql/mysql-%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%968-%E7%A7%8D%E5%B8%B8%E8%A7%81-sql-%E9%94%99%E8%AF%AF%E7%94%A8%E6%B3%95/</link>
       <pubDate>Wed, 30 Oct 2019 15:38:52 +0800</pubDate>
       
-      <guid>http://hideric.github.io/mysql/mysql-%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%968-%E7%A7%8D%E5%B8%B8%E8%A7%81-sql-%E9%94%99%E8%AF%AF%E7%94%A8%E6%B3%95/</guid>
+      <guid>https://hideric.github.io/mysql/mysql-%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%968-%E7%A7%8D%E5%B8%B8%E8%A7%81-sql-%E9%94%99%E8%AF%AF%E7%94%A8%E6%B3%95/</guid>
       <description>MySQL 性能优化：8 种常见 SQL 错误用法！  来源：
 https://yq.aliyun.com/articles/72501
  1、LIMIT 语句 分页查询是最常用的场景之一，但也通常也是最容易出问题的地方。比如对于下面简单的语句，一般 DBA 想到的办法是在 type, name, create_time 字段上加组合索引。这样条件排序都能有效的利用到索引，性能迅速提升。
@@ -157,10 +157,10 @@ SELECT * FROM operation WHERE type = &#39;SQLStats&#39; AND name = &#39;SlowLog&
     
     <item>
       <title>MySQL中IS NULL、IS NOT NULL、!=不能用索引？</title>
-      <link>http://hideric.github.io/mysql/index/null%E8%83%BD%E7%94%A8%E7%B4%A2%E5%BC%95/</link>
+      <link>https://hideric.github.io/mysql/index/null%E8%83%BD%E7%94%A8%E7%B4%A2%E5%BC%95/</link>
       <pubDate>Wed, 07 Aug 2019 11:02:05 +0600</pubDate>
       
-      <guid>http://hideric.github.io/mysql/index/null%E8%83%BD%E7%94%A8%E7%B4%A2%E5%BC%95/</guid>
+      <guid>https://hideric.github.io/mysql/index/null%E8%83%BD%E7%94%A8%E7%B4%A2%E5%BC%95/</guid>
       <description>不知道从什么时候开始，网上流传着这么一个说法：
  MySQL的WHERE子句中包含 IS NULL、IS NOT NULL、!= 这些条件时便不能使用索引查询，只能使用全表扫描。
  这种说法愈演愈烈，甚至被很多同学奉为真理。咱啥话也不说，举个例子。假如我们有个表s1，结构如下：
